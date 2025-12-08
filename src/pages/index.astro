@@ -49,6 +49,21 @@ const faqs = [
     subtitle="Explore hundreds of incredible rivers that shape landscapes, support wildlife, and provide endless opportunities for outdoor adventure"
   />
 
+  <section class="hero-search">
+    <div class="container">
+      <form id="river-search-form" class="search-form">
+        <input
+          type="text"
+          id="river-search"
+          placeholder="Search for a river by name or location..."
+          autocomplete="off"
+        />
+        <button type="submit" aria-label="Search">🔍</button>
+      </form>
+      <div id="search-results" class="search-results"></div>
+    </div>
+  </section>
+
   <section class="intro-section">
     <div class="container">
       <h2>Your Complete Guide to Rivers in the United Kingdom</h2>
@@ -141,7 +156,13 @@ const faqs = [
     <div class="container">
       <h2>Start Your UK Rivers Adventure Today</h2>
       <p>
-        UK rivers offer a rich blend of natural beauty, cultural heritage, and unforgettable outdoor experiences. From chalk streams to rugged Scottish rivers, each river has its own story to tell. Explore our full directory to discover river maps, wildlife guides, and activity ideas for every region.
+        UK rivers offer a rich blend of natural beauty, cultural heritage, and unforgettable outdoor experiences. From chalk streams to rugged Scottish rivers, each river has its own story to tell. The rivers of the UK span diverse landscapes across England, Scotland, Wales, and Northern Ireland, creating unique ecosystems that support abundant wildlife and provide recreational opportunities for millions of visitors each year.
+      </p>
+      <p>
+        When exploring the longest rivers in the UK, you'll discover that the River Severn leads at 220 miles, followed closely by the iconic River Thames at 215 miles. These major rivers in the UK have shaped British history, powered industry, and continue to serve as vital transportation and ecological corridors. Our comprehensive map of rivers in UK territories helps you locate and learn about each waterway, from famous rivers to hidden gems waiting to be explored.
+      </p>
+      <p>
+        Whether you're planning kayaking adventures, searching for prime fishing locations, or seeking peaceful riverside walking trails, our UK rivers directory provides detailed information on river access points, safety guidelines, and seasonal activities. From the salmon-rich waters of Scottish Highland rivers to the tranquil chalk streams of southern England, the diversity of rivers in the United Kingdom offers something for every outdoor enthusiast. Explore our full directory to discover comprehensive river maps, detailed wildlife guides, conservation information, and practical activity ideas for every region across the UK.
       </p>
     </div>
   </section>
@@ -149,11 +170,198 @@ const faqs = [
   <FAQ faqs={faqs} />
 </Layout>
 
+<script>
+  import { supabase } from '../lib/supabase';
+
+  const searchForm = document.getElementById('river-search-form') as HTMLFormElement;
+  const searchInput = document.getElementById('river-search') as HTMLInputElement;
+  const searchResults = document.getElementById('search-results') as HTMLElement;
+
+  searchForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const searchTerm = searchInput.value.trim().toLowerCase();
+
+    if (!searchTerm) {
+      searchResults.innerHTML = '';
+      return;
+    }
+
+    try {
+      const { data: rivers } = await supabase
+        .from('rivers')
+        .select('*')
+        .or(`name.ilike.%${searchTerm}%,region.ilike.%${searchTerm}%,origin.ilike.%${searchTerm}%`)
+        .limit(1)
+        .maybeSingle();
+
+      if (rivers) {
+        searchResults.innerHTML = `
+          <div class="search-result-card">
+            ${rivers.image_url ? `<img src="${rivers.image_url}" alt="${rivers.name}" />` : ''}
+            <div class="result-content">
+              <h3>${rivers.name}</h3>
+              <p class="result-region">${rivers.region} • ${rivers.length_miles ? `${rivers.length_miles} miles` : 'Major UK River'}</p>
+              <p class="result-description">${rivers.description ? rivers.description.substring(0, 150) + '...' : ''}</p>
+              <a href="/rivers/${rivers.slug}" class="result-link">View Full Details →</a>
+            </div>
+          </div>
+        `;
+      } else {
+        searchResults.innerHTML = `
+          <div class="no-result">
+            <p>No river found matching "${searchTerm}". Try searching by river name or region (England, Scotland, Wales, or Northern Ireland).</p>
+          </div>
+        `;
+      }
+    } catch (error) {
+      console.error('Search error:', error);
+      searchResults.innerHTML = `
+        <div class="no-result">
+          <p>An error occurred while searching. Please try again.</p>
+        </div>
+      `;
+    }
+  });
+
+  searchInput?.addEventListener('input', () => {
+    if (!searchInput.value.trim()) {
+      searchResults.innerHTML = '';
+    }
+  });
+</script>
+
 <style>
   .container {
     max-width: var(--max-width);
     margin: 0 auto;
     padding: 0 calc(var(--spacing-unit) * 3);
+  }
+
+  .hero-search {
+    padding: calc(var(--spacing-unit) * 6) 0 calc(var(--spacing-unit) * 8);
+    background: var(--color-background-alt);
+  }
+
+  .search-form {
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    gap: calc(var(--spacing-unit) * 2);
+    background: var(--color-background);
+    padding: calc(var(--spacing-unit) * 1);
+    border-radius: 50px;
+    box-shadow: 0 4px 20px rgba(0, 102, 204, 0.15);
+    border: 2px solid var(--color-primary);
+  }
+
+  .search-form input {
+    flex: 1;
+    border: none;
+    padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 3);
+    font-size: 1rem;
+    font-family: inherit;
+    border-radius: 50px;
+    outline: none;
+  }
+
+  .search-form button {
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 3);
+    border-radius: 50px;
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 60px;
+  }
+
+  .search-form button:hover {
+    background: var(--color-primary-dark);
+    transform: scale(1.05);
+  }
+
+  .search-results {
+    max-width: 800px;
+    margin: calc(var(--spacing-unit) * 4) auto 0;
+  }
+
+  .search-result-card {
+    background: var(--color-background);
+    border: 2px solid var(--color-primary);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    gap: calc(var(--spacing-unit) * 3);
+    box-shadow: 0 8px 24px rgba(0, 102, 204, 0.15);
+    transition: all 0.3s ease;
+  }
+
+  .search-result-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 102, 204, 0.2);
+  }
+
+  .search-result-card img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .result-content {
+    flex: 1;
+    padding: calc(var(--spacing-unit) * 3);
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing-unit) * 1.5);
+  }
+
+  .result-content h3 {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 1.75rem;
+  }
+
+  .result-region {
+    color: var(--color-text-light);
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .result-description {
+    color: var(--color-text-light);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .result-link {
+    align-self: flex-start;
+    background: var(--color-primary);
+    color: white;
+    padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 3);
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+
+  .result-link:hover {
+    background: var(--color-primary-dark);
+    transform: translateX(4px);
+  }
+
+  .no-result {
+    background: var(--color-background);
+    border: 2px solid var(--color-border);
+    border-radius: 12px;
+    padding: calc(var(--spacing-unit) * 4);
+    text-align: center;
+  }
+
+  .no-result p {
+    color: var(--color-text-light);
+    margin: 0;
+    font-size: 1.125rem;
   }
 
   .intro-section {
@@ -174,6 +382,7 @@ const faqs = [
     max-width: 900px;
     margin-left: auto;
     margin-right: auto;
+    text-align: center;
   }
 
   .featured-rivers {
@@ -328,6 +537,15 @@ const faqs = [
   }
 
   @media (max-width: 768px) {
+    .search-result-card {
+      flex-direction: column;
+    }
+
+    .search-result-card img {
+      width: 100%;
+      height: 200px;
+    }
+
     .rivers-grid {
       grid-template-columns: 1fr;
     }
