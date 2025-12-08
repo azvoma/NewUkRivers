@@ -1,0 +1,253 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import RiverCard from '../components/RiverCard.astro';
+import FAQ from '../components/FAQ.astro';
+import { supabase } from '../lib/supabase';
+
+const { data: allRivers } = await supabase
+  .from('rivers')
+  .select('*')
+  .order('name');
+
+const faqs = [
+  {
+    question: "What are the cleanest rivers in the UK?",
+    answer: "Chalk rivers like the River Itchen and River Test are among the cleanest, with crystal-clear water flowing over chalk bedrock. Many Scottish Highland rivers also maintain excellent water quality due to minimal pollution and natural filtration through peat and rock."
+  },
+  {
+    question: "Which UK rivers contain gold?",
+    answer: "The River Tay and River Dee in Scotland are known for containing gold deposits. Small amounts of gold can be found in several other Scottish and Welsh rivers, deposited through natural erosion of gold-bearing rocks in the highlands."
+  },
+  {
+    question: "When can you fish in UK rivers?",
+    answer: "Fishing seasons vary by species and region. Coarse fishing is typically available year-round, while salmon and trout have closed seasons (usually October to March for salmon). Always check local regulations and obtain proper permits before fishing."
+  },
+  {
+    question: "What are the best campsites near rivers in the UK?",
+    answer: "Popular riverside camping areas include the River Wye valley, Thames riverside sites, Scottish Highland rivers, and Lake District rivers. Many offer facilities for water activities, fishing, and nature walks."
+  },
+  {
+    question: "What fish live in UK rivers?",
+    answer: "UK rivers support diverse fish species including salmon, brown trout, sea trout, pike, perch, roach, chub, barbel, bream, carp, and various others. Chalk rivers are particularly important for brown trout populations."
+  },
+  {
+    question: "What is the longest river in the UK?",
+    answer: "The River Severn is the longest river in the United Kingdom at 220 miles (354 km), flowing from Wales through England to the Bristol Channel. The River Thames is the second longest at 215 miles (346 km)."
+  }
+];
+---
+
+<Layout
+  title="Rivers in the UK | Complete UK Rivers Directory & Map"
+  description="Browse all rivers in the UK with names A–Z. Explore river maps, facts, wildlife, activities, and regional river guides."
+  keywords="rivers in the uk, uk rivers, map rivers in uk, names of rivers in the uk"
+>
+  <Hero
+    title="Explore All Rivers in the UK: A–Z River Directory"
+    subtitle="Hundreds of rivers flowing through England, Scotland, Wales, and Northern Ireland"
+  />
+
+  <section class="intro-section">
+    <div class="container">
+      <p>
+        With hundreds of rivers flowing through England, Scotland, Wales, and Northern Ireland, the UK has a rich network of waterways waiting to be explored. This page features every river in the UK, listed alphabetically and regionally for easy navigation.
+      </p>
+      <p>
+        Whether you're researching names of rivers in the UK or planning a trip to a specific region, our comprehensive directory provides essential details, wildlife facts, and interactive river maps.
+      </p>
+    </div>
+  </section>
+
+  <section class="filter-section">
+    <div class="container">
+      <div class="filter-controls">
+        <input
+          type="text"
+          id="search-input"
+          class="search-input"
+          placeholder="Search rivers by name..."
+        />
+        <select id="region-filter" class="region-filter">
+          <option value="all">All Regions</option>
+          <option value="England">England</option>
+          <option value="Scotland">Scotland</option>
+          <option value="Wales">Wales</option>
+          <option value="Northern Ireland">Northern Ireland</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <section class="rivers-directory">
+    <div class="container">
+      <div id="rivers-grid" class="rivers-grid">
+        {allRivers && allRivers.map((river) => (
+          <RiverCard river={river} />
+        ))}
+      </div>
+      <div id="no-results" class="no-results" style="display: none;">
+        <p>No rivers found matching your search criteria.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bottom-section">
+    <div class="container">
+      <p>
+        Our UK river index is designed for students, hikers, campers, and anyone who enjoys discovering waterways. Dive into each river page to learn about its history, wildlife, activities, and conservation status.
+      </p>
+    </div>
+  </section>
+
+  <FAQ faqs={faqs} />
+</Layout>
+
+<script>
+  const searchInput = document.getElementById('search-input') as HTMLInputElement;
+  const regionFilter = document.getElementById('region-filter') as HTMLSelectElement;
+  const riversGrid = document.getElementById('rivers-grid') as HTMLElement;
+  const noResults = document.getElementById('no-results') as HTMLElement;
+
+  const riverCards = Array.from(document.querySelectorAll('.rivers-grid > article'));
+
+  function filterRivers() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const selectedRegion = regionFilter.value;
+
+    let visibleCount = 0;
+
+    riverCards.forEach((card) => {
+      const riverName = card.querySelector('h3')?.textContent?.toLowerCase() || '';
+      const riverRegion = card.querySelector('.region-badge')?.textContent || '';
+
+      const matchesSearch = riverName.includes(searchTerm);
+      const matchesRegion = selectedRegion === 'all' || riverRegion === selectedRegion;
+
+      if (matchesSearch && matchesRegion) {
+        (card as HTMLElement).style.display = 'flex';
+        visibleCount++;
+      } else {
+        (card as HTMLElement).style.display = 'none';
+      }
+    });
+
+    if (visibleCount === 0) {
+      noResults.style.display = 'block';
+      riversGrid.style.display = 'none';
+    } else {
+      noResults.style.display = 'none';
+      riversGrid.style.display = 'grid';
+    }
+  }
+
+  searchInput.addEventListener('input', filterRivers);
+  regionFilter.addEventListener('change', filterRivers);
+</script>
+
+<style>
+  .container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 calc(var(--spacing-unit) * 3);
+  }
+
+  .intro-section {
+    padding: calc(var(--spacing-unit) * 8) 0;
+    background: var(--color-background-alt);
+  }
+
+  .intro-section p {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: var(--color-text-light);
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .filter-section {
+    padding: calc(var(--spacing-unit) * 6) 0 calc(var(--spacing-unit) * 4);
+  }
+
+  .filter-controls {
+    display: flex;
+    gap: calc(var(--spacing-unit) * 2);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .search-input,
+  .region-filter {
+    padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 2);
+    border: 2px solid var(--color-border);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+  }
+
+  .search-input {
+    flex: 1;
+  }
+
+  .search-input:focus,
+  .region-filter:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+  }
+
+  .region-filter {
+    min-width: 180px;
+    cursor: pointer;
+  }
+
+  .rivers-directory {
+    padding: calc(var(--spacing-unit) * 6) 0 calc(var(--spacing-unit) * 10);
+  }
+
+  .rivers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: calc(var(--spacing-unit) * 3);
+  }
+
+  .no-results {
+    text-align: center;
+    padding: calc(var(--spacing-unit) * 8) 0;
+  }
+
+  .no-results p {
+    font-size: 1.125rem;
+    color: var(--color-text-light);
+  }
+
+  .bottom-section {
+    padding: calc(var(--spacing-unit) * 8) 0;
+    background: var(--color-background-alt);
+  }
+
+  .bottom-section p {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: var(--color-text-light);
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    .filter-controls {
+      flex-direction: column;
+    }
+
+    .region-filter {
+      width: 100%;
+    }
+
+    .rivers-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

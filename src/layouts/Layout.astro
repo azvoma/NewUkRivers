@@ -1,0 +1,513 @@
+---
+export interface Props {
+	title?: string;
+	description?: string;
+	keywords?: string;
+}
+
+const {
+	title = 'UK Rivers | Guide to the Longest & Major Rivers in the UK',
+	description = 'Explore all UK rivers with maps, facts, activities and guides. Discover the longest rivers in the UK, major rivers, and a detailed map of rivers in the UK.',
+	keywords = 'uk rivers, longest rivers in uk, rivers of the uk, map of rivers in uk, major rivers in the uk'
+} = Astro.props;
+
+const currentPath = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+	</head>
+	<body>
+		<header class="header">
+			<nav class="nav-container">
+				<a href="/" class="logo">
+					<span class="logo-icon">🌊</span>
+					<span class="logo-text">UK Rivers</span>
+				</a>
+				<button class="mobile-menu-toggle" aria-label="Toggle menu">
+					<span></span>
+					<span></span>
+					<span></span>
+				</button>
+				<ul class="nav-links">
+					<li><a href="/" class={currentPath === '/' ? 'active' : ''}>Home</a></li>
+					<li><a href="/about" class={currentPath === '/about' ? 'active' : ''}>About</a></li>
+					<li><a href="/rivers" class={currentPath === '/rivers' ? 'active' : ''}>Rivers</a></li>
+					<li><a href="/blog" class={currentPath === '/blog' ? 'active' : ''}>Blog</a></li>
+					<li><a href="/contact" class={currentPath === '/contact' ? 'active' : ''}>Contact</a></li>
+				</ul>
+			</nav>
+		</header>
+
+		<main>
+			<slot />
+		</main>
+
+		<footer class="footer">
+			<div class="footer-content">
+				<div class="footer-section">
+					<h3>UK Rivers Directory</h3>
+					<p>Your comprehensive guide to exploring the rivers, wildlife, and outdoor activities across the United Kingdom.</p>
+				</div>
+				<div class="footer-section">
+					<h4>Quick Links</h4>
+					<ul>
+						<li><a href="/">Home</a></li>
+						<li><a href="/about">About</a></li>
+						<li><a href="/rivers">Rivers Directory</a></li>
+						<li><a href="/blog">Blog</a></li>
+						<li><a href="/contact">Contact</a></li>
+					</ul>
+				</div>
+				<div class="footer-section">
+					<h4>Legal</h4>
+					<ul>
+						<li><a href="/privacy">Privacy Policy</a></li>
+						<li><a href="/terms">Terms of Service</a></li>
+						<li><a href="/cookies">Cookie Policy</a></li>
+					</ul>
+				</div>
+				<div class="footer-section">
+					<h4>Connect</h4>
+					<p>Explore, learn, and discover the natural beauty of UK rivers.</p>
+				</div>
+			</div>
+			<div class="footer-bottom">
+				<p>&copy; {new Date().getFullYear()} UK Rivers Directory. All rights reserved.</p>
+			</div>
+		</footer>
+
+		<button id="scroll-to-top" class="scroll-to-top" aria-label="Scroll to top">
+			↑
+		</button>
+
+		<div id="cookie-banner" class="cookie-banner">
+			<div class="cookie-content">
+				<p>We use cookies to enhance your browsing experience and analyze our traffic. By continuing to use this site, you consent to our use of cookies. <a href="/cookies">Learn more</a></p>
+				<button id="accept-cookies" class="cookie-accept">Accept</button>
+			</div>
+		</div>
+
+		<script>
+			document.addEventListener('DOMContentLoaded', () => {
+				const scrollToTopBtn = document.getElementById('scroll-to-top');
+				const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+				const navLinks = document.querySelector('.nav-links');
+
+				window.addEventListener('scroll', () => {
+					if (window.pageYOffset > 300) {
+						scrollToTopBtn?.classList.add('visible');
+					} else {
+						scrollToTopBtn?.classList.remove('visible');
+					}
+				});
+
+				scrollToTopBtn?.addEventListener('click', () => {
+					window.scrollTo({
+						top: 0,
+						behavior: 'smooth'
+					});
+				});
+
+				mobileMenuToggle?.addEventListener('click', () => {
+					navLinks?.classList.toggle('active');
+					mobileMenuToggle.classList.toggle('active');
+				});
+
+				const cookieBanner = document.getElementById('cookie-banner');
+				const acceptCookiesBtn = document.getElementById('accept-cookies');
+
+				if (!localStorage.getItem('cookiesAccepted')) {
+					cookieBanner?.classList.add('visible');
+				}
+
+				acceptCookiesBtn?.addEventListener('click', () => {
+					localStorage.setItem('cookiesAccepted', 'true');
+					cookieBanner?.classList.remove('visible');
+				});
+			});
+		</script>
+	</body>
+</html>
+
+<style is:global>
+	:root {
+		--color-primary: #0066cc;
+		--color-primary-dark: #004d99;
+		--color-secondary: #00a86b;
+		--color-accent: #ff6b35;
+		--color-text: #1a1a1a;
+		--color-text-light: #4a5568;
+		--color-background: #ffffff;
+		--color-background-alt: #f7fafc;
+		--color-border: #e2e8f0;
+		--color-success: #48bb78;
+		--color-warning: #ed8936;
+		--color-error: #f56565;
+		--spacing-unit: 8px;
+		--max-width: 1200px;
+		--header-height: 70px;
+	}
+
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+
+	html {
+		font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+		scroll-behavior: smooth;
+	}
+
+	body {
+		color: var(--color-text);
+		background: var(--color-background);
+		line-height: 1.6;
+		font-size: 16px;
+	}
+
+	main {
+		min-height: calc(100vh - var(--header-height) - 300px);
+		padding-top: var(--header-height);
+	}
+
+	h1, h2, h3, h4, h5, h6 {
+		line-height: 1.2;
+		font-weight: 700;
+		color: var(--color-text);
+	}
+
+	h1 {
+		font-size: clamp(2rem, 5vw, 3rem);
+		margin-bottom: calc(var(--spacing-unit) * 3);
+	}
+
+	h2 {
+		font-size: clamp(1.5rem, 4vw, 2.25rem);
+		margin-bottom: calc(var(--spacing-unit) * 2.5);
+	}
+
+	h3 {
+		font-size: clamp(1.25rem, 3vw, 1.75rem);
+		margin-bottom: calc(var(--spacing-unit) * 2);
+	}
+
+	h4 {
+		font-size: 1.125rem;
+		margin-bottom: calc(var(--spacing-unit) * 1.5);
+	}
+
+	p {
+		margin-bottom: calc(var(--spacing-unit) * 2);
+		line-height: 1.7;
+	}
+
+	a {
+		color: var(--color-primary);
+		text-decoration: none;
+		transition: color 0.3s ease;
+	}
+
+	a:hover {
+		color: var(--color-primary-dark);
+	}
+
+	.header {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		background: var(--color-background);
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+		z-index: 1000;
+		height: var(--header-height);
+	}
+
+	.nav-container {
+		max-width: var(--max-width);
+		margin: 0 auto;
+		padding: 0 calc(var(--spacing-unit) * 3);
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.logo {
+		display: flex;
+		align-items: center;
+		gap: calc(var(--spacing-unit) * 1.5);
+		font-size: 1.5rem;
+		font-weight: 700;
+		color: var(--color-primary);
+	}
+
+	.logo:hover {
+		color: var(--color-primary-dark);
+	}
+
+	.logo-icon {
+		font-size: 2rem;
+	}
+
+	.mobile-menu-toggle {
+		display: none;
+		flex-direction: column;
+		gap: 5px;
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 8px;
+	}
+
+	.mobile-menu-toggle span {
+		width: 25px;
+		height: 3px;
+		background: var(--color-text);
+		transition: all 0.3s ease;
+		border-radius: 3px;
+	}
+
+	.mobile-menu-toggle.active span:nth-child(1) {
+		transform: rotate(45deg) translate(8px, 8px);
+	}
+
+	.mobile-menu-toggle.active span:nth-child(2) {
+		opacity: 0;
+	}
+
+	.mobile-menu-toggle.active span:nth-child(3) {
+		transform: rotate(-45deg) translate(7px, -7px);
+	}
+
+	.nav-links {
+		display: flex;
+		list-style: none;
+		gap: calc(var(--spacing-unit) * 4);
+		align-items: center;
+	}
+
+	.nav-links a {
+		color: var(--color-text);
+		font-weight: 500;
+		padding: calc(var(--spacing-unit) * 1) calc(var(--spacing-unit) * 2);
+		border-radius: 6px;
+		transition: all 0.3s ease;
+	}
+
+	.nav-links a:hover,
+	.nav-links a.active {
+		color: var(--color-primary);
+		background: rgba(0, 102, 204, 0.1);
+	}
+
+	.footer {
+		background: var(--color-text);
+		color: #ffffff;
+		padding: calc(var(--spacing-unit) * 6) 0 calc(var(--spacing-unit) * 3);
+		margin-top: calc(var(--spacing-unit) * 10);
+	}
+
+	.footer-content {
+		max-width: var(--max-width);
+		margin: 0 auto;
+		padding: 0 calc(var(--spacing-unit) * 3);
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: calc(var(--spacing-unit) * 4);
+		margin-bottom: calc(var(--spacing-unit) * 4);
+	}
+
+	.footer-section h3 {
+		color: #ffffff;
+		margin-bottom: calc(var(--spacing-unit) * 2);
+	}
+
+	.footer-section h4 {
+		color: #ffffff;
+		margin-bottom: calc(var(--spacing-unit) * 2);
+		font-size: 1rem;
+	}
+
+	.footer-section p {
+		color: rgba(255, 255, 255, 0.8);
+		line-height: 1.6;
+	}
+
+	.footer-section ul {
+		list-style: none;
+	}
+
+	.footer-section ul li {
+		margin-bottom: calc(var(--spacing-unit) * 1.5);
+	}
+
+	.footer-section ul li a {
+		color: rgba(255, 255, 255, 0.8);
+		transition: color 0.3s ease;
+	}
+
+	.footer-section ul li a:hover {
+		color: #ffffff;
+	}
+
+	.footer-bottom {
+		max-width: var(--max-width);
+		margin: 0 auto;
+		padding: calc(var(--spacing-unit) * 3) calc(var(--spacing-unit) * 3) 0;
+		border-top: 1px solid rgba(255, 255, 255, 0.1);
+		text-align: center;
+	}
+
+	.footer-bottom p {
+		color: rgba(255, 255, 255, 0.6);
+		margin: 0;
+	}
+
+	.scroll-to-top {
+		position: fixed;
+		bottom: calc(var(--spacing-unit) * 4);
+		right: calc(var(--spacing-unit) * 4);
+		width: 50px;
+		height: 50px;
+		border-radius: 50%;
+		background: var(--color-primary);
+		color: white;
+		border: none;
+		font-size: 1.5rem;
+		cursor: pointer;
+		opacity: 0;
+		visibility: hidden;
+		transition: all 0.3s ease;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+		z-index: 999;
+	}
+
+	.scroll-to-top.visible {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	.scroll-to-top:hover {
+		background: var(--color-primary-dark);
+		transform: translateY(-3px);
+	}
+
+	.cookie-banner {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background: var(--color-text);
+		color: white;
+		padding: calc(var(--spacing-unit) * 3);
+		transform: translateY(100%);
+		transition: transform 0.3s ease;
+		z-index: 1001;
+		box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
+	}
+
+	.cookie-banner.visible {
+		transform: translateY(0);
+	}
+
+	.cookie-content {
+		max-width: var(--max-width);
+		margin: 0 auto;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: calc(var(--spacing-unit) * 3);
+		flex-wrap: wrap;
+	}
+
+	.cookie-content p {
+		margin: 0;
+		flex: 1;
+		min-width: 300px;
+	}
+
+	.cookie-content a {
+		color: var(--color-secondary);
+		text-decoration: underline;
+	}
+
+	.cookie-accept {
+		background: var(--color-primary);
+		color: white;
+		border: none;
+		padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 3);
+		border-radius: 6px;
+		font-weight: 600;
+		cursor: pointer;
+		transition: background 0.3s ease;
+		white-space: nowrap;
+	}
+
+	.cookie-accept:hover {
+		background: var(--color-primary-dark);
+	}
+
+	@media (max-width: 768px) {
+		.mobile-menu-toggle {
+			display: flex;
+		}
+
+		.nav-links {
+			position: absolute;
+			top: var(--header-height);
+			left: 0;
+			right: 0;
+			flex-direction: column;
+			background: var(--color-background);
+			padding: calc(var(--spacing-unit) * 3);
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+			opacity: 0;
+			visibility: hidden;
+			transform: translateY(-10px);
+			transition: all 0.3s ease;
+		}
+
+		.nav-links.active {
+			opacity: 1;
+			visibility: visible;
+			transform: translateY(0);
+		}
+
+		.nav-links li {
+			width: 100%;
+		}
+
+		.nav-links a {
+			display: block;
+			width: 100%;
+		}
+
+		.footer-content {
+			grid-template-columns: 1fr;
+		}
+
+		.cookie-content {
+			flex-direction: column;
+			align-items: stretch;
+		}
+
+		.cookie-accept {
+			width: 100%;
+		}
+	}
+</style>

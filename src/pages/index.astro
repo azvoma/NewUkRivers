@@ -1,0 +1,329 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import RiverCard from '../components/RiverCard.astro';
+import FAQ from '../components/FAQ.astro';
+import { supabase } from '../lib/supabase';
+
+const { data: featuredRivers } = await supabase
+  .from('rivers')
+  .select('*')
+  .eq('featured', true)
+  .order('length_miles', { ascending: false });
+
+const faqs = [
+  {
+    question: "What are the longest rivers in the UK?",
+    answer: "The River Severn is the longest river in the UK at 220 miles (354 km), followed by the River Thames at 215 miles (346 km), and the River Trent at 185 miles (297 km). These major rivers flow through England and have shaped British history and landscapes for centuries."
+  },
+  {
+    question: "How many rivers are there in the UK?",
+    answer: "The UK has hundreds of rivers of varying sizes. There are approximately 1,500 named rivers and streams throughout England, Scotland, Wales, and Northern Ireland, ranging from small tributaries to major waterways that support commerce, wildlife, and recreation."
+  },
+  {
+    question: "Is it safe to swim in rivers in the UK?",
+    answer: "Wild swimming in UK rivers can be safe in designated areas with proper precautions. Always check local water quality, be aware of currents and underwater hazards, never swim alone, and consider water temperature. Many rivers have specific safe swimming spots that are monitored during summer months."
+  },
+  {
+    question: "What animals live in rivers in the UK?",
+    answer: "UK rivers support diverse wildlife including otters, water voles, kingfishers, herons, swans, various fish species (salmon, trout, pike, perch), dragonflies, damselflies, and in some areas, seals near estuaries. Many rivers also host rare species like white-clawed crayfish and lamprey."
+  },
+  {
+    question: "Are there campsites near rivers in the UK?",
+    answer: "Yes, there are numerous campsites located near UK rivers, offering opportunities for riverside camping, fishing, and water activities. Popular riverside camping destinations include the River Wye, River Thames, and various Scottish rivers. Many sites offer facilities for kayaking, fishing, and nature walks."
+  },
+  {
+    question: "What plants grow near rivers in the UK?",
+    answer: "UK riverbanks support rich plant communities including willows, alders, rushes, reeds, water crowfoot, yellow flag iris, marsh marigold, meadowsweet, and various sedges. Chalk rivers are particularly special, supporting unique vegetation including water crowfoot that creates beautiful underwater meadows."
+  }
+];
+---
+
+<Layout
+  title="UK Rivers | Guide to the Longest & Major Rivers in the UK"
+  description="Explore all UK rivers with maps, facts, activities and guides. Discover the longest rivers in the UK, major rivers, and a detailed map of rivers in the UK."
+  keywords="uk rivers, longest rivers in uk, rivers of the uk, map of rivers in uk, major rivers in the uk"
+>
+  <Hero
+    title="Discover UK Rivers: Interactive Guide to All Major Rivers in the UK"
+    subtitle="Explore hundreds of incredible rivers that shape landscapes, support wildlife, and provide endless opportunities for outdoor adventure"
+  />
+
+  <section class="intro-section">
+    <div class="container">
+      <p>
+        The UK is home to hundreds of incredible rivers that shape landscapes, support wildlife, and provide endless opportunities for outdoor adventure. Our directory brings together detailed information on every major river in the UK, including maps, wildlife facts, activities, and conservation insights.
+      </p>
+      <p>
+        Whether you're researching the longest rivers in the UK, planning a riverside camping trip, or simply exploring the rivers of the UK for fun, this platform offers an easy-to-use and educational experience backed by accurate data, engaging visuals, and modern UX design.
+      </p>
+    </div>
+  </section>
+
+  <section class="featured-rivers">
+    <div class="container">
+      <h2>Featured UK Rivers</h2>
+      <div class="rivers-grid">
+        {featuredRivers && featuredRivers.map((river) => (
+          <RiverCard river={river} />
+        ))}
+      </div>
+      <div class="view-all">
+        <a href="/rivers" class="button-primary">View All Rivers →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="activities-section">
+    <div class="container">
+      <h2>Activities Around UK Rivers</h2>
+      <div class="activities-grid">
+        <div class="activity-card">
+          <div class="activity-icon">🚣</div>
+          <h3>Kayaking & Canoeing</h3>
+          <p>Explore scenic waterways and challenging rapids across the UK's diverse river systems.</p>
+        </div>
+        <div class="activity-card">
+          <div class="activity-icon">🎣</div>
+          <h3>Fishing</h3>
+          <p>Discover the best fishing spots and learn about seasonal regulations for various species.</p>
+        </div>
+        <div class="activity-card">
+          <div class="activity-icon">🏕️</div>
+          <h3>Riverside Camping</h3>
+          <p>Find beautiful campsites near rivers for an unforgettable outdoor experience.</p>
+        </div>
+        <div class="activity-card">
+          <div class="activity-icon">🥾</div>
+          <h3>Walking Trails</h3>
+          <p>Follow scenic riverside paths and discover the natural beauty of UK waterways.</p>
+        </div>
+        <div class="activity-card">
+          <div class="activity-icon">🏊</div>
+          <h3>Wild Swimming</h3>
+          <p>Learn about safe swimming spots and water quality in UK rivers.</p>
+        </div>
+        <div class="activity-card">
+          <div class="activity-icon">🦅</div>
+          <h3>Wildlife Watching</h3>
+          <p>Spot otters, kingfishers, herons, and other incredible wildlife along riverbanks.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="facts-section">
+    <div class="container">
+      <h2>Important & Fun Facts About UK Rivers</h2>
+      <div class="facts-grid">
+        <div class="fact-card">
+          <div class="fact-number">220</div>
+          <p>The River Severn is the longest in the UK at 220 miles</p>
+        </div>
+        <div class="fact-card">
+          <div class="fact-number">85%</div>
+          <p>The UK has 85% of the world's chalk rivers - globally rare habitats</p>
+        </div>
+        <div class="fact-card">
+          <div class="fact-number">150+</div>
+          <p>Over 150 fish species live in UK rivers</p>
+        </div>
+        <div class="fact-card">
+          <div class="fact-icon">💎</div>
+          <p>Some UK rivers contain natural gold deposits</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bottom-text">
+    <div class="container">
+      <p>
+        UK rivers offer a rich blend of natural beauty, cultural heritage, and unforgettable outdoor experiences. From chalk streams to rugged Scottish rivers, each river has its own story to tell. Explore our full directory to discover river maps, wildlife guides, and activity ideas for every region.
+      </p>
+    </div>
+  </section>
+
+  <FAQ faqs={faqs} />
+</Layout>
+
+<style>
+  .container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 calc(var(--spacing-unit) * 3);
+  }
+
+  .intro-section {
+    padding: calc(var(--spacing-unit) * 8) 0;
+    background: var(--color-background-alt);
+  }
+
+  .intro-section p {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: var(--color-text-light);
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .featured-rivers {
+    padding: calc(var(--spacing-unit) * 10) 0;
+  }
+
+  .featured-rivers h2 {
+    text-align: center;
+    margin-bottom: calc(var(--spacing-unit) * 6);
+  }
+
+  .rivers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: calc(var(--spacing-unit) * 3);
+    margin-bottom: calc(var(--spacing-unit) * 6);
+  }
+
+  .view-all {
+    text-align: center;
+  }
+
+  .button-primary {
+    display: inline-block;
+    background: var(--color-primary);
+    color: white;
+    padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 4);
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.125rem;
+    transition: all 0.3s ease;
+  }
+
+  .button-primary:hover {
+    background: var(--color-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 102, 204, 0.3);
+  }
+
+  .activities-section {
+    padding: calc(var(--spacing-unit) * 10) 0;
+    background: var(--color-background-alt);
+  }
+
+  .activities-section h2 {
+    text-align: center;
+    margin-bottom: calc(var(--spacing-unit) * 6);
+  }
+
+  .activities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: calc(var(--spacing-unit) * 3);
+  }
+
+  .activity-card {
+    background: var(--color-background);
+    padding: calc(var(--spacing-unit) * 4);
+    border-radius: 12px;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+  }
+
+  .activity-card:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 8px 24px rgba(0, 102, 204, 0.12);
+    transform: translateY(-4px);
+  }
+
+  .activity-icon {
+    font-size: 3rem;
+    margin-bottom: calc(var(--spacing-unit) * 2);
+  }
+
+  .activity-card h3 {
+    margin-bottom: calc(var(--spacing-unit) * 1.5);
+    font-size: 1.25rem;
+  }
+
+  .activity-card p {
+    color: var(--color-text-light);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .facts-section {
+    padding: calc(var(--spacing-unit) * 10) 0;
+  }
+
+  .facts-section h2 {
+    text-align: center;
+    margin-bottom: calc(var(--spacing-unit) * 6);
+  }
+
+  .facts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: calc(var(--spacing-unit) * 3);
+  }
+
+  .fact-card {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    color: white;
+    padding: calc(var(--spacing-unit) * 4);
+    border-radius: 12px;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+
+  .fact-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0, 102, 204, 0.25);
+  }
+
+  .fact-number {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: calc(var(--spacing-unit) * 2);
+    line-height: 1;
+  }
+
+  .fact-icon {
+    font-size: 3.5rem;
+    margin-bottom: calc(var(--spacing-unit) * 2);
+  }
+
+  .fact-card p {
+    font-size: 1.125rem;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .bottom-text {
+    padding: calc(var(--spacing-unit) * 8) 0;
+    background: var(--color-background-alt);
+  }
+
+  .bottom-text p {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: var(--color-text-light);
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    .rivers-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .activities-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .facts-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,264 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import FAQ from '../components/FAQ.astro';
+
+const faqs = [
+  {
+    question: "Where can I find a simple UK rivers map?",
+    answer: "Our directory provides an interactive and comprehensive map of UK rivers organized by region. You can browse rivers by England, Scotland, Wales, and Northern Ireland, with each river showing its location, length, and key features."
+  },
+  {
+    question: "What makes chalk rivers in the UK special?",
+    answer: "Chalk rivers are globally rare, and the UK has 85% of the world's chalk streams. These crystal-clear waters flow over chalk bedrock, creating unique ecosystems with stable temperatures and exceptional water quality that support rare species and beautiful aquatic plants."
+  },
+  {
+    question: "How many major rivers are there in the UK?",
+    answer: "The UK has approximately 50 major rivers, including famous waterways like the Thames, Severn, Trent, Tay, Clyde, and Wye. These rivers play crucial roles in transportation, commerce, recreation, and supporting diverse ecosystems throughout the regions."
+  },
+  {
+    question: "Do UK rivers have crayfish?",
+    answer: "Yes, UK rivers have both native white-clawed crayfish and invasive American signal crayfish. The native species is endangered and protected, while the larger invasive species has spread throughout many waterways, impacting native wildlife."
+  },
+  {
+    question: "What animals live near the rivers in the UK?",
+    answer: "Riverbanks support diverse wildlife including otters, water voles, herons, kingfishers, swans, various duck species, and many insects. Some rivers also have seals near estuaries, and in Scotland, you might spot ospreys hunting for fish."
+  },
+  {
+    question: "Are there labelled maps of rivers in the UK?",
+    answer: "Yes, our directory provides clearly labelled information for each river including name, location, length, origin, mouth, and region. Each river page includes geographic details and key landmarks to help you understand the river's course."
+  }
+];
+---
+
+<Layout
+  title="About Us | Map of Rivers UK & UK River Guidebook"
+  description="Learn about our UK rivers directory, explore maps of rivers UK-wide, and discover how our guidebook helps you understand rivers, wildlife, and activities."
+  keywords="map of rivers uk, map of uk rivers, rivers uk, uk rivers guidebook"
+>
+  <Hero
+    title="About Our UK Rivers Guidebook & Interactive River Map"
+  />
+
+  <section class="about-intro">
+    <div class="container">
+      <p>
+        Our mission is to provide the most complete, user-friendly, and educational map of rivers in the UK. We combine accurate data, modern design, and detailed guides to help people explore rivers UK-wide, from major waterways to hidden tributaries.
+      </p>
+      <p>
+        Our UK rivers guidebook approach ensures every visitor gains knowledge about river ecosystems, wildlife, cultural history, and the best activities along each river. Whether you're a student, adventurer, or nature lover, our platform gives you the tools to explore with confidence.
+      </p>
+    </div>
+  </section>
+
+  <section class="mission-section">
+    <div class="container">
+      <div class="mission-grid">
+        <div class="mission-card">
+          <div class="mission-icon">🗺️</div>
+          <h3>How We Built the UK River Map</h3>
+          <p>Our interactive map uses accurate geographic data to show the location and course of UK rivers. Each river entry includes detailed information about length, origin, mouth, and regional characteristics.</p>
+          <ul>
+            <li>GIS-powered location data</li>
+            <li>Regional breakdowns</li>
+            <li>Interactive A–Z database</li>
+            <li>Continuously updated information</li>
+          </ul>
+        </div>
+
+        <div class="mission-card">
+          <div class="mission-icon">🎯</div>
+          <h3>Our Mission</h3>
+          <p>We're committed to making UK river knowledge accessible, engaging, and useful for everyone. Our platform serves education, recreation, and conservation.</p>
+          <ul>
+            <li>Promote environmental awareness</li>
+            <li>Support river conservation</li>
+            <li>Encourage outdoor activities</li>
+            <li>Provide educational resources</li>
+          </ul>
+        </div>
+
+        <div class="mission-card">
+          <div class="mission-icon">💧</div>
+          <h3>Why UK Rivers Matter</h3>
+          <p>Rivers are vital ecosystems that support life, shape landscapes, and connect communities. Understanding and protecting these waterways is essential for future generations.</p>
+          <ul>
+            <li>Critical biodiversity habitats</li>
+            <li>Cultural and historical significance</li>
+            <li>Freshwater supply and hydrology</li>
+            <li>Recreation and wellbeing</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="values-section">
+    <div class="container">
+      <h2>What Makes Us Different</h2>
+      <div class="values-grid">
+        <div class="value-item">
+          <h4>Comprehensive Coverage</h4>
+          <p>From the longest rivers to smaller tributaries, we cover waterways across England, Scotland, Wales, and Northern Ireland with detailed, accurate information.</p>
+        </div>
+        <div class="value-item">
+          <h4>Educational Focus</h4>
+          <p>Every river page includes wildlife information, historical context, and conservation insights to help you learn while you explore.</p>
+        </div>
+        <div class="value-item">
+          <h4>Activity Guides</h4>
+          <p>Discover the best spots for kayaking, fishing, camping, walking, and wild swimming with safety information and seasonal recommendations.</p>
+        </div>
+        <div class="value-item">
+          <h4>Modern Design</h4>
+          <p>Our user-friendly interface makes it easy to search, filter, and discover rivers by region, length, activities, or wildlife.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="closing-section">
+    <div class="container">
+      <p>
+        The UK's rivers are dynamic ecosystems that support fish, plants, animals, and entire communities. By offering a complete and modern guidebook, we aim to help people learn, explore, and appreciate these waterways in a meaningful way.
+      </p>
+    </div>
+  </section>
+
+  <FAQ faqs={faqs} />
+</Layout>
+
+<style>
+  .container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 calc(var(--spacing-unit) * 3);
+  }
+
+  .about-intro {
+    padding: calc(var(--spacing-unit) * 8) 0;
+    background: var(--color-background-alt);
+  }
+
+  .about-intro p {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: var(--color-text-light);
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .mission-section {
+    padding: calc(var(--spacing-unit) * 10) 0;
+  }
+
+  .mission-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: calc(var(--spacing-unit) * 4);
+  }
+
+  .mission-card {
+    background: var(--color-background-alt);
+    padding: calc(var(--spacing-unit) * 4);
+    border-radius: 12px;
+    border: 2px solid var(--color-border);
+    transition: all 0.3s ease;
+  }
+
+  .mission-card:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 8px 24px rgba(0, 102, 204, 0.12);
+    transform: translateY(-4px);
+  }
+
+  .mission-icon {
+    font-size: 3rem;
+    margin-bottom: calc(var(--spacing-unit) * 2);
+  }
+
+  .mission-card h3 {
+    margin-bottom: calc(var(--spacing-unit) * 2);
+    color: var(--color-text);
+  }
+
+  .mission-card p {
+    color: var(--color-text-light);
+    margin-bottom: calc(var(--spacing-unit) * 2);
+  }
+
+  .mission-card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .mission-card ul li {
+    padding: calc(var(--spacing-unit) * 1) 0;
+    color: var(--color-text-light);
+    position: relative;
+    padding-left: calc(var(--spacing-unit) * 3);
+  }
+
+  .mission-card ul li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--color-secondary);
+    font-weight: 700;
+  }
+
+  .values-section {
+    padding: calc(var(--spacing-unit) * 10) 0;
+    background: var(--color-background-alt);
+  }
+
+  .values-section h2 {
+    text-align: center;
+    margin-bottom: calc(var(--spacing-unit) * 6);
+  }
+
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: calc(var(--spacing-unit) * 4);
+  }
+
+  .value-item {
+    text-align: center;
+  }
+
+  .value-item h4 {
+    color: var(--color-primary);
+    margin-bottom: calc(var(--spacing-unit) * 1.5);
+    font-size: 1.25rem;
+  }
+
+  .value-item p {
+    color: var(--color-text-light);
+    line-height: 1.7;
+  }
+
+  .closing-section {
+    padding: calc(var(--spacing-unit) * 8) 0;
+  }
+
+  .closing-section p {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: var(--color-text-light);
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    .mission-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .values-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

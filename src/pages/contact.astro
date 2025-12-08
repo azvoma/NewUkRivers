@@ -1,0 +1,386 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import FAQ from '../components/FAQ.astro';
+
+const faqs = [
+  {
+    question: "How many rivers are there in the UK?",
+    answer: "The UK has approximately 1,500 named rivers and streams of varying sizes throughout England, Scotland, Wales, and Northern Ireland. This includes major rivers, tributaries, and smaller waterways that together form an extensive river network."
+  },
+  {
+    question: "Can I submit information about a UK river?",
+    answer: "Yes! We welcome submissions about UK rivers. Use our contact form to share information, corrections, photos, or details about campsites and activities near rivers. Your contributions help keep our directory accurate and comprehensive."
+  },
+  {
+    question: "Do UK rivers have crayfish?",
+    answer: "Yes, UK rivers have both native white-clawed crayfish (endangered and protected) and invasive American signal crayfish (larger and more common). The invasive species has spread throughout many UK waterways and can outcompete the native species."
+  },
+  {
+    question: "Are there wild swimming safety rules?",
+    answer: "Yes, wild swimming safety guidelines include: never swim alone, check water quality and depth, be aware of currents and underwater hazards, avoid swimming after heavy rain, consider water temperature, tell someone where you're going, and only swim in designated safe areas when possible."
+  },
+  {
+    question: "What are the main rivers in the UK?",
+    answer: "The main rivers in the UK include the River Severn (longest at 220 miles), River Thames (215 miles), River Trent (185 miles), River Tay (120 miles), River Clyde (109 miles), River Wye (134 miles), and River Ouse, among many others."
+  },
+  {
+    question: "Where can I find a labelled UK rivers map?",
+    answer: "Our Rivers directory page provides a complete listing of UK rivers with detailed information including names, regions, lengths, and geographic locations. Each river page includes specific location details and key landmarks."
+  }
+];
+---
+
+<Layout
+  title="Contact Us | UK Rivers Directory & River Information"
+  description="Contact the UK Rivers Directory for questions about rivers of the UK, maps, wildlife, and activities. Get in touch for support or submissions."
+  keywords="rivers of uk, main rivers in the uk, uk rivers contact"
+>
+  <Hero
+    title="Contact the UK Rivers Directory"
+  />
+
+  <section class="intro-section">
+    <div class="container">
+      <p>
+        If you have questions about the rivers of the UK, want to submit information, or need help using our interactive river map, we're here to help. Our team responds within 24–48 hours.
+      </p>
+      <p>
+        We encourage users, researchers, and educators to reach out with river data, corrections, or collaboration requests. Your input helps us keep the UK river directory accurate and up to date.
+      </p>
+    </div>
+  </section>
+
+  <section class="contact-section">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-info">
+          <h2>Get in Touch</h2>
+          <p>We'd love to hear from you. Whether you have questions, suggestions, or want to contribute information about UK rivers, please use the form or contact details below.</p>
+
+          <div class="info-cards">
+            <div class="info-card">
+              <div class="info-icon">📧</div>
+              <h3>Email Us</h3>
+              <p>info@ukrivers.directory</p>
+            </div>
+            <div class="info-card">
+              <div class="info-icon">📝</div>
+              <h3>Submit Data</h3>
+              <p>Share river information, photos, or corrections</p>
+            </div>
+            <div class="info-card">
+              <div class="info-icon">🏕️</div>
+              <h3>Add Locations</h3>
+              <p>Suggest campsites, activities, or points of interest</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-form-wrapper">
+          <form id="contact-form" class="contact-form">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                placeholder="Your name"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                placeholder="your@email.com"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="subject">Subject</label>
+              <input
+                type="text"
+                id="subject"
+                name="subject"
+                required
+                placeholder="What is this regarding?"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="type">Type of Inquiry</label>
+              <select id="type" name="type" required>
+                <option value="">Select type...</option>
+                <option value="inquiry">General Inquiry</option>
+                <option value="correction">Report Incorrect Information</option>
+                <option value="submission">Submit River Data</option>
+                <option value="photo">Submit Photos</option>
+                <option value="location">Add Campsite/Activity</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea
+                id="message"
+                name="message"
+                required
+                rows="6"
+                placeholder="Tell us more..."
+              ></textarea>
+            </div>
+
+            <button type="submit" class="submit-button">
+              Send Message
+            </button>
+
+            <div id="form-success" class="form-message success" style="display: none;">
+              Thank you! Your message has been sent successfully. We'll respond within 24-48 hours.
+            </div>
+
+            <div id="form-error" class="form-message error" style="display: none;">
+              Sorry, there was an error sending your message. Please try again.
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bottom-section">
+    <div class="container">
+      <p>
+        We are committed to building the most accurate and user-friendly UK rivers platform. Reach out to help us improve, submit data, or ask river-related questions.
+      </p>
+    </div>
+  </section>
+
+  <FAQ faqs={faqs} />
+</Layout>
+
+<script>
+  import { supabase } from '../lib/supabase';
+
+  const contactForm = document.getElementById('contact-form') as HTMLFormElement;
+  const formSuccess = document.getElementById('form-success') as HTMLElement;
+  const formError = document.getElementById('form-error') as HTMLElement;
+
+  contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(contactForm);
+    const data = {
+      name: formData.get('name') as string,
+      email: formData.get('email') as string,
+      subject: formData.get('subject') as string,
+      message: formData.get('message') as string,
+      submission_type: formData.get('type') as string,
+    };
+
+    try {
+      const { error } = await supabase
+        .from('contact_submissions')
+        .insert([data]);
+
+      if (error) throw error;
+
+      formSuccess.style.display = 'block';
+      formError.style.display = 'none';
+      contactForm.reset();
+
+      setTimeout(() => {
+        formSuccess.style.display = 'none';
+      }, 5000);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      formError.style.display = 'block';
+      formSuccess.style.display = 'none';
+    }
+  });
+</script>
+
+<style>
+  .container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 calc(var(--spacing-unit) * 3);
+  }
+
+  .intro-section {
+    padding: calc(var(--spacing-unit) * 8) 0;
+    background: var(--color-background-alt);
+  }
+
+  .intro-section p {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: var(--color-text-light);
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .contact-section {
+    padding: calc(var(--spacing-unit) * 10) 0;
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: calc(var(--spacing-unit) * 6);
+    align-items: start;
+  }
+
+  .contact-info h2 {
+    margin-bottom: calc(var(--spacing-unit) * 3);
+  }
+
+  .contact-info > p {
+    color: var(--color-text-light);
+    line-height: 1.7;
+    margin-bottom: calc(var(--spacing-unit) * 4);
+  }
+
+  .info-cards {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing-unit) * 2);
+  }
+
+  .info-card {
+    background: var(--color-background-alt);
+    padding: calc(var(--spacing-unit) * 3);
+    border-radius: 12px;
+    border: 2px solid var(--color-border);
+    transition: all 0.3s ease;
+  }
+
+  .info-card:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.1);
+  }
+
+  .info-icon {
+    font-size: 2rem;
+    margin-bottom: calc(var(--spacing-unit) * 1.5);
+  }
+
+  .info-card h3 {
+    font-size: 1.125rem;
+    margin-bottom: calc(var(--spacing-unit) * 1);
+  }
+
+  .info-card p {
+    color: var(--color-text-light);
+    margin: 0;
+  }
+
+  .contact-form-wrapper {
+    background: var(--color-background-alt);
+    padding: calc(var(--spacing-unit) * 4);
+    border-radius: 12px;
+    border: 2px solid var(--color-border);
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing-unit) * 3);
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing-unit) * 1);
+  }
+
+  .form-group label {
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: calc(var(--spacing-unit) * 1.5);
+    border: 2px solid var(--color-border);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+  }
+
+  .form-group textarea {
+    resize: vertical;
+  }
+
+  .submit-button {
+    background: var(--color-primary);
+    color: white;
+    padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 4);
+    border: none;
+    border-radius: 8px;
+    font-size: 1.125rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .submit-button:hover {
+    background: var(--color-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 102, 204, 0.3);
+  }
+
+  .form-message {
+    padding: calc(var(--spacing-unit) * 2);
+    border-radius: 8px;
+    font-weight: 500;
+  }
+
+  .form-message.success {
+    background: #d1fae5;
+    color: #065f46;
+    border: 2px solid #10b981;
+  }
+
+  .form-message.error {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 2px solid #ef4444;
+  }
+
+  .bottom-section {
+    padding: calc(var(--spacing-unit) * 8) 0;
+    background: var(--color-background-alt);
+  }
+
+  .bottom-section p {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: var(--color-text-light);
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
