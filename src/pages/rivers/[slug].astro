@@ -1,0 +1,506 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import FAQ from '../../components/FAQ.astro';
+import { supabase } from '../../lib/supabase';
+
+export async function getStaticPaths() {
+  const { data: rivers } = await supabase
+    .from('rivers')
+    .select('*');
+
+  return rivers?.map((river) => ({
+    params: { slug: river.slug },
+    props: { river },
+  })) || [];
+}
+
+const { river } = Astro.props;
+
+const relatedRivers = await supabase
+  .from('rivers')
+  .select('*')
+  .eq('region', river.region)
+  .neq('slug', river.slug)
+  .limit(3);
+
+const faqs = [
+  {
+    question: `How long is the ${river.name}?`,
+    answer: river.length_miles
+      ? `The ${river.name} is ${river.length_miles} miles (${river.length_km} km) long, making it ${river.length_miles > 150 ? 'one of the longer' : 'a significant'} rivers in the UK.`
+      : `The ${river.name} flows through ${river.region}, contributing to the UK's diverse river network.`
+  },
+  {
+    question: `Where does the ${river.name} start and end?`,
+    answer: `The ${river.name} rises at ${river.origin} and flows to ${river.mouth}. ${river.region === 'Scotland' ? 'Scottish rivers often flow through dramatic highland scenery.' : river.region === 'Wales' ? 'Welsh rivers are known for their beauty and salmon fishing.' : 'English rivers have played crucial roles in history and industry.'}`
+  },
+  {
+    question: `What wildlife can I see along the ${river.name}?`,
+    answer: river.wildlife && river.wildlife.length > 0
+      ? `The ${river.name} supports diverse wildlife including ${river.wildlife.slice(0, 3).join(', ')}${river.wildlife.length > 3 ? ', and more' : ''}. Bring binoculars for the best wildlife watching experience.`
+      : `The ${river.name} supports various wildlife species typical of UK rivers. Check with local wildlife trusts for current sightings.`
+  },
+  {
+    question: `What activities are available on the ${river.name}?`,
+    answer: river.activities && river.activities.length > 0
+      ? `Popular activities on the ${river.name} include ${river.activities.slice(0, 4).join(', ')}${river.activities.length > 4 ? ', and more' : ''}. Always check local regulations and safety guidelines.`
+      : `Various outdoor activities are available along the ${river.name}. Contact local tourism offices for current information.`
+  },
+  {
+    question: `Is it safe to swim in the ${river.name}?`,
+    answer: `${river.swimming_safety}. Always check current water quality, avoid swimming after heavy rain, never swim alone, and be aware of currents and underwater hazards.`
+  },
+  {
+    question: river.has_gold ? `Can you find gold in the ${river.name}?` : `What makes the ${river.name} special?`,
+    answer: river.has_gold
+      ? `Yes, the ${river.name} is known to contain natural gold deposits. Gold panning requires landowner permission and proper equipment. The gold comes from erosion of gold-bearing rocks upstream.`
+      : `The ${river.name} is special for its natural beauty, wildlife, and ${river.activities && river.activities.length > 0 ? 'recreational opportunities' : 'cultural significance'}. Each UK river has unique characteristics shaped by its geology and history.`
+  }
+];
+
+const galleryImages = [
+  { url: river.image_url || 'https://images.pexels.com/photos/1179229/pexels-photo-1179229.jpeg', alt: `${river.name} main view` },
+  { url: 'https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg', alt: `${river.name} landscape` },
+  { url: 'https://images.pexels.com/photos/1118877/pexels-photo-1118877.jpeg', alt: `${river.name} wildlife habitat` },
+  { url: 'https://images.pexels.com/photos/2166927/pexels-photo-2166927.jpeg', alt: `${river.name} scenic view` }
+];
+
+const secondaryGalleryImages = [
+  { url: 'https://images.pexels.com/photos/1761280/pexels-photo-1761280.jpeg', alt: `${river.name} activities` },
+  { url: 'https://images.pexels.com/photos/1118872/pexels-photo-1118872.jpeg', alt: `${river.name} nature` },
+  { url: 'https://images.pexels.com/photos/2249542/pexels-photo-2249542.jpeg', alt: `${river.name} surroundings` },
+  { url: 'https://images.pexels.com/photos/1029622/pexels-photo-1029622.jpeg', alt: `${river.name} waterside` }
+];
+---
+
+<Layout
+  title={`${river.name} | ${river.region} River Guide & Information`}
+  description={`Explore ${river.name} in ${river.region}. ${river.description ? river.description.substring(0, 120) : `Discover wildlife, activities, and essential information about this ${river.region} river.`}`}
+  keywords={`${river.name}, ${river.slug}, ${river.region} rivers, UK rivers, ${river.activities && river.activities.length > 0 ? river.activities.join(', ') : 'river activities'}`}
+>
+  <div class="river-hero" style={river.image_url ? `background-image: url(${river.image_url})` : ''}>
+    <div class="hero-overlay">
+      <div class="container">
+        <h1>{river.name}</h1>
+        <p class="hero-subtitle">{river.region} • {river.length_miles ? `${river.length_miles} miles (${river.length_km} km)` : 'Major UK River'}</p>
+      </div>
+    </div>
+  </div>
+
+  <section class="river-intro">
+    <div class="container">
+      <h2>About {river.name}</h2>
+      <p class="lead">{river.description}</p>
+    </div>
+  </section>
+
+  <section class="river-details">
+    <div class="container">
+      <div class="details-grid">
+        <div class="detail-card">
+          <h3>📍 Location</h3>
+          <div class="detail-content">
+            <p><strong>Region:</strong> {river.region}</p>
+            <p><strong>Origin:</strong> {river.origin}</p>
+            <p><strong>Mouth:</strong> {river.mouth}</p>
+            {river.length_miles && (
+              <p><strong>Length:</strong> {river.length_miles} miles ({river.length_km} km)</p>
+            )}
+          </div>
+        </div>
+
+        <div class="detail-card">
+          <h3>🦅 Wildlife</h3>
+          <div class="detail-content">
+            {river.wildlife && river.wildlife.length > 0 ? (
+              <ul>
+                {river.wildlife.map((species) => (
+                  <li>{species}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>Various wildlife species inhabit this river.</p>
+            )}
+          </div>
+        </div>
+
+        <div class="detail-card">
+          <h3>🎯 Activities</h3>
+          <div class="detail-content">
+            {river.activities && river.activities.length > 0 ? (
+              <ul>
+                {river.activities.map((activity) => (
+                  <li>{activity}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>Various activities available along this river.</p>
+            )}
+          </div>
+        </div>
+
+        <div class="detail-card">
+          <h3>💧 Safety Information</h3>
+          <div class="detail-content">
+            <p><strong>Swimming Safety:</strong> {river.swimming_safety}</p>
+            {river.fishing_season && (
+              <p><strong>Fishing Season:</strong> {river.fishing_season}</p>
+            )}
+            {river.has_gold && (
+              <p class="gold-note">⭐ This river is known to contain natural gold deposits</p>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="gallery-section">
+    <div class="container">
+      <h2>{river.name} Photo Gallery</h2>
+      <div class="gallery-grid">
+        {galleryImages.map((image) => (
+          <div class="gallery-item">
+            <img src={image.url} alt={image.alt} loading="lazy" />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="features-section">
+    <div class="container">
+      <h2>Key Features of {river.name}</h2>
+      <div class="features-grid">
+        <div class="feature-box">
+          <div class="feature-icon">🌊</div>
+          <h3>River Course</h3>
+          <p>The {river.name} flows from {river.origin} through {river.region}, eventually reaching {river.mouth}. {river.length_miles && `At ${river.length_miles} miles long, it traverses diverse landscapes.`}</p>
+        </div>
+        <div class="feature-box">
+          <div class="feature-icon">🏞️</div>
+          <h3>Natural Beauty</h3>
+          <p>The river valley offers stunning scenery, from its source through varied terrain. Perfect for photography, nature walks, and outdoor exploration.</p>
+        </div>
+        <div class="feature-box">
+          <div class="feature-icon">🎣</div>
+          <h3>Recreation</h3>
+          <p>Popular activities include {river.activities && river.activities.length > 0 ? river.activities.slice(0, 3).join(', ') : 'walking, fishing, and wildlife watching'}. Always follow local guidelines and safety advice.</p>
+        </div>
+        <div class="feature-box">
+          <div class="feature-icon">🌿</div>
+          <h3>Ecology</h3>
+          <p>The {river.name} supports important ecosystems including {river.wildlife && river.wildlife.length > 0 ? river.wildlife.slice(0, 2).join(' and ') : 'diverse wildlife'}. Conservation efforts help protect these habitats.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="gallery-section secondary">
+    <div class="container">
+      <h2>More Views of {river.name}</h2>
+      <div class="gallery-grid secondary-gallery">
+        {secondaryGalleryImages.map((image) => (
+          <div class="gallery-item">
+            <img src={image.url} alt={image.alt} loading="lazy" />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {relatedRivers.data && relatedRivers.data.length > 0 && (
+    <section class="related-section">
+      <div class="container">
+        <h2>Other Rivers in {river.region}</h2>
+        <div class="related-grid">
+          {relatedRivers.data.map((relatedRiver) => (
+            <a href={`/rivers/${relatedRiver.slug}`} class="related-card">
+              {relatedRiver.image_url && (
+                <div class="related-image">
+                  <img src={relatedRiver.image_url} alt={relatedRiver.name} />
+                </div>
+              )}
+              <h3>{relatedRiver.name}</h3>
+              <p>{relatedRiver.length_miles && `${relatedRiver.length_miles} miles`}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <FAQ faqs={faqs} />
+</Layout>
+
+<style>
+  .container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 calc(var(--spacing-unit) * 3);
+  }
+
+  .river-hero {
+    position: relative;
+    height: 400px;
+    background-size: cover;
+    background-position: center;
+    background-color: var(--color-primary);
+    display: flex;
+    align-items: center;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6));
+    display: flex;
+    align-items: center;
+  }
+
+  .river-hero h1 {
+    color: white;
+    margin-bottom: calc(var(--spacing-unit) * 2);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .hero-subtitle {
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 1.25rem;
+    font-weight: 500;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .river-intro {
+    padding: calc(var(--spacing-unit) * 10) 0 calc(var(--spacing-unit) * 8);
+  }
+
+  .river-intro h2 {
+    text-align: center;
+    margin-bottom: calc(var(--spacing-unit) * 4);
+  }
+
+  .lead {
+    font-size: 1.25rem;
+    line-height: 1.8;
+    color: var(--color-text-light);
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .river-details {
+    padding: calc(var(--spacing-unit) * 8) 0;
+    background: var(--color-background-alt);
+  }
+
+  .details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: calc(var(--spacing-unit) * 3);
+  }
+
+  .detail-card {
+    background: var(--color-background);
+    padding: calc(var(--spacing-unit) * 4);
+    border-radius: 12px;
+    border: 2px solid var(--color-border);
+    transition: all 0.3s ease;
+  }
+
+  .detail-card:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.1);
+    transform: translateY(-4px);
+  }
+
+  .detail-card h3 {
+    margin-bottom: calc(var(--spacing-unit) * 2);
+    font-size: 1.25rem;
+  }
+
+  .detail-content p {
+    margin-bottom: calc(var(--spacing-unit) * 1);
+    color: var(--color-text-light);
+  }
+
+  .detail-content ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .detail-content ul li {
+    padding: calc(var(--spacing-unit) * 0.75) 0;
+    color: var(--color-text-light);
+    position: relative;
+    padding-left: calc(var(--spacing-unit) * 3);
+  }
+
+  .detail-content ul li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--color-secondary);
+    font-weight: 700;
+  }
+
+  .gold-note {
+    background: #fef3c7;
+    color: #92400e;
+    padding: calc(var(--spacing-unit) * 1.5);
+    border-radius: 6px;
+    font-weight: 600;
+    margin-top: calc(var(--spacing-unit) * 2);
+  }
+
+  .gallery-section {
+    padding: calc(var(--spacing-unit) * 10) 0;
+  }
+
+  .gallery-section.secondary {
+    background: var(--color-background-alt);
+  }
+
+  .gallery-section h2 {
+    text-align: center;
+    margin-bottom: calc(var(--spacing-unit) * 6);
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: calc(var(--spacing-unit) * 2);
+  }
+
+  .gallery-item {
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .gallery-item:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px);
+  }
+
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .gallery-item:hover img {
+    transform: scale(1.1);
+  }
+
+  .features-section {
+    padding: calc(var(--spacing-unit) * 10) 0;
+  }
+
+  .features-section h2 {
+    text-align: center;
+    margin-bottom: calc(var(--spacing-unit) * 6);
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: calc(var(--spacing-unit) * 4);
+  }
+
+  .feature-box {
+    text-align: center;
+  }
+
+  .feature-icon {
+    font-size: 3rem;
+    margin-bottom: calc(var(--spacing-unit) * 2);
+  }
+
+  .feature-box h3 {
+    margin-bottom: calc(var(--spacing-unit) * 1.5);
+    font-size: 1.25rem;
+  }
+
+  .feature-box p {
+    color: var(--color-text-light);
+    line-height: 1.7;
+  }
+
+  .related-section {
+    padding: calc(var(--spacing-unit) * 10) 0;
+    background: var(--color-background-alt);
+  }
+
+  .related-section h2 {
+    text-align: center;
+    margin-bottom: calc(var(--spacing-unit) * 6);
+  }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: calc(var(--spacing-unit) * 3);
+  }
+
+  .related-card {
+    background: var(--color-background);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid var(--color-border);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: var(--color-text);
+  }
+
+  .related-card:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 8px 24px rgba(0, 102, 204, 0.12);
+    transform: translateY(-4px);
+  }
+
+  .related-image {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+  }
+
+  .related-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .related-card:hover .related-image img {
+    transform: scale(1.05);
+  }
+
+  .related-card h3 {
+    padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 1);
+    margin: 0;
+    font-size: 1.25rem;
+  }
+
+  .related-card p {
+    padding: 0 calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 2);
+    margin: 0;
+    color: var(--color-text-light);
+  }
+
+  @media (max-width: 768px) {
+    .river-hero {
+      height: 300px;
+    }
+
+    .details-grid,
+    .gallery-grid,
+    .features-grid,
+    .related-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
