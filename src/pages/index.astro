@@ -173,12 +173,23 @@ const faqs = [
     }
 
     try {
-      const { data: rivers } = await supabase
+      const { data: rivers, error } = await supabase
         .from('rivers')
         .select('*')
         .or(`name.ilike.%${searchTerm}%,region.ilike.%${searchTerm}%,origin.ilike.%${searchTerm}%,mouth.ilike.%${searchTerm}%`)
+        .order('name')
         .limit(1)
         .maybeSingle();
+
+      if (error) {
+        console.error('Supabase error:', error);
+        searchResults.innerHTML = `
+          <div class="no-result">
+            <p>An error occurred while searching. Please try again.</p>
+          </div>
+        `;
+        return;
+      }
 
       if (rivers) {
         searchResults.innerHTML = `
@@ -195,7 +206,7 @@ const faqs = [
       } else {
         searchResults.innerHTML = `
           <div class="no-result">
-            <p>No river found matching "${searchTerm}". Try searching by river name or location (e.g., Scotland, Thames, Bristol).</p>
+            <p>No river found matching "${searchTerm}". Try searching by river name or location (e.g., "Thames", "Scotland", or "Severn").</p>
           </div>
         `;
       }
@@ -211,13 +222,13 @@ const faqs = [
 
   searchForm?.addEventListener('submit', (e) => {
     e.preventDefault();
-    const searchTerm = searchInput.value.trim().toLowerCase();
+    const searchTerm = searchInput.value.trim();
     performSearch(searchTerm);
   });
 
   searchInput?.addEventListener('input', () => {
     clearTimeout(searchTimeout);
-    const searchTerm = searchInput.value.trim().toLowerCase();
+    const searchTerm = searchInput.value.trim();
 
     if (!searchTerm) {
       searchResults.innerHTML = '';

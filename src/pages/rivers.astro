@@ -109,12 +109,23 @@ const faqs = [
     }
 
     try {
-      const { data: river } = await supabase
+      const { data: river, error } = await supabase
         .from('rivers')
         .select('*')
         .or(`name.ilike.%${searchTerm}%,region.ilike.%${searchTerm}%,origin.ilike.%${searchTerm}%,mouth.ilike.%${searchTerm}%`)
+        .order('name')
         .limit(1)
         .maybeSingle();
+
+      if (error) {
+        console.error('Supabase error:', error);
+        resultsContainer.innerHTML = `
+          <div class="no-result">
+            <p>An error occurred while searching. Please try again.</p>
+          </div>
+        `;
+        return;
+      }
 
       if (river) {
         resultsContainer.innerHTML = `
@@ -131,7 +142,7 @@ const faqs = [
       } else {
         resultsContainer.innerHTML = `
           <div class="no-result">
-            <p>No river found matching "${searchTerm}". Try searching by river name or location (e.g., Scotland, Thames, Bristol).</p>
+            <p>No river found matching "${searchTerm}". Try searching by river name or location (e.g., "Thames", "Scotland", or "Severn").</p>
           </div>
         `;
       }
