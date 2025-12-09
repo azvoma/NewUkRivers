@@ -47,9 +47,22 @@ const faqs = [
   <Hero
     title="Discover UK Rivers: Interactive Guide to All Major Rivers in the UK"
     subtitle="Explore hundreds of incredible rivers that shape landscapes, support wildlife, and provide endless opportunities for outdoor adventure"
-    showSearch={true}
-    searchId="home-river-search"
   />
+
+  <section class="hero-search">
+    <div class="container">
+      <form id="river-search-form" class="search-form">
+        <input
+          type="text"
+          id="river-search"
+          placeholder="Search for a river by name or location..."
+          autocomplete="off"
+        />
+        <button type="submit" aria-label="Search">🔍</button>
+      </form>
+      <div id="search-results" class="search-results"></div>
+    </div>
+  </section>
 
   <section class="intro-section">
     <div class="container">
@@ -160,9 +173,9 @@ const faqs = [
 <script>
   import { supabase } from '../lib/supabase';
 
-  const searchForm = document.getElementById('home-river-search-form') as HTMLFormElement;
-  const searchInput = document.getElementById('home-river-search') as HTMLInputElement;
-  const searchResults = document.getElementById('home-river-search-results') as HTMLElement;
+  const searchForm = document.getElementById('river-search-form') as HTMLFormElement;
+  const searchInput = document.getElementById('river-search') as HTMLInputElement;
+  const searchResults = document.getElementById('search-results') as HTMLElement;
 
   searchForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
