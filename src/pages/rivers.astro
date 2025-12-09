@@ -100,9 +100,59 @@ const faqs = [
   const searchInput = document.getElementById('rivers-search') as HTMLInputElement;
   const resultsContainer = document.getElementById('rivers-search-results') as HTMLElement;
 
-  async function handleSearch(e: Event) {
-    e.preventDefault();
+  let searchTimeout: ReturnType<typeof setTimeout>;
 
+  async function performSearch(searchTerm: string) {
+    if (!searchTerm) {
+      resultsContainer.innerHTML = '';
+      return;
+    }
+
+    try {
+      const { data: river } = await supabase
+        .from('rivers')
+        .select('*')
+        .or(`name.ilike.%${searchTerm}%,region.ilike.%${searchTerm}%,origin.ilike.%${searchTerm}%,mouth.ilike.%${searchTerm}%`)
+        .limit(1)
+        .maybeSingle();
+
+      if (river) {
+        resultsContainer.innerHTML = `
+          <article class="search-result-card">
+            ${river.image_url ? `<img src="${river.image_url}" alt="${river.name}" />` : ''}
+            <div class="result-content">
+              <h3>${river.name}</h3>
+              <p class="result-region">${river.region} • ${river.length_miles ? `${river.length_miles} miles` : 'Major UK River'}</p>
+              <p class="result-description">${river.description || 'Explore this beautiful UK river'}</p>
+              <a href="/rivers/${river.slug}" class="result-link">View Full Details →</a>
+            </div>
+          </article>
+        `;
+      } else {
+        resultsContainer.innerHTML = `
+          <div class="no-result">
+            <p>No river found matching "${searchTerm}". Try searching by river name or location (e.g., Scotland, Thames, Bristol).</p>
+          </div>
+        `;
+      }
+    } catch (error) {
+      console.error('Search error:', error);
+      resultsContainer.innerHTML = `
+        <div class="no-result">
+          <p>An error occurred while searching. Please try again.</p>
+        </div>
+      `;
+    }
+  }
+
+  searchForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const searchTerm = searchInput.value.trim();
+    performSearch(searchTerm);
+  });
+
+  searchInput?.addEventListener('input', () => {
+    clearTimeout(searchTimeout);
     const searchTerm = searchInput.value.trim();
 
     if (!searchTerm) {
@@ -110,35 +160,10 @@ const faqs = [
       return;
     }
 
-    const { data: river } = await supabase
-      .from('rivers')
-      .select('*')
-      .or(`name.ilike.%${searchTerm}%,region.ilike.%${searchTerm}%,origin.ilike.%${searchTerm}%`)
-      .limit(1)
-      .maybeSingle();
-
-    if (river) {
-      resultsContainer.innerHTML = `
-        <article class="search-result-card">
-          ${river.image_url ? `<img src="${river.image_url}" alt="${river.name}" />` : ''}
-          <div class="result-content">
-            <h3>${river.name}</h3>
-            <p class="result-region">${river.region}</p>
-            <p class="result-description">${river.description || 'Explore this beautiful UK river'}</p>
-            <a href="/rivers/${river.slug}" class="result-link">View Full River Page</a>
-          </div>
-        </article>
-      `;
-    } else {
-      resultsContainer.innerHTML = `
-        <div class="no-result">
-          <p>No river found matching "${searchTerm}". Try searching by river name or location.</p>
-        </div>
-      `;
-    }
-  }
-
-  searchForm.addEventListener('submit', handleSearch);
+    searchTimeout = setTimeout(() => {
+      performSearch(searchTerm);
+    }, 300);
+  });
 </script>
 
 <style>

@@ -164,10 +164,9 @@ const faqs = [
   const searchInput = document.getElementById('home-river-search') as HTMLInputElement;
   const searchResults = document.getElementById('home-river-search-results') as HTMLElement;
 
-  searchForm?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const searchTerm = searchInput.value.trim().toLowerCase();
+  let searchTimeout: ReturnType<typeof setTimeout>;
 
+  async function performSearch(searchTerm: string) {
     if (!searchTerm) {
       searchResults.innerHTML = '';
       return;
@@ -177,7 +176,7 @@ const faqs = [
       const { data: rivers } = await supabase
         .from('rivers')
         .select('*')
-        .or(`name.ilike.%${searchTerm}%,region.ilike.%${searchTerm}%,origin.ilike.%${searchTerm}%`)
+        .or(`name.ilike.%${searchTerm}%,region.ilike.%${searchTerm}%,origin.ilike.%${searchTerm}%,mouth.ilike.%${searchTerm}%`)
         .limit(1)
         .maybeSingle();
 
@@ -196,7 +195,7 @@ const faqs = [
       } else {
         searchResults.innerHTML = `
           <div class="no-result">
-            <p>No river found matching "${searchTerm}". Try searching by river name or region (England, Scotland, Wales, or Northern Ireland).</p>
+            <p>No river found matching "${searchTerm}". Try searching by river name or location (e.g., Scotland, Thames, Bristol).</p>
           </div>
         `;
       }
@@ -208,12 +207,26 @@ const faqs = [
         </div>
       `;
     }
+  }
+
+  searchForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const searchTerm = searchInput.value.trim().toLowerCase();
+    performSearch(searchTerm);
   });
 
   searchInput?.addEventListener('input', () => {
-    if (!searchInput.value.trim()) {
+    clearTimeout(searchTimeout);
+    const searchTerm = searchInput.value.trim().toLowerCase();
+
+    if (!searchTerm) {
       searchResults.innerHTML = '';
+      return;
     }
+
+    searchTimeout = setTimeout(() => {
+      performSearch(searchTerm);
+    }, 300);
   });
 </script>
 
