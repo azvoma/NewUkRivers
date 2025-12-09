@@ -11,6 +11,22 @@ const { data: featuredRivers } = await supabase
   .eq('featured', true)
   .order('length_miles', { ascending: false });
 
+const schemaData = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "UK Rivers Directory",
+  "description": "Comprehensive guide to UK rivers with maps, facts, wildlife information, and activities.",
+  "url": Astro.site?.toString() || "https://ukrivers.directory",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": `${Astro.site?.toString() || "https://ukrivers.directory"}/rivers?q={search_term_string}`
+    },
+    "query-input": "required name=search_term_string"
+  }
+};
+
 const faqs = [
   {
     question: "What are the longest rivers in the UK?",
@@ -43,6 +59,8 @@ const faqs = [
   title="UK Rivers | Guide to the Longest & Major Rivers in the UK"
   description="Explore all UK rivers with maps, facts, activities and guides. Discover the longest rivers in the UK, major rivers, and a detailed map of rivers in the UK."
   keywords="uk rivers, longest rivers in uk, rivers of the uk, map of rivers in uk, major rivers in the uk"
+  type="website"
+  schemaData={schemaData}
 >
   <Hero
     title="Discover UK Rivers: Interactive Guide to All Major Rivers in the UK"
@@ -51,16 +69,23 @@ const faqs = [
 
   <section class="hero-search">
     <div class="container">
-      <form id="river-search-form" class="search-form">
+      <form id="river-search-form" class="search-form" role="search">
+        <label for="river-search" class="sr-only">Search for UK rivers</label>
         <input
           type="text"
           id="river-search"
           placeholder="Search for a river by name or location..."
           autocomplete="off"
+          aria-describedby="search-hint"
         />
-        <button type="submit" aria-label="Search">🔍</button>
+        <button type="submit" aria-label="Search rivers">🔍</button>
       </form>
-      <div id="search-results" class="search-results"></div>
+      <span id="search-hint" class="sr-only">Enter a river name or location to search</span>
+      <div id="search-results" class="search-results" role="region" aria-live="polite"></div>
+      <div id="search-loading" class="search-loading" style="display: none;" role="status">
+        <div class="spinner"></div>
+        <span>Searching...</span>
+      </div>
     </div>
   </section>
 
@@ -176,6 +201,7 @@ const faqs = [
   const searchForm = document.getElementById('river-search-form') as HTMLFormElement;
   const searchInput = document.getElementById('river-search') as HTMLInputElement;
   const searchResults = document.getElementById('search-results') as HTMLElement;
+  const searchLoading = document.getElementById('search-loading') as HTMLElement;
 
   searchForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -186,6 +212,9 @@ const faqs = [
       return;
     }
 
+    searchLoading.style.display = 'flex';
+    searchResults.innerHTML = '';
+
     try {
       const { data: rivers } = await supabase
         .from('rivers')
@@ -193,6 +222,8 @@ const faqs = [
         .or(`name.ilike.%${searchTerm}%,region.ilike.%${searchTerm}%,origin.ilike.%${searchTerm}%`)
         .limit(1)
         .maybeSingle();
+
+      searchLoading.style.display = 'none';
 
       if (rivers) {
         searchResults.innerHTML = `
@@ -215,8 +246,9 @@ const faqs = [
       }
     } catch (error) {
       console.error('Search error:', error);
+      searchLoading.style.display = 'none';
       searchResults.innerHTML = `
-        <div class="no-result">
+        <div class="no-result error">
           <p>An error occurred while searching. Please try again.</p>
         </div>
       `;
@@ -362,6 +394,59 @@ const faqs = [
     color: var(--color-text-light);
     margin: 0;
     font-size: 1.125rem;
+  }
+
+  .no-result.error {
+    border-color: var(--color-error);
+    background: #fff5f5;
+  }
+
+  .no-result.error p {
+    color: var(--color-error);
+  }
+
+  .search-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: calc(var(--spacing-unit) * 2);
+    padding: calc(var(--spacing-unit) * 4);
+    background: var(--color-background);
+    border: 2px solid var(--color-primary);
+    border-radius: 12px;
+    margin-top: calc(var(--spacing-unit) * 4);
+  }
+
+  .search-loading .spinner {
+    width: 24px;
+    height: 24px;
+    border: 3px solid var(--color-border);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  .search-loading span {
+    color: var(--color-text-light);
+    font-weight: 500;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
   }
 
   .intro-section {

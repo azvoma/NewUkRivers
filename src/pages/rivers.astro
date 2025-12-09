@@ -3,12 +3,39 @@ import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import RiverCard from '../components/RiverCard.astro';
 import FAQ from '../components/FAQ.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 import { supabase } from '../lib/supabase';
 
 const { data: allRivers } = await supabase
   .from('rivers')
   .select('*')
   .order('name');
+
+const breadcrumbItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Rivers Directory', href: '/rivers' }
+];
+
+const schemaData = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "UK Rivers Directory",
+  "description": "Browse all rivers in the UK with comprehensive information about each waterway.",
+  "url": new URL('/rivers', Astro.site).toString(),
+  "mainEntity": {
+    "@type": "ItemList",
+    "itemListElement": allRivers?.slice(0, 10).map((river, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "item": {
+        "@type": "Place",
+        "name": river.name,
+        "url": new URL(`/rivers/${river.slug}`, Astro.site).toString(),
+        "description": river.description
+      }
+    }))
+  }
+};
 
 const faqs = [
   {
@@ -42,7 +69,11 @@ const faqs = [
   title="Rivers in the UK | Complete UK Rivers Directory & Map"
   description="Browse all rivers in the UK with names A–Z. Explore river maps, facts, wildlife, activities, and regional river guides."
   keywords="rivers in the uk, uk rivers, map rivers in uk, names of rivers in the uk"
+  type="website"
+  schemaData={schemaData}
 >
+  <Breadcrumb items={breadcrumbItems} />
+
   <Hero
     title="Explore All Rivers in the UK: A–Z River Directory"
     subtitle="Hundreds of rivers flowing through England, Scotland, Wales, and Northern Ireland"
@@ -63,13 +94,16 @@ const faqs = [
   <section class="filter-section">
     <div class="container">
       <div class="filter-controls">
+        <label for="search-input" class="sr-only">Search rivers by name</label>
         <input
           type="text"
           id="search-input"
           class="search-input"
           placeholder="Search rivers by name..."
+          aria-label="Search rivers by name"
         />
-        <select id="region-filter" class="region-filter">
+        <label for="region-filter" class="sr-only">Filter by region</label>
+        <select id="region-filter" class="region-filter" aria-label="Filter rivers by region">
           <option value="all">All Regions</option>
           <option value="England">England</option>
           <option value="Scotland">Scotland</option>
@@ -77,6 +111,7 @@ const faqs = [
           <option value="Northern Ireland">Northern Ireland</option>
         </select>
       </div>
+      <div id="results-count" class="results-count" aria-live="polite"></div>
     </div>
   </section>
 
@@ -116,8 +151,16 @@ const faqs = [
   const regionFilter = document.getElementById('region-filter') as HTMLSelectElement;
   const riversGrid = document.getElementById('rivers-grid') as HTMLElement;
   const noResults = document.getElementById('no-results') as HTMLElement;
+  const resultsCount = document.getElementById('results-count') as HTMLElement;
 
   const riverCards = Array.from(document.querySelectorAll('.rivers-grid > article'));
+  const totalRivers = riverCards.length;
+
+  function updateResultsCount(count: number) {
+    if (resultsCount) {
+      resultsCount.textContent = `Showing ${count} of ${totalRivers} rivers`;
+    }
+  }
 
   function filterRivers() {
     const searchTerm = searchInput.value.toLowerCase();
@@ -140,6 +183,8 @@ const faqs = [
       }
     });
 
+    updateResultsCount(visibleCount);
+
     if (visibleCount === 0) {
       noResults.style.display = 'block';
       riversGrid.style.display = 'none';
@@ -149,6 +194,7 @@ const faqs = [
     }
   }
 
+  updateResultsCount(totalRivers);
   searchInput.addEventListener('input', filterRivers);
   regionFilter.addEventListener('change', filterRivers);
 </script>
@@ -215,6 +261,26 @@ const faqs = [
   .region-filter {
     min-width: 180px;
     cursor: pointer;
+  }
+
+  .results-count {
+    text-align: center;
+    color: var(--color-text-light);
+    font-size: 0.95rem;
+    margin-top: calc(var(--spacing-unit) * 2);
+    font-weight: 500;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
   }
 
   .rivers-directory {

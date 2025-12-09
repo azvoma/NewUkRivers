@@ -1,0 +1,215 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Page Not Found | UK Rivers Directory"
+  description="The page you're looking for doesn't exist. Browse our UK rivers directory to find what you need."
+  noindex={true}
+>
+  <div class="error-page">
+    <div class="container">
+      <div class="error-content">
+        <h1 class="error-code">404</h1>
+        <h2 class="error-title">River Not Found</h2>
+        <p class="error-message">
+          Sorry, the page you're looking for seems to have dried up. Like a tributary that's taken a different path, this page doesn't exist.
+        </p>
+        <div class="error-actions">
+          <a href="/" class="button-primary">Go Home</a>
+          <a href="/rivers" class="button-secondary">Browse Rivers</a>
+        </div>
+        <div class="search-suggestion">
+          <p>Try searching for a river:</p>
+          <form action="/rivers" method="get" class="search-form">
+            <input
+              type="text"
+              name="q"
+              placeholder="Search rivers..."
+              class="search-input"
+            />
+            <button type="submit" class="search-button">Search</button>
+          </form>
+        </div>
+      </div>
+      <div class="error-illustration">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="none">
+          <path d="M50 150 Q 100 100, 150 150 T 250 150 T 350 150" stroke="#0066cc" stroke-width="4" fill="none" opacity="0.3"/>
+          <path d="M50 180 Q 100 130, 150 180 T 250 180 T 350 180" stroke="#0066cc" stroke-width="4" fill="none" opacity="0.5"/>
+          <circle cx="200" cy="150" r="60" fill="#e2e8f0" opacity="0.5"/>
+          <text x="200" y="165" font-size="48" font-weight="bold" fill="#0066cc" text-anchor="middle">?</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 calc(var(--spacing-unit) * 3);
+  }
+
+  .error-page {
+    min-height: calc(100vh - var(--header-height));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: calc(var(--spacing-unit) * 6) 0;
+  }
+
+  .error-page .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: calc(var(--spacing-unit) * 6);
+    align-items: center;
+  }
+
+  .error-content {
+    text-align: left;
+  }
+
+  .error-code {
+    font-size: clamp(4rem, 10vw, 8rem);
+    color: var(--color-primary);
+    margin-bottom: calc(var(--spacing-unit) * 2);
+    line-height: 1;
+    font-weight: 700;
+  }
+
+  .error-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    color: var(--color-text);
+    margin-bottom: calc(var(--spacing-unit) * 3);
+  }
+
+  .error-message {
+    font-size: 1.25rem;
+    color: var(--color-text-light);
+    line-height: 1.7;
+    margin-bottom: calc(var(--spacing-unit) * 4);
+  }
+
+  .error-actions {
+    display: flex;
+    gap: calc(var(--spacing-unit) * 2);
+    margin-bottom: calc(var(--spacing-unit) * 6);
+    flex-wrap: wrap;
+  }
+
+  .button-primary,
+  .button-secondary {
+    display: inline-block;
+    padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 4);
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.125rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .button-primary {
+    background: var(--color-primary);
+    color: white;
+  }
+
+  .button-primary:hover {
+    background: var(--color-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 102, 204, 0.3);
+  }
+
+  .button-secondary {
+    background: transparent;
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+  }
+
+  .button-secondary:hover {
+    background: var(--color-primary);
+    color: white;
+  }
+
+  .search-suggestion {
+    margin-top: calc(var(--spacing-unit) * 4);
+  }
+
+  .search-suggestion p {
+    font-size: 1rem;
+    color: var(--color-text-light);
+    margin-bottom: calc(var(--spacing-unit) * 2);
+  }
+
+  .search-form {
+    display: flex;
+    gap: calc(var(--spacing-unit) * 2);
+    max-width: 500px;
+  }
+
+  .search-input {
+    flex: 1;
+    padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 2);
+    border: 2px solid var(--color-border);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.3s ease;
+  }
+
+  .search-input:focus {
+    border-color: var(--color-primary);
+  }
+
+  .search-button {
+    padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 3);
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .search-button:hover {
+    background: var(--color-primary-dark);
+  }
+
+  .error-illustration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .error-illustration svg {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+  }
+
+  @media (max-width: 768px) {
+    .error-page .container {
+      grid-template-columns: 1fr;
+      gap: calc(var(--spacing-unit) * 4);
+    }
+
+    .error-content {
+      text-align: center;
+    }
+
+    .error-actions {
+      justify-content: center;
+    }
+
+    .error-illustration {
+      order: -1;
+    }
+
+    .search-form {
+      flex-direction: column;
+      max-width: 100%;
+    }
+  }
+</style>

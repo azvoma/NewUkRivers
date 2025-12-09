@@ -1,0 +1,56 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+  keywords?: string;
+  image?: string;
+  url?: string;
+  type?: string;
+  schemaData?: any;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  keywords,
+  image = '/favicon.svg',
+  url,
+  type = 'website',
+  schemaData,
+  noindex = false
+} = Astro.props;
+
+const canonicalURL = url || new URL(Astro.url.pathname, Astro.site).toString();
+const imageURL = image.startsWith('http') ? image : new URL(image, Astro.site).toString();
+const siteName = 'UK Rivers Directory';
+---
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<meta name="generator" content={Astro.generator} />
+
+<title>{title}</title>
+<meta name="description" content={description} />
+{keywords && <meta name="keywords" content={keywords} />}
+
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+<link rel="canonical" href={canonicalURL} />
+
+<meta property="og:type" content={type} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={imageURL} />
+<meta property="og:site_name" content={siteName} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={canonicalURL} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageURL} />
+
+{schemaData && (
+  <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
+)}

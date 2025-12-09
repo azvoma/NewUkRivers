@@ -1,0 +1,95 @@
+---
+export interface BreadcrumbItem {
+  label: string;
+  href: string;
+}
+
+interface Props {
+  items: BreadcrumbItem[];
+}
+
+const { items } = Astro.props;
+
+const schemaData = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": items.map((item, index) => ({
+    "@type": "ListItem",
+    "position": index + 1,
+    "name": item.label,
+    "item": new URL(item.href, Astro.site).toString()
+  }))
+};
+---
+
+<nav aria-label="Breadcrumb" class="breadcrumb-nav">
+  <ol class="breadcrumb-list">
+    {items.map((item, index) => (
+      <li class="breadcrumb-item">
+        {index < items.length - 1 ? (
+          <>
+            <a href={item.href}>{item.label}</a>
+            <span class="breadcrumb-separator" aria-hidden="true">/</span>
+          </>
+        ) : (
+          <span aria-current="page">{item.label}</span>
+        )}
+      </li>
+    ))}
+  </ol>
+  <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
+</nav>
+
+<style>
+  .breadcrumb-nav {
+    padding: calc(var(--spacing-unit) * 2) 0;
+    background: var(--color-background-alt);
+  }
+
+  .breadcrumb-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: calc(var(--spacing-unit) * 1);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 calc(var(--spacing-unit) * 3);
+  }
+
+  .breadcrumb-item {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--spacing-unit) * 1);
+    font-size: 0.9rem;
+  }
+
+  .breadcrumb-item a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .breadcrumb-item a:hover {
+    color: var(--color-primary-dark);
+    text-decoration: underline;
+  }
+
+  .breadcrumb-item span[aria-current="page"] {
+    color: var(--color-text-light);
+    font-weight: 500;
+  }
+
+  .breadcrumb-separator {
+    color: var(--color-text-light);
+    margin: 0 calc(var(--spacing-unit) * 0.5);
+  }
+
+  @media (max-width: 768px) {
+    .breadcrumb-item {
+      font-size: 0.85rem;
+    }
+  }
+</style>

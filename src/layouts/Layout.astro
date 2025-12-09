@@ -1,14 +1,24 @@
 ---
+import SEOHead from '../components/SEOHead.astro';
+
 export interface Props {
 	title?: string;
 	description?: string;
 	keywords?: string;
+	image?: string;
+	type?: string;
+	schemaData?: any;
+	noindex?: boolean;
 }
 
 const {
 	title = 'UK Rivers | Guide to the Longest & Major Rivers in the UK',
 	description = 'Explore all UK rivers with maps, facts, activities and guides. Discover the longest rivers in the UK, major rivers, and a detailed map of rivers in the UK.',
-	keywords = 'uk rivers, longest rivers in uk, rivers of the uk, map of rivers in uk, major rivers in the uk'
+	keywords = 'uk rivers, longest rivers in uk, rivers of the uk, map of rivers in uk, major rivers in the uk',
+	image,
+	type,
+	schemaData,
+	noindex
 } = Astro.props;
 
 const currentPath = Astro.url.pathname;
@@ -17,27 +27,28 @@ const currentPath = Astro.url.pathname;
 <!doctype html>
 <html lang="en">
 	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-		<meta name="description" content={description} />
-		<meta name="keywords" content={keywords} />
-		<meta property="og:title" content={title} />
-		<meta property="og:description" content={description} />
+		<SEOHead
+			title={title}
+			description={description}
+			keywords={keywords}
+			image={image}
+			type={type}
+			schemaData={schemaData}
+			noindex={noindex}
+		/>
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 	</head>
 	<body>
+		<a href="#main-content" class="skip-link">Skip to main content</a>
 		<header class="header">
 			<nav class="nav-container">
 				<a href="/" class="logo">
 					<span class="logo-icon">🌊</span>
 					<span class="logo-text">UK Rivers</span>
 				</a>
-				<button class="mobile-menu-toggle" aria-label="Toggle menu">
+				<button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
 					<span></span>
 					<span></span>
 					<span></span>
@@ -52,7 +63,7 @@ const currentPath = Astro.url.pathname;
 			</nav>
 		</header>
 
-		<main>
+		<main id="main-content">
 			<slot />
 		</main>
 
@@ -123,6 +134,8 @@ const currentPath = Astro.url.pathname;
 				});
 
 				mobileMenuToggle?.addEventListener('click', () => {
+					const isExpanded = mobileMenuToggle.getAttribute('aria-expanded') === 'true';
+					mobileMenuToggle.setAttribute('aria-expanded', (!isExpanded).toString());
 					navLinks?.classList.toggle('active');
 					mobileMenuToggle.classList.toggle('active');
 				});
@@ -160,6 +173,25 @@ const currentPath = Astro.url.pathname;
 		--spacing-unit: 8px;
 		--max-width: 1200px;
 		--header-height: 70px;
+		--focus-ring: 0 0 0 3px rgba(0, 102, 204, 0.3);
+	}
+
+	.skip-link {
+		position: absolute;
+		top: -100px;
+		left: 0;
+		background: var(--color-primary);
+		color: white;
+		padding: calc(var(--spacing-unit) * 2);
+		text-decoration: none;
+		z-index: 10000;
+		font-weight: 600;
+	}
+
+	.skip-link:focus {
+		top: 0;
+		outline: 2px solid var(--color-primary-dark);
+		outline-offset: 2px;
 	}
 
 	* {
@@ -224,6 +256,20 @@ const currentPath = Astro.url.pathname;
 
 	a:hover {
 		color: var(--color-primary-dark);
+	}
+
+	a:focus,
+	button:focus,
+	input:focus,
+	select:focus,
+	textarea:focus {
+		outline: 2px solid var(--color-primary);
+		outline-offset: 2px;
+	}
+
+	*:focus-visible {
+		outline: 2px solid var(--color-primary);
+		outline-offset: 2px;
 	}
 
 	.header {

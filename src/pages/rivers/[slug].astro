@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import FAQ from '../../components/FAQ.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
 import { supabase } from '../../lib/supabase';
 
 export async function getStaticPaths() {
@@ -22,6 +23,40 @@ const relatedRivers = await supabase
   .eq('region', river.region)
   .neq('slug', river.slug)
   .limit(3);
+
+const breadcrumbItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Rivers Directory', href: '/rivers' },
+  { label: river.name, href: `/rivers/${river.slug}` }
+];
+
+const schemaData = {
+  "@context": "https://schema.org",
+  "@type": "Place",
+  "name": river.name,
+  "description": river.description,
+  "url": new URL(`/rivers/${river.slug}`, Astro.site).toString(),
+  "geo": river.origin && {
+    "@type": "GeoCoordinates",
+    "name": river.origin
+  },
+  "containedInPlace": {
+    "@type": "AdministrativeArea",
+    "name": river.region
+  },
+  ...(river.image_url && {
+    "image": river.image_url
+  }),
+  ...(river.length_miles && {
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "Length",
+        "value": `${river.length_miles} miles (${river.length_km} km)`
+      }
+    ]
+  })
+};
 
 const faqs = [
   {
@@ -77,7 +112,12 @@ const secondaryGalleryImages = [
   title={`${river.name} | ${river.region} River Guide & Information`}
   description={`Explore ${river.name} in ${river.region}. ${river.description ? river.description.substring(0, 120) : `Discover wildlife, activities, and essential information about this ${river.region} river.`}`}
   keywords={`${river.name}, ${river.slug}, ${river.region} rivers, UK rivers, ${river.activities && river.activities.length > 0 ? river.activities.join(', ') : 'river activities'}`}
+  image={river.image_url}
+  type="article"
+  schemaData={schemaData}
 >
+  <Breadcrumb items={breadcrumbItems} />
+
   <div class="river-hero" style={river.image_url ? `background-image: url(${river.image_url})` : ''}>
     <div class="hero-overlay">
       <div class="container">
@@ -159,9 +199,9 @@ const secondaryGalleryImages = [
     <div class="container">
       <h2>{river.name} Photo Gallery</h2>
       <div class="gallery-grid">
-        {galleryImages.map((image) => (
+        {galleryImages.map((image, index) => (
           <div class="gallery-item">
-            <img src={image.url} alt={image.alt} loading="lazy" />
+            <img src={image.url} alt={image.alt} loading="lazy" width="400" height="300" />
           </div>
         ))}
       </div>
@@ -200,9 +240,9 @@ const secondaryGalleryImages = [
     <div class="container">
       <h2>More Views of {river.name}</h2>
       <div class="gallery-grid secondary-gallery">
-        {secondaryGalleryImages.map((image) => (
+        {secondaryGalleryImages.map((image, index) => (
           <div class="gallery-item">
-            <img src={image.url} alt={image.alt} loading="lazy" />
+            <img src={image.url} alt={image.alt} loading="lazy" width="400" height="300" />
           </div>
         ))}
       </div>
@@ -215,10 +255,10 @@ const secondaryGalleryImages = [
         <h2>Other Rivers in {river.region}</h2>
         <div class="related-grid">
           {relatedRivers.data.map((relatedRiver) => (
-            <a href={`/rivers/${relatedRiver.slug}`} class="related-card">
+            <a href={`/rivers/${relatedRiver.slug}`} class="related-card" aria-label={`View ${relatedRiver.name} details`}>
               {relatedRiver.image_url && (
                 <div class="related-image">
-                  <img src={relatedRiver.image_url} alt={relatedRiver.name} />
+                  <img src={relatedRiver.image_url} alt={`${relatedRiver.name} river`} width="300" height="180" loading="lazy" />
                 </div>
               )}
               <h3>{relatedRiver.name}</h3>
