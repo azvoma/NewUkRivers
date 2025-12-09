@@ -164,32 +164,22 @@ const faqs = [
   const searchInput = document.getElementById('home-river-search') as HTMLInputElement;
   const searchResults = document.getElementById('home-river-search-results') as HTMLElement;
 
-  let searchTimeout: ReturnType<typeof setTimeout>;
+  searchForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const searchTerm = searchInput.value.trim().toLowerCase();
 
-  async function performSearch(searchTerm: string) {
     if (!searchTerm) {
       searchResults.innerHTML = '';
       return;
     }
 
     try {
-      const { data: rivers, error } = await supabase
+      const { data: rivers } = await supabase
         .from('rivers')
         .select('*')
-        .or(`name.ilike.%${searchTerm}%,region.ilike.%${searchTerm}%,origin.ilike.%${searchTerm}%,mouth.ilike.%${searchTerm}%`)
-        .order('name')
+        .or(`name.ilike.%${searchTerm}%,region.ilike.%${searchTerm}%,origin.ilike.%${searchTerm}%`)
         .limit(1)
         .maybeSingle();
-
-      if (error) {
-        console.error('Supabase error:', error);
-        searchResults.innerHTML = `
-          <div class="no-result">
-            <p>An error occurred while searching. Please try again.</p>
-          </div>
-        `;
-        return;
-      }
 
       if (rivers) {
         searchResults.innerHTML = `
@@ -206,7 +196,7 @@ const faqs = [
       } else {
         searchResults.innerHTML = `
           <div class="no-result">
-            <p>No river found matching "${searchTerm}". Try searching by river name or location (e.g., "Thames", "Scotland", or "Severn").</p>
+            <p>No river found matching "${searchTerm}". Try searching by river name or region (England, Scotland, Wales, or Northern Ireland).</p>
           </div>
         `;
       }
@@ -218,26 +208,12 @@ const faqs = [
         </div>
       `;
     }
-  }
-
-  searchForm?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const searchTerm = searchInput.value.trim();
-    performSearch(searchTerm);
   });
 
   searchInput?.addEventListener('input', () => {
-    clearTimeout(searchTimeout);
-    const searchTerm = searchInput.value.trim();
-
-    if (!searchTerm) {
+    if (!searchInput.value.trim()) {
       searchResults.innerHTML = '';
-      return;
     }
-
-    searchTimeout = setTimeout(() => {
-      performSearch(searchTerm);
-    }, 300);
   });
 </script>
 
