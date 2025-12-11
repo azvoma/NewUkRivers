@@ -96,16 +96,19 @@ const faqs = [
 const galleryImages = [
   { url: river.image_url || 'https://images.pexels.com/photos/1179229/pexels-photo-1179229.jpeg', alt: `${river.name} main view` },
   { url: 'https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg', alt: `${river.name} landscape` },
-  { url: 'https://images.pexels.com/photos/1118877/pexels-photo-1118877.jpeg', alt: `${river.name} wildlife habitat` },
-  { url: 'https://images.pexels.com/photos/2166927/pexels-photo-2166927.jpeg', alt: `${river.name} scenic view` }
+  { url: 'https://images.pexels.com/photos/1118877/pexels-photo-1118877.jpeg', alt: `${river.name} wildlife habitat` }
 ];
 
-const secondaryGalleryImages = [
-  { url: 'https://images.pexels.com/photos/1761280/pexels-photo-1761280.jpeg', alt: `${river.name} activities` },
-  { url: 'https://images.pexels.com/photos/1118872/pexels-photo-1118872.jpeg', alt: `${river.name} nature` },
-  { url: 'https://images.pexels.com/photos/2249542/pexels-photo-2249542.jpeg', alt: `${river.name} surroundings` },
-  { url: 'https://images.pexels.com/photos/1029622/pexels-photo-1029622.jpeg', alt: `${river.name} waterside` }
+const funFacts = [
+  `The ${river.name} has been a vital waterway for centuries, supporting local communities and wildlife.`,
+  `${river.region} is home to some of the UK's most beautiful river landscapes, including the ${river.name}.`,
+  `The ${river.name} flows from ${river.origin} to ${river.mouth}, creating diverse habitats along its course.`,
+  `Many historical settlements were established along the ${river.name} due to its strategic importance.`,
+  `The ${river.name} supports a rich ecosystem that includes rare and protected species.`,
+  `Local legends and folklore have been inspired by the ${river.name} throughout history.`
 ];
+
+const randomFunFact = funFacts[Math.floor(Math.random() * funFacts.length)];
 ---
 
 <Layout
@@ -136,7 +139,7 @@ const secondaryGalleryImages = [
 
   <section class="river-details">
     <div class="container">
-      <div class="details-grid">
+      <div class="details-grid-four">
         <div class="detail-card">
           <h3>📍 Location</h3>
           <div class="detail-content">
@@ -180,14 +183,14 @@ const secondaryGalleryImages = [
         </div>
 
         <div class="detail-card">
-          <h3>💧 Safety Information</h3>
+          <h3>💧 Safety</h3>
           <div class="detail-content">
             <p><strong>Swimming Safety:</strong> {river.swimming_safety}</p>
             {river.fishing_season && (
               <p><strong>Fishing Season:</strong> {river.fishing_season}</p>
             )}
             {river.has_gold && (
-              <p class="gold-note">⭐ This river is known to contain natural gold deposits</p>
+              <p class="gold-note">⭐ Contains natural gold deposits</p>
             )}
           </div>
         </div>
@@ -236,18 +239,34 @@ const secondaryGalleryImages = [
     </div>
   </section>
 
-  <section class="gallery-section secondary">
+  <section class="fun-fact-section">
     <div class="container">
-      <h2>More Views of {river.name}</h2>
-      <div class="gallery-grid secondary-gallery">
-        {secondaryGalleryImages.map((image, index) => (
-          <div class="gallery-item">
-            <img src={image.url} alt={image.alt} loading="lazy" width="400" height="300" />
-          </div>
-        ))}
+      <div class="fun-fact-card">
+        <div class="fun-fact-icon">💡</div>
+        <h3>Fun Fact</h3>
+        <p>{randomFunFact}</p>
       </div>
     </div>
   </section>
+
+  <section class="location-map-section">
+    <div class="container">
+      <h2>Location Map</h2>
+      <div class="map-container">
+        <iframe
+          width="100%"
+          height="450"
+          style="border:0"
+          loading="lazy"
+          allowfullscreen
+          referrerpolicy="no-referrer-when-downgrade"
+          src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent(river.origin + ', ' + river.region + ', UK')}&zoom=10`}>
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <FAQ faqs={faqs} />
 
   {relatedRivers.data && relatedRivers.data.length > 0 && (
     <section class="related-section">
@@ -269,8 +288,6 @@ const secondaryGalleryImages = [
       </div>
     </section>
   )}
-
-  <FAQ faqs={faqs} />
 </Layout>
 
 <style>
@@ -334,9 +351,9 @@ const secondaryGalleryImages = [
     background: var(--color-background-alt);
   }
 
-  .details-grid {
+  .details-grid-four {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: calc(var(--spacing-unit) * 3);
   }
 
@@ -397,10 +414,6 @@ const secondaryGalleryImages = [
     padding: calc(var(--spacing-unit) * 10) 0;
   }
 
-  .gallery-section.secondary {
-    background: var(--color-background-alt);
-  }
-
   .gallery-section h2 {
     text-align: center;
     margin-bottom: calc(var(--spacing-unit) * 6);
@@ -408,8 +421,8 @@ const secondaryGalleryImages = [
 
   .gallery-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: calc(var(--spacing-unit) * 2);
+    grid-template-columns: repeat(3, 1fr);
+    gap: calc(var(--spacing-unit) * 3);
   }
 
   .gallery-item {
@@ -470,9 +483,60 @@ const secondaryGalleryImages = [
     line-height: 1.7;
   }
 
+  .fun-fact-section {
+    padding: calc(var(--spacing-unit) * 8) 0;
+    background: var(--color-background-alt);
+  }
+
+  .fun-fact-card {
+    max-width: 800px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    color: white;
+    padding: calc(var(--spacing-unit) * 5);
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(0, 102, 204, 0.2);
+  }
+
+  .fun-fact-icon {
+    font-size: 3rem;
+    margin-bottom: calc(var(--spacing-unit) * 2);
+  }
+
+  .fun-fact-card h3 {
+    font-size: 1.75rem;
+    margin-bottom: calc(var(--spacing-unit) * 2);
+    color: white;
+  }
+
+  .fun-fact-card p {
+    font-size: 1.25rem;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .location-map-section {
+    padding: calc(var(--spacing-unit) * 10) 0;
+  }
+
+  .location-map-section h2 {
+    text-align: center;
+    margin-bottom: calc(var(--spacing-unit) * 6);
+  }
+
+  .map-container {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .map-container iframe {
+    display: block;
+  }
+
   .related-section {
     padding: calc(var(--spacing-unit) * 10) 0;
-    background: var(--color-background-alt);
   }
 
   .related-section h2 {
@@ -531,12 +595,18 @@ const secondaryGalleryImages = [
     color: var(--color-text-light);
   }
 
+  @media (max-width: 1024px) {
+    .details-grid-four {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
   @media (max-width: 768px) {
     .river-hero {
       height: 300px;
     }
 
-    .details-grid,
+    .details-grid-four,
     .gallery-grid,
     .features-grid,
     .related-grid {
