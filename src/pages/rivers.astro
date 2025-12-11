@@ -128,10 +128,10 @@ const faqs = [
   <section class="bottom-section">
     <div class="container">
       <h2>Your Gateway to UK River Exploration</h2>
-      <p>
+      <p class="spaced-paragraph">
         Our comprehensive UK river index serves as an essential resource designed for students conducting geographical research, outdoor enthusiasts planning hiking and camping adventures, conservationists studying aquatic ecosystems, and anyone passionate about discovering the remarkable waterways flowing through Britain. Dive deep into each detailed river page to learn about its fascinating history, diverse native wildlife populations, available outdoor activities, current conservation status, and environmental challenges. This authoritative directory features rivers in the UK from all four nations—England, Scotland, Wales, and Northern Ireland—providing thoroughly researched information about the names of rivers in the UK, their precise geographic locations, accurate measurements of river lengths, and the unique ecological characteristics that make each British waterway special and worthy of protection for future generations.
       </p>
-      <p>
+      <p class="spaced-paragraph">
         Whether you're searching for detailed information about the longest rivers in the UK like the 220-mile River Severn or exploring smaller tributaries and chalk streams, our extensive map of rivers in UK database includes comprehensive details about every significant watercourse. From the mighty River Severn flowing 220 miles through the Welsh highlands and English countryside, to renowned Scottish salmon rivers like the Tay and Spey that attract anglers worldwide, to the scenic Welsh valleys magnificently carved by the Wye and Usk over millennia, the extraordinary diversity of UK rivers reflects the rich geographical heritage and remarkable ecological significance of the British Isles. Each river entry in our directory provides practical, actionable information for riverside visitors, dedicated conservationists, academic researchers, and outdoor adventurers exploring the rivers of the UK responsibly and sustainably.
       </p>
     </div>
@@ -316,6 +316,10 @@ const faqs = [
     max-width: 900px;
     margin: 0 auto;
     text-align: center;
+  }
+
+  .spaced-paragraph {
+    margin-bottom: calc(var(--spacing-unit) * 3);
   }
 
   @media (max-width: 768px) {

@@ -75,7 +75,7 @@ const faqs = [
     <div class="container">
       <div class="blog-grid">
         {blogPosts.map((post) => (
-          <article class="blog-card">
+          <a href={`/blog/${post.slug}`} class="blog-card">
             <div class="blog-category">{post.category}</div>
             <h3>{post.title}</h3>
             {post.excerpt && (
@@ -90,7 +90,7 @@ const faqs = [
                 })}
               </span>
             </div>
-          </article>
+          </a>
         ))}
       </div>
     </div>
@@ -196,13 +196,14 @@ const faqs = [
     display: flex;
     flex-direction: column;
     gap: calc(var(--spacing-unit) * 2);
+    text-decoration: none;
+    color: inherit;
   }
 
   .blog-card:hover {
     border-color: var(--color-primary);
     box-shadow: 0 8px 24px rgba(0, 102, 204, 0.12);
     transform: translateY(-4px);
-    cursor: pointer;
   }
 
   .blog-category {

@@ -121,10 +121,10 @@ const faqs = [
   <section class="closing-section">
     <div class="container">
       <h2>Join Us in Celebrating UK Rivers</h2>
-      <p>
+      <p class="spaced-paragraph">
         The rivers in the UK are dynamic ecosystems that support diverse fish species, aquatic plants, wildlife, and entire communities throughout England, Scotland, Wales, and Northern Ireland. By offering a comprehensive and modern map of rivers in the UK, we aim to help people learn about, explore, and appreciate these vital waterways in meaningful ways. Our directory covers everything from the longest rivers in the UK, including the 220-mile River Severn and 215-mile River Thames, to smaller chalk streams and Highland waterways that make Britain's river network globally significant. Each river page in our UK rivers guidebook documents unique characteristics, wildlife habitats, historical importance, and recreational opportunities.
       </p>
-      <p>
+      <p class="spaced-paragraph">
         The map of UK rivers provides detailed information about major rivers in the UK and their tributaries, ensuring comprehensive coverage across all regions. We document river origins, mouths, lengths, fishing seasons, kayaking routes, wild swimming spots, and riverside walking trails to support both outdoor adventures and educational research. The rivers of the UK represent centuries of natural history and human interaction with the landscape, playing crucial roles in commerce, agriculture, recreation, and biodiversity conservation. By understanding and respecting these waterways through our detailed guides and safety information, we can ensure UK rivers remain healthy, accessible, and protected for future generations to enjoy and study.
       </p>
     </div>
@@ -271,6 +271,10 @@ const faqs = [
     max-width: 900px;
     margin: 0 auto;
     text-align: center;
+  }
+
+  .spaced-paragraph {
+    margin-bottom: calc(var(--spacing-unit) * 3);
   }
 
   @media (max-width: 768px) {
