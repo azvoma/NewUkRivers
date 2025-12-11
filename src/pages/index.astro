@@ -3,12 +3,9 @@ import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import RiverCard from '../components/RiverCard.astro';
 import FAQ from '../components/FAQ.astro';
-import { supabase } from '../lib/supabase';
+import { getRivers } from '../lib/supabase';
 
-const { data: allRivers } = await supabase
-  .from('rivers')
-  .select('*')
-  .order('name');
+const allRivers = getRivers().sort((a, b) => a.name.localeCompare(b.name));
 
 const schemaData = {
   "@context": "https://schema.org",
@@ -105,7 +102,7 @@ const faqs = [
   <section class="rivers-section">
     <div class="container">
       <div id="rivers-grid" class="rivers-grid">
-        {allRivers && allRivers.map((river) => (
+        {allRivers.map((river) => (
           <RiverCard river={river} />
         ))}
       </div>

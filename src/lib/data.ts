@@ -1,0 +1,333 @@
+export interface River {
+  id: string;
+  name: string;
+  slug: string;
+  region: string;
+  length_km: number | null;
+  length_miles: number | null;
+  description: string | null;
+  origin: string | null;
+  mouth: string | null;
+  wildlife: string[];
+  activities: string[];
+  has_gold: boolean;
+  swimming_safety: string;
+  fishing_season: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  featured: boolean;
+  image_url: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface BlogPost {
+  id: string;
+  title: string;
+  slug: string;
+  category: string;
+  excerpt: string | null;
+  content: string | null;
+  image_url: string | null;
+  published: boolean;
+  published_at: string | null;
+  created_at: string;
+}
+
+export const rivers: River[] = [
+  {
+    id: '1',
+    name: 'River Thames',
+    slug: 'river-thames',
+    region: 'England',
+    length_km: 346,
+    length_miles: 215,
+    description: 'The River Thames flows through southern England and London. It is the second longest river in the UK and has played a crucial role in British history, commerce, and culture.',
+    origin: 'Thames Head, Gloucestershire',
+    mouth: 'Thames Estuary, North Sea',
+    wildlife: ['Swans', 'Herons', 'Pike', 'Perch', 'Roach', 'Dace', 'Kingfishers', 'Otters'],
+    activities: ['Boating', 'Kayaking', 'Fishing', 'Walking', 'Cycling', 'Wildlife Watching'],
+    has_gold: false,
+    swimming_safety: 'Swimming in the Thames requires caution due to currents and boat traffic. Use designated safe swimming areas only.',
+    fishing_season: 'Coarse fishing: Year-round; Trout: March-September',
+    latitude: 51.5074,
+    longitude: -0.1278,
+    featured: true,
+    image_url: 'https://images.pexels.com/photos/460672/pexels-photo-460672.jpeg',
+    created_at: '2024-01-01T00:00:00Z',
+    updated_at: '2024-01-01T00:00:00Z'
+  },
+  {
+    id: '2',
+    name: 'River Severn',
+    slug: 'river-severn',
+    region: 'England',
+    length_km: 354,
+    length_miles: 220,
+    description: 'The River Severn is the longest river in the UK, flowing from Wales through western England to the Bristol Channel. It has a distinctive tidal bore and supports diverse wildlife.',
+    origin: 'Plynlimon, Wales',
+    mouth: 'Bristol Channel',
+    wildlife: ['Salmon', 'Lamprey', 'Eels', 'Otters', 'Kingfishers', 'Herons', 'Shad'],
+    activities: ['Fishing', 'Kayaking', 'Canoeing', 'Walking', 'Wildlife Watching', 'Bore Watching'],
+    has_gold: false,
+    swimming_safety: 'Not recommended for swimming due to strong currents and tidal bore. Extremely dangerous in tidal sections.',
+    fishing_season: 'Salmon: February-September; Coarse: June-March',
+    latitude: 52.5,
+    longitude: -2.5,
+    featured: true,
+    image_url: 'https://images.pexels.com/photos/534164/pexels-photo-534164.jpeg',
+    created_at: '2024-01-01T00:00:00Z',
+    updated_at: '2024-01-01T00:00:00Z'
+  },
+  {
+    id: '3',
+    name: 'River Tay',
+    slug: 'river-tay',
+    region: 'Scotland',
+    length_km: 193,
+    length_miles: 120,
+    description: 'The River Tay is Scotland\'s longest river and has the largest discharge of any river in Britain. Famous for Atlantic salmon and known to contain gold deposits.',
+    origin: 'Ben Lui, Scottish Highlands',
+    mouth: 'Firth of Tay, North Sea',
+    wildlife: ['Atlantic Salmon', 'Sea Trout', 'Brown Trout', 'Pike', 'Otters', 'Ospreys', 'Seals'],
+    activities: ['Salmon Fishing', 'Gold Panning', 'Kayaking', 'Wildlife Watching', 'Walking', 'Photography'],
+    has_gold: true,
+    swimming_safety: 'Cold water temperatures year-round. Only swim in designated areas with proper safety equipment.',
+    fishing_season: 'Salmon: January-October; Trout: March-September',
+    latitude: 56.4,
+    longitude: -3.4,
+    featured: true,
+    image_url: 'https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg',
+    created_at: '2024-01-01T00:00:00Z',
+    updated_at: '2024-01-01T00:00:00Z'
+  },
+  {
+    id: '4',
+    name: 'River Wye',
+    slug: 'river-wye',
+    region: 'Wales',
+    length_km: 215,
+    length_miles: 134,
+    description: 'The River Wye flows through Wales and England, designated as a Site of Special Scientific Interest. Known for its outstanding natural beauty and important salmon fishery.',
+    origin: 'Plynlimon, Wales',
+    mouth: 'River Severn Estuary',
+    wildlife: ['Salmon', 'Brown Trout', 'Grayling', 'Otters', 'Kingfishers', 'Dippers', 'Peregrine Falcons'],
+    activities: ['Canoeing', 'Kayaking', 'Fishing', 'Walking', 'Camping', 'Wildlife Watching'],
+    has_gold: false,
+    swimming_safety: 'Generally safe in calm sections during summer. Always check local conditions and avoid weirs.',
+    fishing_season: 'Salmon: March-October; Trout: March-September',
+    latitude: 51.8,
+    longitude: -2.6,
+    featured: true,
+    image_url: 'https://images.pexels.com/photos/1179229/pexels-photo-1179229.jpeg',
+    created_at: '2024-01-01T00:00:00Z',
+    updated_at: '2024-01-01T00:00:00Z'
+  },
+  {
+    id: '5',
+    name: 'River Trent',
+    slug: 'river-trent',
+    region: 'England',
+    length_km: 297,
+    length_miles: 185,
+    description: 'The River Trent is England\'s third-longest river, flowing through the Midlands and joining the River Ouse to form the Humber Estuary. Important for navigation and industry.',
+    origin: 'Biddulph Moor, Staffordshire',
+    mouth: 'Humber Estuary',
+    wildlife: ['Pike', 'Barbel', 'Chub', 'Bream', 'Otters', 'Cormorants', 'Herons'],
+    activities: ['Coarse Fishing', 'Boating', 'Walking', 'Cycling', 'Wildlife Watching'],
+    has_gold: false,
+    swimming_safety: 'Not recommended due to strong currents, depth variations, and boat traffic.',
+    fishing_season: 'Coarse fishing: June-March; Predatory fish restrictions apply',
+    latitude: 53.5,
+    longitude: -1.0,
+    featured: false,
+    image_url: 'https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg',
+    created_at: '2024-01-01T00:00:00Z',
+    updated_at: '2024-01-01T00:00:00Z'
+  },
+  {
+    id: '6',
+    name: 'River Dee',
+    slug: 'river-dee-scotland',
+    region: 'Scotland',
+    length_km: 137,
+    length_miles: 85,
+    description: 'The River Dee flows through Aberdeenshire and is famous for its salmon fishing and royal connections. Known to contain gold deposits.',
+    origin: 'Cairngorms, Scottish Highlands',
+    mouth: 'North Sea at Aberdeen',
+    wildlife: ['Atlantic Salmon', 'Sea Trout', 'Brown Trout', 'Otters', 'Ospreys', 'Red Squirrels'],
+    activities: ['Salmon Fishing', 'Gold Panning', 'Walking', 'Mountain Biking', 'Wildlife Watching'],
+    has_gold: true,
+    swimming_safety: 'Very cold water year-round. Only for experienced wild swimmers with proper equipment.',
+    fishing_season: 'Salmon: February-September; Trout: March-September',
+    latitude: 57.1,
+    longitude: -2.9,
+    featured: true,
+    image_url: 'https://images.pexels.com/photos/1118877/pexels-photo-1118877.jpeg',
+    created_at: '2024-01-01T00:00:00Z',
+    updated_at: '2024-01-01T00:00:00Z'
+  },
+  {
+    id: '7',
+    name: 'River Spey',
+    slug: 'river-spey',
+    region: 'Scotland',
+    length_km: 172,
+    length_miles: 107,
+    description: 'The River Spey is Scotland\'s second longest river and fastest flowing. Famous for salmon fishing and the whisky distilleries along its banks.',
+    origin: 'Loch Spey, Scottish Highlands',
+    mouth: 'Moray Firth',
+    wildlife: ['Atlantic Salmon', 'Sea Trout', 'Ospreys', 'Otters', 'Pine Martens', 'Capercaillie'],
+    activities: ['Salmon Fishing', 'Rafting', 'Canoeing', 'Whisky Trail', 'Walking', 'Wildlife Watching'],
+    has_gold: false,
+    swimming_safety: 'Fast-flowing and cold. Only for experienced swimmers in designated calm pools.',
+    fishing_season: 'Salmon: February-September; Trout: March-September',
+    latitude: 57.3,
+    longitude: -3.3,
+    featured: true,
+    image_url: 'https://images.pexels.com/photos/2901209/pexels-photo-2901209.jpeg',
+    created_at: '2024-01-01T00:00:00Z',
+    updated_at: '2024-01-01T00:00:00Z'
+  },
+  {
+    id: '8',
+    name: 'River Ouse',
+    slug: 'river-ouse-yorkshire',
+    region: 'England',
+    length_km: 89,
+    length_miles: 52,
+    description: 'The River Ouse flows through York and North Yorkshire before joining the River Trent. Rich in history with Roman and Viking connections.',
+    origin: 'Ouse Gill Beck, North Yorkshire',
+    mouth: 'Humber Estuary',
+    wildlife: ['Pike', 'Perch', 'Roach', 'Bream', 'Otters', 'Kingfishers', 'Grey Herons'],
+    activities: ['Coarse Fishing', 'Boating', 'Rowing', 'Walking', 'Historic Tours'],
+    has_gold: false,
+    swimming_safety: 'Not recommended due to tidal influences, depth variations, and water quality concerns.',
+    fishing_season: 'Coarse fishing: June-March',
+    latitude: 53.9,
+    longitude: -1.08,
+    featured: false,
+    image_url: 'https://images.pexels.com/photos/2376997/pexels-photo-2376997.jpeg',
+    created_at: '2024-01-01T00:00:00Z',
+    updated_at: '2024-01-01T00:00:00Z'
+  },
+  {
+    id: '9',
+    name: 'River Clyde',
+    slug: 'river-clyde',
+    region: 'Scotland',
+    length_km: 176,
+    length_miles: 109,
+    description: 'The River Clyde flows through Glasgow and was once one of the world\'s most important shipbuilding rivers. Now undergoing environmental regeneration.',
+    origin: 'Lowther Hills, South Lanarkshire',
+    mouth: 'Firth of Clyde',
+    wildlife: ['Salmon', 'Sea Trout', 'Otters', 'Seals', 'Cormorants', 'Swans'],
+    activities: ['Walking', 'Cycling', 'Fishing', 'Kayaking', 'Heritage Tours'],
+    has_gold: false,
+    swimming_safety: 'Not recommended in urban sections. Rural upper sections safer during summer.',
+    fishing_season: 'Salmon: February-October; Trout: March-September',
+    latitude: 55.9,
+    longitude: -4.4,
+    featured: false,
+    image_url: 'https://images.pexels.com/photos/1287145/pexels-photo-1287145.jpeg',
+    created_at: '2024-01-01T00:00:00Z',
+    updated_at: '2024-01-01T00:00:00Z'
+  },
+  {
+    id: '10',
+    name: 'River Avon',
+    slug: 'river-avon-warwickshire',
+    region: 'England',
+    length_km: 154,
+    length_miles: 96,
+    description: 'The Warwickshire Avon flows through Shakespeare country. Known for its scenic beauty and connection to Stratford-upon-Avon.',
+    origin: 'Naseby, Northamptonshire',
+    mouth: 'River Severn at Tewkesbury',
+    wildlife: ['Pike', 'Chub', 'Barbel', 'Kingfishers', 'Otters', 'Swans', 'Water Voles'],
+    activities: ['Narrowboat Cruising', 'Fishing', 'Walking', 'Cycling', 'Theatre Tours'],
+    has_gold: false,
+    swimming_safety: 'Some safe swimming spots in upper reaches during summer. Always check locally.',
+    fishing_season: 'Coarse fishing: June-March',
+    latitude: 52.2,
+    longitude: -1.7,
+    featured: false,
+    image_url: 'https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg',
+    created_at: '2024-01-01T00:00:00Z',
+    updated_at: '2024-01-01T00:00:00Z'
+  }
+];
+
+export const blogPosts: BlogPost[] = [
+  {
+    id: '1',
+    title: 'The Complete Guide to Wild Swimming in UK Rivers',
+    slug: 'wild-swimming-uk-rivers-guide',
+    category: 'Safety',
+    excerpt: 'Essential safety tips, best locations, and what you need to know before taking the plunge into Britain\'s rivers.',
+    content: null,
+    image_url: 'https://images.pexels.com/photos/1118877/pexels-photo-1118877.jpeg',
+    published: true,
+    published_at: '2024-03-15T10:00:00Z',
+    created_at: '2024-03-15T10:00:00Z'
+  },
+  {
+    id: '2',
+    title: 'Chalk Rivers: Britain\'s Rare Aquatic Treasures',
+    slug: 'chalk-rivers-uk-guide',
+    category: 'Conservation',
+    excerpt: 'Discover why the UK hosts 85% of the world\'s chalk streams and what makes these ecosystems so special.',
+    content: null,
+    image_url: 'https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg',
+    published: true,
+    published_at: '2024-03-10T10:00:00Z',
+    created_at: '2024-03-10T10:00:00Z'
+  },
+  {
+    id: '3',
+    title: 'Top 10 Rivers for Salmon Fishing in Scotland',
+    slug: 'salmon-fishing-scotland-rivers',
+    category: 'Fishing',
+    excerpt: 'From the Tay to the Spey, explore Scotland\'s premier salmon fishing destinations and learn about seasonal patterns.',
+    content: null,
+    image_url: 'https://images.pexels.com/photos/2901209/pexels-photo-2901209.jpeg',
+    published: true,
+    published_at: '2024-03-05T10:00:00Z',
+    created_at: '2024-03-05T10:00:00Z'
+  },
+  {
+    id: '4',
+    title: 'Wildlife Spotting Along the River Thames',
+    slug: 'thames-wildlife-guide',
+    category: 'Wildlife',
+    excerpt: 'A comprehensive guide to the diverse wildlife inhabiting Britain\'s most famous river, from kingfishers to seals.',
+    content: null,
+    image_url: 'https://images.pexels.com/photos/460672/pexels-photo-460672.jpeg',
+    published: true,
+    published_at: '2024-02-28T10:00:00Z',
+    created_at: '2024-02-28T10:00:00Z'
+  },
+  {
+    id: '5',
+    title: 'Gold Panning in Scottish Rivers: A Beginner\'s Guide',
+    slug: 'gold-panning-scotland-guide',
+    category: 'Activities',
+    excerpt: 'Learn where to find gold in rivers like the Tay and Dee, plus essential techniques and legal requirements.',
+    content: null,
+    image_url: 'https://images.pexels.com/photos/1118877/pexels-photo-1118877.jpeg',
+    published: true,
+    published_at: '2024-02-20T10:00:00Z',
+    created_at: '2024-02-20T10:00:00Z'
+  },
+  {
+    id: '6',
+    title: 'Understanding River Geography: From Source to Sea',
+    slug: 'river-geography-uk-explained',
+    category: 'Geography',
+    excerpt: 'Explore how UK rivers form, flow, and shape the landscape from mountain springs to coastal estuaries.',
+    content: null,
+    image_url: 'https://images.pexels.com/photos/534164/pexels-photo-534164.jpeg',
+    published: true,
+    published_at: '2024-02-15T10:00:00Z',
+    created_at: '2024-02-15T10:00:00Z'
+  }
+];

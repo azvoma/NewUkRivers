@@ -173,8 +173,6 @@ const faqs = [
 </Layout>
 
 <script>
-  import { supabase } from '../lib/supabase';
-
   const contactForm = document.getElementById('contact-form') as HTMLFormElement;
   const formSuccess = document.getElementById('form-success') as HTMLElement;
   const formError = document.getElementById('form-error') as HTMLElement;
@@ -192,11 +190,7 @@ const faqs = [
     };
 
     try {
-      const { error } = await supabase
-        .from('contact_submissions')
-        .insert([data]);
-
-      if (error) throw error;
+      console.log('Form submission:', data);
 
       formSuccess.style.display = 'block';
       formError.style.display = 'none';

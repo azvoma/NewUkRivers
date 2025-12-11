@@ -4,12 +4,9 @@ import Hero from '../components/Hero.astro';
 import RiverCard from '../components/RiverCard.astro';
 import FAQ from '../components/FAQ.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
-import { supabase } from '../lib/supabase';
+import { getRivers } from '../lib/supabase';
 
-const { data: allRivers } = await supabase
-  .from('rivers')
-  .select('*')
-  .order('name');
+const allRivers = getRivers().sort((a, b) => a.name.localeCompare(b.name));
 
 const breadcrumbItems = [
   { label: 'Home', href: '/' },
@@ -24,7 +21,7 @@ const schemaData = {
   "url": new URL('/rivers', Astro.site).toString(),
   "mainEntity": {
     "@type": "ItemList",
-    "itemListElement": allRivers?.slice(0, 10).map((river, index) => ({
+    "itemListElement": allRivers.slice(0, 10).map((river, index) => ({
       "@type": "ListItem",
       "position": index + 1,
       "item": {
@@ -118,7 +115,7 @@ const faqs = [
   <section class="rivers-directory">
     <div class="container">
       <div id="rivers-grid" class="rivers-grid">
-        {allRivers && allRivers.map((river) => (
+        {allRivers.map((river) => (
           <RiverCard river={river} />
         ))}
       </div>

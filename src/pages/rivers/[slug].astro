@@ -2,27 +2,22 @@
 import Layout from '../../layouts/Layout.astro';
 import FAQ from '../../components/FAQ.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
-import { supabase } from '../../lib/supabase';
+import { getRivers, getRiversByRegion } from '../../lib/supabase';
 
 export async function getStaticPaths() {
-  const { data: rivers } = await supabase
-    .from('rivers')
-    .select('*');
+  const rivers = getRivers();
 
-  return rivers?.map((river) => ({
+  return rivers.map((river) => ({
     params: { slug: river.slug },
     props: { river },
-  })) || [];
+  }));
 }
 
 const { river } = Astro.props;
 
-const relatedRivers = await supabase
-  .from('rivers')
-  .select('*')
-  .eq('region', river.region)
-  .neq('slug', river.slug)
-  .limit(3);
+const relatedRivers = getRiversByRegion(river.region)
+  .filter(r => r.slug !== river.slug)
+  .slice(0, 3);
 
 const breadcrumbItems = [
   { label: 'Home', href: '/' },
@@ -268,12 +263,12 @@ const randomFunFact = funFacts[Math.floor(Math.random() * funFacts.length)];
 
   <FAQ faqs={faqs} />
 
-  {relatedRivers.data && relatedRivers.data.length > 0 && (
+  {relatedRivers.length > 0 && (
     <section class="related-section">
       <div class="container">
         <h2>Other Rivers in {river.region}</h2>
         <div class="related-grid">
-          {relatedRivers.data.map((relatedRiver) => (
+          {relatedRivers.map((relatedRiver) => (
             <a href={`/rivers/${relatedRiver.slug}`} class="related-card" aria-label={`View ${relatedRiver.name} details`}>
               {relatedRiver.image_url && (
                 <div class="related-image">

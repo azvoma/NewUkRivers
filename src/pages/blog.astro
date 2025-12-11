@@ -2,13 +2,11 @@
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import FAQ from '../components/FAQ.astro';
-import { supabase } from '../lib/supabase';
+import { getBlogPosts } from '../lib/supabase';
 
-const { data: blogPosts } = await supabase
-  .from('blog_posts')
-  .select('*')
-  .eq('published', true)
-  .order('published_at', { ascending: false });
+const blogPosts = getBlogPosts().sort((a, b) =>
+  new Date(b.published_at!).getTime() - new Date(a.published_at!).getTime()
+);
 
 const categories = ['Wildlife', 'Activities', 'Safety', 'Conservation', 'Geography', 'Fishing'];
 
@@ -76,7 +74,7 @@ const faqs = [
   <section class="blog-posts-section">
     <div class="container">
       <div class="blog-grid">
-        {blogPosts && blogPosts.map((post) => (
+        {blogPosts.map((post) => (
           <article class="blog-card">
             <div class="blog-category">{post.category}</div>
             <h3>{post.title}</h3>
