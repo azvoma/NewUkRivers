@@ -8,7 +8,7 @@ export interface Props {
 const { river } = Astro.props;
 ---
 
-<article class="river-card">
+<a href={`/rivers/${river.slug}`} class="river-card">
   {river.image_url && (
     <div class="river-image">
       <img src={river.image_url} alt={`${river.name} - UK river flowing through ${river.region}`} />
@@ -50,11 +50,7 @@ const { river } = Astro.props;
       <span class="feature-badge wildlife">{river.wildlife.length} Species</span>
     )}
   </div>
-
-  <a href={`/rivers/${river.slug}`} class="view-button">
-    View Details →
-  </a>
-</article>
+</a>
 
 <style>
   .river-card {
@@ -66,12 +62,20 @@ const { river } = Astro.props;
     display: flex;
     flex-direction: column;
     gap: calc(var(--spacing-unit) * 2);
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
   }
 
   .river-card:hover {
     border-color: var(--color-primary);
     box-shadow: 0 8px 24px rgba(0, 102, 204, 0.12);
     transform: translateY(-4px);
+  }
+
+  .river-card:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
   }
 
   .river-image {
@@ -95,8 +99,8 @@ const { river } = Astro.props;
     padding: 0 calc(var(--spacing-unit) * 3);
   }
 
-  .river-card > .view-button {
-    margin: 0 calc(var(--spacing-unit) * 3) calc(var(--spacing-unit) * 3);
+  .river-card > .river-features {
+    padding-bottom: calc(var(--spacing-unit) * 3);
   }
 
   .river-card-header {
@@ -175,21 +179,5 @@ const { river } = Astro.props;
   .feature-badge.wildlife {
     background: #d1fae5;
     color: #065f46;
-  }
-
-  .view-button {
-    align-self: flex-start;
-    background: var(--color-primary);
-    color: white;
-    padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 3);
-    border-radius: 8px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    margin-top: auto;
-  }
-
-  .view-button:hover {
-    background: var(--color-primary-dark);
-    transform: translateX(4px);
   }
 </style>
