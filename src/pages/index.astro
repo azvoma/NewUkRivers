@@ -5,7 +5,7 @@ import RiverCard from '../components/RiverCard.astro';
 import FAQ from '../components/FAQ.astro';
 import { getRivers } from '../lib/supabase';
 
-const allRivers = getRivers().filter(river => river.featured).sort((a, b) => a.name.localeCompare(b.name));
+const allRivers = getRivers().sort((a, b) => a.name.localeCompare(b.name));
 
 const schemaData = {
   "@context": "https://schema.org",
