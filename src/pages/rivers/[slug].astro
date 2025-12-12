@@ -659,7 +659,7 @@ const exploreActivities = [
 
   .facts-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: calc(var(--spacing-unit) * 3);
   }
 
@@ -919,6 +919,12 @@ const exploreActivities = [
     padding: 0 calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 2);
     margin: 0;
     color: var(--color-text-light);
+  }
+
+  @media (max-width: 1200px) {
+    .facts-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 
   @media (max-width: 768px) {
