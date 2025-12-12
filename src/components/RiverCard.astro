@@ -8,59 +8,51 @@ export interface Props {
 const { river } = Astro.props;
 ---
 
-<a href={`/rivers/${river.slug}`} class="river-card-link">
-  <article class="river-card">
-    {river.image_url && (
-      <div class="river-image">
-        <img src={river.image_url} alt={`${river.name} - UK river flowing through ${river.region}`} />
+<a href={`/rivers/${river.slug}`} class="river-card">
+  {river.image_url && (
+    <div class="river-image">
+      <img src={river.image_url} alt={`${river.name} - UK river flowing through ${river.region}`} />
+    </div>
+  )}
+
+  <div class="river-card-header">
+    <h3>{river.name}</h3>
+    <span class="region-badge">{river.region}</span>
+  </div>
+
+  <div class="river-info">
+    {river.length_miles && (
+      <div class="info-item">
+        <span class="info-label">Length:</span>
+        <span class="info-value">{river.length_miles} miles ({river.length_km} km)</span>
       </div>
     )}
-
-    <div class="river-card-header">
-      <h3>{river.name}</h3>
-      <span class="region-badge">{river.region}</span>
-    </div>
-
-    <div class="river-info">
-      {river.length_miles && (
-        <div class="info-item">
-          <span class="info-label">Length:</span>
-          <span class="info-value">{river.length_miles} miles ({river.length_km} km)</span>
-        </div>
-      )}
-      {river.origin && (
-        <div class="info-item">
-          <span class="info-label">Origin:</span>
-          <span class="info-value">{river.origin}</span>
-        </div>
-      )}
-    </div>
-
-    {river.description && (
-      <p class="river-description">{river.description.substring(0, 150)}...</p>
+    {river.origin && (
+      <div class="info-item">
+        <span class="info-label">Origin:</span>
+        <span class="info-value">{river.origin}</span>
+      </div>
     )}
+  </div>
 
-    <div class="river-features">
-      {river.has_gold && (
-        <span class="feature-badge gold">Contains Gold</span>
-      )}
-      {river.activities && river.activities.length > 0 && (
-        <span class="feature-badge activities">{river.activities.length} Activities</span>
-      )}
-      {river.wildlife && river.wildlife.length > 0 && (
-        <span class="feature-badge wildlife">{river.wildlife.length} Species</span>
-      )}
-    </div>
-  </article>
+  {river.description && (
+    <p class="river-description">{river.description.substring(0, 150)}...</p>
+  )}
+
+  <div class="river-features">
+    {river.has_gold && (
+      <span class="feature-badge gold">Contains Gold</span>
+    )}
+    {river.activities && river.activities.length > 0 && (
+      <span class="feature-badge activities">{river.activities.length} Activities</span>
+    )}
+    {river.wildlife && river.wildlife.length > 0 && (
+      <span class="feature-badge wildlife">{river.wildlife.length} Species</span>
+    )}
+  </div>
 </a>
 
 <style>
-  .river-card-link {
-    text-decoration: none;
-    display: block;
-    height: 100%;
-  }
-
   .river-card {
     background: var(--color-background);
     border: 2px solid var(--color-border);
@@ -70,11 +62,12 @@ const { river } = Astro.props;
     display: flex;
     flex-direction: column;
     gap: calc(var(--spacing-unit) * 2);
-    height: 100%;
+    text-decoration: none;
+    color: inherit;
     cursor: pointer;
   }
 
-  .river-card-link:hover .river-card {
+  .river-card:hover {
     border-color: var(--color-primary);
     box-shadow: 0 8px 24px rgba(0, 102, 204, 0.12);
     transform: translateY(-4px);
@@ -93,7 +86,7 @@ const { river } = Astro.props;
     transition: transform 0.3s ease;
   }
 
-  .river-card-link:hover .river-image img {
+  .river-card:hover .river-image img {
     transform: scale(1.05);
   }
 
@@ -159,7 +152,6 @@ const { river } = Astro.props;
     display: flex;
     flex-wrap: wrap;
     gap: calc(var(--spacing-unit) * 1);
-    margin-top: auto;
   }
 
   .feature-badge {

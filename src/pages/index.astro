@@ -5,7 +5,7 @@ import RiverCard from '../components/RiverCard.astro';
 import FAQ from '../components/FAQ.astro';
 import { getRivers } from '../lib/supabase';
 
-const featuredRivers = getRivers().filter(river => river.featured).slice(0, 6);
+const allRivers = getRivers().filter(river => river.featured).sort((a, b) => a.name.localeCompare(b.name));
 
 const schemaData = {
   "@context": "https://schema.org",
@@ -75,16 +75,39 @@ const faqs = [
     </div>
   </section>
 
-  <section class="featured-rivers-section">
+  <section class="filter-section">
     <div class="container">
-      <h2>Featured UK Rivers</h2>
-      <div class="rivers-grid">
-        {featuredRivers.map((river) => (
+      <div class="filter-controls">
+        <label for="search-input" class="sr-only">Search rivers by name</label>
+        <input
+          type="text"
+          id="search-input"
+          class="search-input"
+          placeholder="Search rivers by name..."
+          aria-label="Search rivers by name"
+        />
+        <label for="region-filter" class="sr-only">Filter by region</label>
+        <select id="region-filter" class="region-filter" aria-label="Filter rivers by region">
+          <option value="all">All Regions</option>
+          <option value="England">England</option>
+          <option value="Scotland">Scotland</option>
+          <option value="Wales">Wales</option>
+          <option value="Northern Ireland">Northern Ireland</option>
+        </select>
+      </div>
+      <div id="results-count" class="results-count" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="rivers-section">
+    <div class="container">
+      <div id="rivers-grid" class="rivers-grid">
+        {allRivers.map((river) => (
           <RiverCard river={river} />
         ))}
       </div>
-      <div class="view-all-container">
-        <a href="/rivers" class="view-all-button">View All Rivers →</a>
+      <div id="no-results" class="no-results" style="display: none;">
+        <p>No rivers found matching your search criteria.</p>
       </div>
     </div>
   </section>
@@ -166,6 +189,59 @@ const faqs = [
   <FAQ faqs={faqs} />
 </Layout>
 
+<script>
+  const searchInput = document.getElementById('search-input') as HTMLInputElement;
+  const regionFilter = document.getElementById('region-filter') as HTMLSelectElement;
+  const riversGrid = document.getElementById('rivers-grid') as HTMLElement;
+  const noResults = document.getElementById('no-results') as HTMLElement;
+  const resultsCount = document.getElementById('results-count') as HTMLElement;
+
+  const riverCards = Array.from(document.querySelectorAll('.rivers-grid > article'));
+  const totalRivers = riverCards.length;
+
+  function updateResultsCount(count: number) {
+    if (resultsCount) {
+      resultsCount.textContent = `Showing ${count} of ${totalRivers} rivers`;
+    }
+  }
+
+  function filterRivers() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const selectedRegion = regionFilter.value;
+
+    let visibleCount = 0;
+
+    riverCards.forEach((card) => {
+      const riverName = card.querySelector('h3')?.textContent?.toLowerCase() || '';
+      const riverRegion = card.querySelector('.region-badge')?.textContent || '';
+
+      const matchesSearch = riverName.includes(searchTerm);
+      const matchesRegion = selectedRegion === 'all' || riverRegion === selectedRegion;
+
+      if (matchesSearch && matchesRegion) {
+        (card as HTMLElement).style.display = 'flex';
+        visibleCount++;
+      } else {
+        (card as HTMLElement).style.display = 'none';
+      }
+    });
+
+    updateResultsCount(visibleCount);
+
+    if (visibleCount === 0) {
+      noResults.style.display = 'block';
+      riversGrid.style.display = 'none';
+    } else {
+      noResults.style.display = 'none';
+      riversGrid.style.display = 'grid';
+    }
+  }
+
+  updateResultsCount(totalRivers);
+  searchInput.addEventListener('input', filterRivers);
+  regionFilter.addEventListener('change', filterRivers);
+</script>
+
 <style>
   .container {
     max-width: var(--max-width);
@@ -173,6 +249,63 @@ const faqs = [
     padding: 0 calc(var(--spacing-unit) * 3);
   }
 
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  .filter-section {
+    padding: calc(var(--spacing-unit) * 8) 0 calc(var(--spacing-unit) * 4);
+    background: var(--color-background-alt);
+  }
+
+  .filter-controls {
+    display: flex;
+    gap: calc(var(--spacing-unit) * 3);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .search-input,
+  .region-filter {
+    padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 3);
+    border: 2px solid var(--color-border);
+    border-radius: 8px;
+    font-size: 1.125rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+  }
+
+  .search-input {
+    flex: 1;
+  }
+
+  .search-input:focus,
+  .region-filter:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+  }
+
+  .region-filter {
+    min-width: 200px;
+    cursor: pointer;
+  }
+
+  .results-count {
+    text-align: center;
+    color: var(--color-text-light);
+    font-size: 1rem;
+    margin-top: calc(var(--spacing-unit) * 3);
+    font-weight: 500;
+  }
 
   .intro-section {
     padding: calc(var(--spacing-unit) * 8) 0;
@@ -195,44 +328,24 @@ const faqs = [
     text-align: center;
   }
 
-  .featured-rivers-section {
-    padding: calc(var(--spacing-unit) * 8) 0 calc(var(--spacing-unit) * 10);
-  }
-
-  .featured-rivers-section h2 {
-    text-align: center;
-    margin-bottom: calc(var(--spacing-unit) * 6);
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
+  .rivers-section {
+    padding: calc(var(--spacing-unit) * 6) 0 calc(var(--spacing-unit) * 10);
   }
 
   .rivers-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: calc(var(--spacing-unit) * 3);
-    margin-bottom: calc(var(--spacing-unit) * 6);
   }
 
-  .view-all-container {
+  .no-results {
     text-align: center;
-    margin-top: calc(var(--spacing-unit) * 6);
+    padding: calc(var(--spacing-unit) * 8) 0;
   }
 
-  .view-all-button {
-    display: inline-block;
-    background: var(--color-primary);
-    color: white;
-    padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 4);
-    border-radius: 8px;
+  .no-results p {
     font-size: 1.125rem;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.3s ease;
-  }
-
-  .view-all-button:hover {
-    background: var(--color-primary-dark);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.2);
+    color: var(--color-text-light);
   }
 
   .activities-section {
