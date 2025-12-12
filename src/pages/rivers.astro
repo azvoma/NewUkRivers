@@ -147,7 +147,7 @@ const faqs = [
   const noResults = document.getElementById('no-results') as HTMLElement;
   const resultsCount = document.getElementById('results-count') as HTMLElement;
 
-  const riverCards = Array.from(document.querySelectorAll('.rivers-grid > article'));
+  const riverCards = Array.from(document.querySelectorAll('.rivers-grid > a'));
   const totalRivers = riverCards.length;
 
   function updateResultsCount(count: number) {
