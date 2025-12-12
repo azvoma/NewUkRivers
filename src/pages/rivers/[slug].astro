@@ -94,16 +94,102 @@ const galleryImages = [
   { url: 'https://images.pexels.com/photos/1118877/pexels-photo-1118877.jpeg', alt: `${river.name} wildlife habitat` }
 ];
 
-const funFacts = [
+const riverSpecificFacts = {
+  'river-thames': [
+    'The Thames is tidal up to Teddington Lock, making it unique among UK rivers.',
+    'Over 125 species of fish live in the Thames, including seahorses in the estuary.',
+    'The Thames Path is 184 miles long, following the river from source to sea.',
+    'The Thames froze over 23 times between 1408 and 1814, hosting "Frost Fairs".'
+  ],
+  'river-severn': [
+    'The Severn Bore is a tidal wave that can reach speeds of 13mph and heights of 2 meters.',
+    'The Severn is Britain\'s longest river at 220 miles.',
+    'Five major bridges cross the Severn, including two suspension bridges.',
+    'The river drains an area of 4,409 square miles.'
+  ],
+  'river-tay': [
+    'The Tay has the largest discharge of any UK river, flowing at 122 cubic meters per second.',
+    'Gold has been found in the Tay for centuries, with panning still popular today.',
+    'The Tay Rail Bridge disaster of 1879 remains one of Britain\'s worst structural failures.',
+    'Salmon weighing over 60 pounds have been caught in the Tay.'
+  ],
+  'river-wye': [
+    'The Wye was Britain\'s first Area of Outstanding Natural Beauty.',
+    'The entire river is a Site of Special Scientific Interest (SSSI).',
+    'The Wye Valley inspired Romantic poets like Wordsworth.',
+    'Over 30 species of fish inhabit the Wye, including rare twaite shad.'
+  ],
+  'river-dee-scotland': [
+    'Queen Victoria\'s love of the Dee helped establish Royal Deeside as a tourist destination.',
+    'Gold nuggets up to 59 grams have been found in the Dee.',
+    'The Dee is one of Scotland\'s premier salmon rivers.',
+    'Balmoral Castle sits beside the River Dee.'
+  ],
+  'river-spey': [
+    'More whisky distilleries are located along the Spey than any other river in Scotland.',
+    'The Spey is Scotland\'s fastest flowing river.',
+    'Ospreys returned to nest along the Spey in 1959 after 50 years\' absence.',
+    'The Speyside Way follows 65 miles of the river.'
+  ]
+};
+
+const didYouKnowFacts = riverSpecificFacts[river.slug] || [
   `The ${river.name} has been a vital waterway for centuries, supporting local communities and wildlife.`,
-  `${river.region} is home to some of the UK's most beautiful river landscapes, including the ${river.name}.`,
-  `The ${river.name} flows from ${river.origin} to ${river.mouth}, creating diverse habitats along its course.`,
+  `${river.region} is home to some of the UK's most beautiful river landscapes.`,
   `Many historical settlements were established along the ${river.name} due to its strategic importance.`,
-  `The ${river.name} supports a rich ecosystem that includes rare and protected species.`,
-  `Local legends and folklore have been inspired by the ${river.name} throughout history.`
+  `The ${river.name} supports a rich ecosystem that includes rare and protected species.`
 ];
 
-const randomFunFact = funFacts[Math.floor(Math.random() * funFacts.length)];
+const tributaries = {
+  'river-thames': ['River Kennet', 'River Wey', 'River Lea', 'River Cherwell'],
+  'river-severn': ['River Avon', 'River Teme', 'River Stour', 'River Tern'],
+  'river-tay': ['River Tummel', 'River Isla', 'River Earn', 'River Almond'],
+  'river-wye': ['River Lugg', 'River Monnow', 'River Irfon'],
+  'river-trent': ['River Dove', 'River Derwent', 'River Soar'],
+  'river-dee-scotland': ['Water of Tanar', 'Geldie Burn', 'Water of Feugh'],
+  'river-spey': ['River Feshie', 'River Dulnain', 'River Avon']
+};
+
+const riverTributaries = tributaries[river.slug] || [];
+
+const exploreActivities = [
+  {
+    icon: '🥾',
+    title: 'Walking Routes',
+    description: 'Discover scenic riverside paths and national trails that follow the course of the river.',
+    available: river.activities.includes('Walking')
+  },
+  {
+    icon: '🚴',
+    title: 'Cycling Paths',
+    description: 'Explore dedicated cycle routes and quiet roads alongside the river valley.',
+    available: river.activities.includes('Cycling')
+  },
+  {
+    icon: '🛶',
+    title: 'Water Sports',
+    description: 'Kayaking, canoeing, and paddleboarding opportunities along calm sections.',
+    available: river.activities.includes('Kayaking') || river.activities.includes('Canoeing')
+  },
+  {
+    icon: '🎣',
+    title: 'Fishing Spots',
+    description: 'Prime locations for coarse and game fishing with proper permits.',
+    available: river.activities.includes('Fishing')
+  },
+  {
+    icon: '🦅',
+    title: 'Wildlife Watching',
+    description: 'Birdwatching hides and viewpoints for observing river wildlife.',
+    available: river.activities.includes('Wildlife Watching')
+  },
+  {
+    icon: '🏕️',
+    title: 'Camping Sites',
+    description: 'Riverside campsites and wild camping areas for overnight stays.',
+    available: river.activities.includes('Camping')
+  }
+].filter(activity => activity.available);
 ---
 
 <Layout
@@ -234,15 +320,98 @@ const randomFunFact = funFacts[Math.floor(Math.random() * funFacts.length)];
     </div>
   </section>
 
-  <section class="fun-fact-section">
+  <section class="did-you-know-section">
     <div class="container">
-      <div class="fun-fact-card">
-        <div class="fun-fact-icon">💡</div>
-        <h3>Fun Fact</h3>
-        <p>{randomFunFact}</p>
+      <h2>Did You Know?</h2>
+      <div class="facts-grid">
+        {didYouKnowFacts.map((fact) => (
+          <div class="fact-item">
+            <div class="fact-icon">💡</div>
+            <p>{fact}</p>
+          </div>
+        ))}
       </div>
     </div>
   </section>
+
+  {exploreActivities.length > 0 && (
+    <section class="explore-section">
+      <div class="container">
+        <h2>Explore Along {river.name}</h2>
+        <p class="section-intro">Discover activities and attractions along the river course</p>
+        <div class="explore-grid">
+          {exploreActivities.map((activity) => (
+            <div class="explore-card">
+              <div class="explore-icon">{activity.icon}</div>
+              <h3>{activity.title}</h3>
+              <p>{activity.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="geography-section">
+    <div class="container">
+      <h2>River Geography & Education</h2>
+      <div class="geography-grid">
+        <div class="geography-card">
+          <h3>🏔️ Physical Geography</h3>
+          <div class="geography-content">
+            <p><strong>River Course:</strong> The {river.name} follows a classic river profile from source to mouth, creating diverse habitats along its {river.length_miles || 'considerable'} mile journey.</p>
+            <p><strong>Landscape Features:</strong> The river creates distinctive features including meanders, floodplains, and {river.mouth?.includes('Estuary') || river.mouth?.includes('Sea') ? 'an estuary where it meets the sea' : 'its confluence with larger waterways'}.</p>
+            <p><strong>Geology:</strong> The river has carved through {river.region} landscape over thousands of years, shaped by the underlying bedrock and glacial activity.</p>
+          </div>
+        </div>
+
+        <div class="geography-card">
+          <h3>🏘️ Human Geography</h3>
+          <div class="geography-content">
+            <p><strong>Settlements:</strong> Major towns and cities developed along the {river.name} due to access to water, transportation, and trade opportunities.</p>
+            <p><strong>Historical Industry:</strong> The river powered mills, supported fishing communities, and served as a vital transport route for goods and people.</p>
+            <p><strong>Modern Use:</strong> Today the river supports recreation, tourism, {river.activities.includes('Fishing') ? 'sport fishing' : 'water sports'}, and remains important for local ecosystems.</p>
+          </div>
+        </div>
+
+        <div class="geography-card">
+          <h3>🌊 Environmental Status</h3>
+          <div class="geography-content">
+            <p><strong>Water Quality:</strong> Regular monitoring ensures the river maintains good ecological status under UK water quality standards.</p>
+            <p><strong>Conservation:</strong> Protected habitats along the river support {river.wildlife.length > 0 ? river.wildlife.length : 'numerous'} species of wildlife including rare and endangered species.</p>
+            <p><strong>Climate Adaptation:</strong> River management includes flood prevention, habitat restoration, and preparing for changing rainfall patterns.</p>
+          </div>
+        </div>
+
+        <div class="geography-card">
+          <h3>⚠️ Flood Management</h3>
+          <div class="geography-content">
+            <p><strong>Flood Risk:</strong> Like all UK rivers, the {river.name} experiences seasonal variations in flow and occasional flooding during heavy rainfall.</p>
+            <p><strong>Defenses:</strong> Flood management schemes protect communities through embankments, flood storage areas, and early warning systems.</p>
+            <p><strong>Natural Solutions:</strong> Riverside tree planting and wetland restoration help manage water flow naturally while supporting biodiversity.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {riverTributaries.length > 0 && (
+    <section class="tributaries-section">
+      <div class="container">
+        <h2>Key Tributaries</h2>
+        <p class="section-intro">Major tributaries that feed into the {river.name}</p>
+        <div class="tributaries-grid">
+          {riverTributaries.map((tributary) => (
+            <div class="tributary-item">
+              <div class="tributary-icon">🌊</div>
+              <h3>{tributary}</h3>
+              <p>A significant tributary contributing to the {river.name}'s flow and ecosystem.</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 
   <section class="location-map-section">
     <div class="container">
@@ -478,37 +647,199 @@ const randomFunFact = funFacts[Math.floor(Math.random() * funFacts.length)];
     line-height: 1.7;
   }
 
-  .fun-fact-section {
-    padding: calc(var(--spacing-unit) * 8) 0;
+  .did-you-know-section {
+    padding: calc(var(--spacing-unit) * 10) 0;
     background: var(--color-background-alt);
   }
 
-  .fun-fact-card {
-    max-width: 800px;
-    margin: 0 auto;
-    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
-    color: white;
-    padding: calc(var(--spacing-unit) * 5);
-    border-radius: 16px;
+  .did-you-know-section h2 {
     text-align: center;
-    box-shadow: 0 8px 24px rgba(0, 102, 204, 0.2);
+    margin-bottom: calc(var(--spacing-unit) * 6);
   }
 
-  .fun-fact-icon {
+  .facts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: calc(var(--spacing-unit) * 3);
+  }
+
+  .fact-item {
+    background: white;
+    padding: calc(var(--spacing-unit) * 4);
+    border-radius: 12px;
+    border: 2px solid var(--color-border);
+    transition: all 0.3s ease;
+    text-align: center;
+  }
+
+  .fact-item:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 8px 24px rgba(0, 102, 204, 0.15);
+    transform: translateY(-4px);
+  }
+
+  .fact-icon {
+    font-size: 2.5rem;
+    margin-bottom: calc(var(--spacing-unit) * 2);
+  }
+
+  .fact-item p {
+    color: var(--color-text-light);
+    line-height: 1.7;
+    margin: 0;
+    font-size: 1rem;
+  }
+
+  .explore-section {
+    padding: calc(var(--spacing-unit) * 10) 0;
+  }
+
+  .explore-section h2 {
+    text-align: center;
+    margin-bottom: calc(var(--spacing-unit) * 2);
+  }
+
+  .section-intro {
+    text-align: center;
+    color: var(--color-text-light);
+    font-size: 1.125rem;
+    margin-bottom: calc(var(--spacing-unit) * 6);
+  }
+
+  .explore-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: calc(var(--spacing-unit) * 3);
+  }
+
+  .explore-card {
+    background: var(--color-background);
+    padding: calc(var(--spacing-unit) * 4);
+    border-radius: 12px;
+    border: 2px solid var(--color-border);
+    transition: all 0.3s ease;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .explore-card:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 8px 24px rgba(0, 102, 204, 0.15);
+    transform: translateY(-4px);
+  }
+
+  .explore-icon {
     font-size: 3rem;
     margin-bottom: calc(var(--spacing-unit) * 2);
   }
 
-  .fun-fact-card h3 {
-    font-size: 1.75rem;
-    margin-bottom: calc(var(--spacing-unit) * 2);
-    color: white;
+  .explore-card h3 {
+    margin-bottom: calc(var(--spacing-unit) * 1.5);
+    font-size: 1.25rem;
   }
 
-  .fun-fact-card p {
-    font-size: 1.25rem;
-    line-height: 1.7;
+  .explore-card p {
+    color: var(--color-text-light);
+    line-height: 1.6;
     margin: 0;
+  }
+
+  .geography-section {
+    padding: calc(var(--spacing-unit) * 10) 0;
+    background: var(--color-background-alt);
+  }
+
+  .geography-section h2 {
+    text-align: center;
+    margin-bottom: calc(var(--spacing-unit) * 6);
+  }
+
+  .geography-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: calc(var(--spacing-unit) * 3);
+  }
+
+  .geography-card {
+    background: white;
+    padding: calc(var(--spacing-unit) * 4);
+    border-radius: 12px;
+    border: 2px solid var(--color-border);
+    transition: all 0.3s ease;
+  }
+
+  .geography-card:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 8px 24px rgba(0, 102, 204, 0.15);
+    transform: translateY(-4px);
+  }
+
+  .geography-card h3 {
+    margin-bottom: calc(var(--spacing-unit) * 2);
+    font-size: 1.375rem;
+    color: var(--color-text);
+  }
+
+  .geography-content p {
+    margin-bottom: calc(var(--spacing-unit) * 2);
+    color: var(--color-text-light);
+    line-height: 1.7;
+  }
+
+  .geography-content p:last-child {
+    margin-bottom: 0;
+  }
+
+  .geography-content strong {
+    color: var(--color-text);
+  }
+
+  .tributaries-section {
+    padding: calc(var(--spacing-unit) * 10) 0;
+  }
+
+  .tributaries-section h2 {
+    text-align: center;
+    margin-bottom: calc(var(--spacing-unit) * 2);
+  }
+
+  .tributaries-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: calc(var(--spacing-unit) * 3);
+  }
+
+  .tributary-item {
+    background: var(--color-background);
+    padding: calc(var(--spacing-unit) * 3);
+    border-radius: 12px;
+    border: 2px solid var(--color-border);
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+
+  .tributary-item:hover {
+    border-color: var(--color-secondary);
+    box-shadow: 0 4px 16px rgba(0, 136, 169, 0.12);
+    transform: translateY(-2px);
+  }
+
+  .tributary-icon {
+    font-size: 2rem;
+    margin-bottom: calc(var(--spacing-unit) * 1.5);
+  }
+
+  .tributary-item h3 {
+    margin-bottom: calc(var(--spacing-unit) * 1);
+    font-size: 1.125rem;
+    color: var(--color-text);
+  }
+
+  .tributary-item p {
+    color: var(--color-text-light);
+    font-size: 0.9375rem;
+    margin: 0;
+    line-height: 1.6;
   }
 
   .location-map-section {
@@ -598,7 +929,11 @@ const randomFunFact = funFacts[Math.floor(Math.random() * funFacts.length)];
     .details-grid-four,
     .gallery-grid,
     .features-grid,
-    .related-grid {
+    .related-grid,
+    .facts-grid,
+    .explore-grid,
+    .geography-grid,
+    .tributaries-grid {
       grid-template-columns: 1fr;
     }
   }
