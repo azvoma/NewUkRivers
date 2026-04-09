@@ -154,40 +154,40 @@ const riverTributaries = tributaries[river.slug] || [];
 
 const exploreActivities = [
   {
-    icon: '🥾',
     title: 'Walking Routes',
     description: 'Discover scenic riverside paths and national trails that follow the course of the river.',
-    available: river.activities.includes('Walking')
+    available: river.activities.includes('Walking'),
+    icon: 'walking'
   },
   {
-    icon: '🚴',
     title: 'Cycling Paths',
     description: 'Explore dedicated cycle routes and quiet roads alongside the river valley.',
-    available: river.activities.includes('Cycling')
+    available: river.activities.includes('Cycling'),
+    icon: 'cycling'
   },
   {
-    icon: '🛶',
     title: 'Water Sports',
     description: 'Kayaking, canoeing, and paddleboarding opportunities along calm sections.',
-    available: river.activities.includes('Kayaking') || river.activities.includes('Canoeing')
+    available: river.activities.includes('Kayaking') || river.activities.includes('Canoeing'),
+    icon: 'watersports'
   },
   {
-    icon: '🎣',
     title: 'Fishing Spots',
     description: 'Prime locations for coarse and game fishing with proper permits.',
-    available: river.activities.includes('Fishing')
+    available: river.activities.includes('Fishing'),
+    icon: 'fishing'
   },
   {
-    icon: '🦅',
     title: 'Wildlife Watching',
     description: 'Birdwatching hides and viewpoints for observing river wildlife.',
-    available: river.activities.includes('Wildlife Watching')
+    available: river.activities.includes('Wildlife Watching'),
+    icon: 'wildlife'
   },
   {
-    icon: '🏕️',
     title: 'Camping Sites',
     description: 'Riverside campsites and wild camping areas for overnight stays.',
-    available: river.activities.includes('Camping')
+    available: river.activities.includes('Camping'),
+    icon: 'camping'
   }
 ].filter(activity => activity.available);
 ---
@@ -202,11 +202,35 @@ const exploreActivities = [
 >
   <Breadcrumb items={breadcrumbItems} />
 
-  <div class="river-hero" style={river.image_url ? `background-image: url(${river.image_url})` : ''}>
-    <div class="hero-overlay">
+  <div class="river-hero">
+    <div class="hero-inner">
       <div class="container">
+        <div class="hero-badge">{river.region}</div>
         <h1>{river.name}</h1>
-        <p class="hero-subtitle">{river.region} • {river.length_miles ? `${river.length_miles} miles (${river.length_km} km)` : 'Major UK River'}</p>
+        <p class="hero-subtitle">
+          {river.length_miles ? `${river.length_miles} miles (${river.length_km} km)` : 'Major UK River'}
+          {river.has_gold && <span class="gold-badge">Contains Gold</span>}
+        </p>
+        <div class="hero-stats">
+          {river.origin && (
+            <div class="hero-stat">
+              <span class="stat-label">Source</span>
+              <span class="stat-value">{river.origin}</span>
+            </div>
+          )}
+          {river.mouth && (
+            <div class="hero-stat">
+              <span class="stat-label">Mouth</span>
+              <span class="stat-value">{river.mouth}</span>
+            </div>
+          )}
+          {river.activities.length > 0 && (
+            <div class="hero-stat">
+              <span class="stat-label">Activities</span>
+              <span class="stat-value">{river.activities.length} available</span>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   </div>
@@ -218,11 +242,30 @@ const exploreActivities = [
     </div>
   </section>
 
+  <section class="gallery-section">
+    <div class="container">
+      <h2>{river.name} Photo Gallery</h2>
+      <div class="gallery-grid">
+        {galleryImages.map((image) => (
+          <div class="gallery-item">
+            <img src={image.url} alt={image.alt} loading="lazy" width="400" height="300" />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
   <section class="river-details">
     <div class="container">
       <div class="details-grid-four">
         <div class="detail-card">
-          <h3>📍 Location</h3>
+          <div class="detail-card-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M12 2C8.7 2 6 4.7 6 8C6 12.5 12 22 12 22C12 22 18 12.5 18 8C18 4.7 15.3 2 12 2Z" stroke="#0066cc" stroke-width="2" fill="none"/>
+              <circle cx="12" cy="8" r="2.5" stroke="#0066cc" stroke-width="1.5" fill="none"/>
+            </svg>
+          </div>
+          <h3>Location</h3>
           <div class="detail-content">
             <p><strong>Region:</strong> {river.region}</p>
             <p><strong>Origin:</strong> {river.origin}</p>
@@ -234,7 +277,14 @@ const exploreActivities = [
         </div>
 
         <div class="detail-card">
-          <h3>🦅 Wildlife</h3>
+          <div class="detail-card-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M12 3C12 3 6 7 6 13C6 16.3 8.7 19 12 19C15.3 19 18 16.3 18 13C18 7 12 3 12 3Z" stroke="#0066cc" stroke-width="2" fill="none" stroke-linejoin="round"/>
+              <path d="M8 12L12 8L16 12" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <path d="M12 8V15" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Wildlife</h3>
           <div class="detail-content">
             {river.wildlife && river.wildlife.length > 0 ? (
               <ul>
@@ -249,7 +299,13 @@ const exploreActivities = [
         </div>
 
         <div class="detail-card">
-          <h3>🎯 Activities</h3>
+          <div class="detail-card-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" stroke="#0066cc" stroke-width="2" fill="none"/>
+              <path d="M12 7V12L15 15" stroke="#0066cc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>Activities</h3>
           <div class="detail-content">
             {river.activities && river.activities.length > 0 ? (
               <ul>
@@ -264,30 +320,25 @@ const exploreActivities = [
         </div>
 
         <div class="detail-card">
-          <h3>💧 Safety</h3>
+          <div class="detail-card-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M4 16C6 13 8 11 11 11C14 11 16 14 19 14C21 14 22 13 22 13" stroke="#0066cc" stroke-width="2" stroke-linecap="round" fill="none"/>
+              <path d="M2 20C4 17 6 15 9 15C12 15 14 18 17 18C19 18 21 17 22 16" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+              <path d="M12 2V8" stroke="#0066cc" stroke-width="2" stroke-linecap="round"/>
+              <path d="M9 5L12 2L15 5" stroke="#0066cc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+          <h3>Safety</h3>
           <div class="detail-content">
             <p><strong>Swimming Safety:</strong> {river.swimming_safety}</p>
             {river.fishing_season && (
               <p><strong>Fishing Season:</strong> {river.fishing_season}</p>
             )}
             {river.has_gold && (
-              <p class="gold-note">⭐ Contains natural gold deposits</p>
+              <p class="gold-note">Contains natural gold deposits</p>
             )}
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="gallery-section">
-    <div class="container">
-      <h2>{river.name} Photo Gallery</h2>
-      <div class="gallery-grid">
-        {galleryImages.map((image, index) => (
-          <div class="gallery-item">
-            <img src={image.url} alt={image.alt} loading="lazy" width="400" height="300" />
-          </div>
-        ))}
       </div>
     </div>
   </section>
@@ -297,22 +348,50 @@ const exploreActivities = [
       <h2>Key Features of {river.name}</h2>
       <div class="features-grid">
         <div class="feature-box">
-          <div class="feature-icon">🌊</div>
+          <div class="feature-icon">
+            <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="22" cy="22" r="22" fill="#e8f4fd"/>
+              <path d="M8 28C11 24 14 22 18 22C22 22 24 26 28 26C32 26 34 24 36 22" stroke="#0066cc" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+              <path d="M8 33C11 29 14 27 18 27C22 27 24 31 28 31C32 31 34 29 36 27" stroke="#0066cc" stroke-width="1.75" stroke-linecap="round" fill="none" opacity="0.6"/>
+            </svg>
+          </div>
           <h3>River Course</h3>
           <p>The {river.name} flows from {river.origin} through {river.region}, eventually reaching {river.mouth}. {river.length_miles && `At ${river.length_miles} miles long, it traverses diverse landscapes.`}</p>
         </div>
         <div class="feature-box">
-          <div class="feature-icon">🏞️</div>
+          <div class="feature-icon">
+            <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="22" cy="22" r="22" fill="#e8f4fd"/>
+              <path d="M12 34L22 12L32 34H12Z" stroke="#0066cc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <circle cx="22" cy="10" r="3" fill="#0066cc" opacity="0.5"/>
+              <path d="M17 26C18.5 24 20 23 22 23C24 23 25.5 25 27 26" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            </svg>
+          </div>
           <h3>Natural Beauty</h3>
           <p>The river valley offers stunning scenery, from its source through varied terrain. Perfect for photography, nature walks, and outdoor exploration.</p>
         </div>
         <div class="feature-box">
-          <div class="feature-icon">🎣</div>
+          <div class="feature-icon">
+            <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="22" cy="22" r="22" fill="#e8f4fd"/>
+              <path d="M22 10V28" stroke="#0066cc" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M22 28L16 23" stroke="#0066cc" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M22 28L28 23" stroke="#0066cc" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M12 33C15 30 17 28 20 28C23 28 25 31 28 31C30 31 31.5 30 34 28" stroke="#0066cc" stroke-width="2" stroke-linecap="round" fill="none"/>
+            </svg>
+          </div>
           <h3>Recreation</h3>
           <p>Popular activities include {river.activities && river.activities.length > 0 ? river.activities.slice(0, 3).join(', ') : 'walking, fishing, and wildlife watching'}. Always follow local guidelines and safety advice.</p>
         </div>
         <div class="feature-box">
-          <div class="feature-icon">🌿</div>
+          <div class="feature-icon">
+            <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="22" cy="22" r="22" fill="#e8f4fd"/>
+              <path d="M22 10C18 13 14 18 14 23C14 27.4 17.6 31 22 31C26.4 31 30 27.4 30 23C30 18 26 13 22 10Z" stroke="#0066cc" stroke-width="2" fill="none" stroke-linejoin="round"/>
+              <path d="M18 20C19.5 18.5 21 18 22 18C23 18 24.5 18.5 26 20" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+              <path d="M22 18V24" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
           <h3>Ecology</h3>
           <p>The {river.name} supports important ecosystems including {river.wildlife && river.wildlife.length > 0 ? river.wildlife.slice(0, 2).join(' and ') : 'diverse wildlife'}. Conservation efforts help protect these habitats.</p>
         </div>
@@ -326,7 +405,15 @@ const exploreActivities = [
       <div class="facts-grid">
         {didYouKnowFacts.map((fact) => (
           <div class="fact-item">
-            <div class="fact-icon">💡</div>
+            <div class="fact-icon">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <circle cx="16" cy="16" r="16" fill="#e8f4fd"/>
+                <circle cx="16" cy="12" r="4" stroke="#0066cc" stroke-width="1.75" fill="none"/>
+                <path d="M12 16C12 18 13 20 16 20C19 20 20 18 20 16" stroke="#0066cc" stroke-width="1.75" stroke-linecap="round" fill="none"/>
+                <path d="M16 20V24" stroke="#0066cc" stroke-width="1.75" stroke-linecap="round"/>
+                <path d="M13 24H19" stroke="#0066cc" stroke-width="1.75" stroke-linecap="round"/>
+              </svg>
+            </div>
             <p>{fact}</p>
           </div>
         ))}
@@ -342,7 +429,63 @@ const exploreActivities = [
         <div class="explore-grid">
           {exploreActivities.map((activity) => (
             <div class="explore-card">
-              <div class="explore-icon">{activity.icon}</div>
+              <div class="explore-icon">
+                {activity.icon === 'walking' && (
+                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <circle cx="20" cy="20" r="20" fill="#e8f4fd"/>
+                    <circle cx="20" cy="11" r="3" stroke="#0066cc" stroke-width="2" fill="none"/>
+                    <path d="M20 14V18" stroke="#0066cc" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M17 16L14 20M23 16L26 20" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round"/>
+                    <path d="M13 28L17 20L21 24L25 18L29 22" stroke="#0066cc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                  </svg>
+                )}
+                {activity.icon === 'cycling' && (
+                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <circle cx="20" cy="20" r="20" fill="#e8f4fd"/>
+                    <circle cx="13" cy="25" r="5" stroke="#0066cc" stroke-width="2" fill="none"/>
+                    <circle cx="27" cy="25" r="5" stroke="#0066cc" stroke-width="2" fill="none"/>
+                    <path d="M13 25L20 15L27 25" stroke="#0066cc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    <path d="M17 15H24" stroke="#0066cc" stroke-width="2" stroke-linecap="round"/>
+                    <circle cx="24" cy="13" r="2" fill="#0066cc" opacity="0.5"/>
+                  </svg>
+                )}
+                {activity.icon === 'watersports' && (
+                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <circle cx="20" cy="20" r="20" fill="#e8f4fd"/>
+                    <path d="M10 25C12 22 14 20 17 20C20 20 22 23 25 23C28 23 30 21 30 21" stroke="#0066cc" stroke-width="2" stroke-linecap="round" fill="none"/>
+                    <path d="M14 17L20 13L26 17" stroke="#0066cc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    <path d="M20 13V21" stroke="#0066cc" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M8 20L13 17M32 20L27 17" stroke="#0066cc" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                )}
+                {activity.icon === 'fishing' && (
+                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <circle cx="20" cy="20" r="20" fill="#e8f4fd"/>
+                    <path d="M20 9V27" stroke="#0066cc" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M20 27L15 22" stroke="#0066cc" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M20 27L25 22" stroke="#0066cc" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M10 31C13 28 15 26 18 26C21 26 23 29 26 29C28 29 29.5 28 32 26" stroke="#0066cc" stroke-width="2" stroke-linecap="round" fill="none"/>
+                    <circle cx="22" cy="12" r="2" fill="#0066cc" opacity="0.4"/>
+                  </svg>
+                )}
+                {activity.icon === 'wildlife' && (
+                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <circle cx="20" cy="20" r="20" fill="#e8f4fd"/>
+                    <path d="M20 9C20 9 12 14 12 20C12 24.4 15.6 28 20 28C24.4 28 28 24.4 28 20C28 14 20 9 20 9Z" stroke="#0066cc" stroke-width="2" fill="none" stroke-linejoin="round"/>
+                    <path d="M14 18L20 13L26 18" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    <path d="M20 13V20" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round"/>
+                    <path d="M16 20H24" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round"/>
+                  </svg>
+                )}
+                {activity.icon === 'camping' && (
+                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <circle cx="20" cy="20" r="20" fill="#e8f4fd"/>
+                    <path d="M10 29L20 11L30 29H10Z" stroke="#0066cc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    <path d="M15 29V23H25V29" stroke="#0066cc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M18 23V20H22V23" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                )}
+              </div>
               <h3>{activity.title}</h3>
               <p>{activity.description}</p>
             </div>
@@ -357,7 +500,14 @@ const exploreActivities = [
       <h2>River Geography & Education</h2>
       <div class="geography-grid">
         <div class="geography-card">
-          <h3>🏔️ Physical Geography</h3>
+          <div class="geography-card-header">
+            <div class="geography-icon">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M14 2L18 10H26L20 15L22 24L14 19L6 24L8 15L2 10H10L14 2Z" stroke="#0066cc" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              </svg>
+            </div>
+            <h3>Physical Geography</h3>
+          </div>
           <div class="geography-content">
             <p><strong>River Course:</strong> The {river.name} follows a classic river profile from source to mouth, creating diverse habitats along its {river.length_miles || 'considerable'} mile journey.</p>
             <p><strong>Landscape Features:</strong> The river creates distinctive features including meanders, floodplains, and {river.mouth?.includes('Estuary') || river.mouth?.includes('Sea') ? 'an estuary where it meets the sea' : 'its confluence with larger waterways'}.</p>
@@ -366,7 +516,17 @@ const exploreActivities = [
         </div>
 
         <div class="geography-card">
-          <h3>🏘️ Human Geography</h3>
+          <div class="geography-card-header">
+            <div class="geography-icon">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <rect x="4" y="12" width="20" height="14" rx="2" stroke="#0066cc" stroke-width="1.75" fill="none"/>
+                <path d="M9 12V9C9 6.2 11.2 4 14 4C16.8 4 19 6.2 19 9V12" stroke="#0066cc" stroke-width="1.75" stroke-linecap="round" fill="none"/>
+                <circle cx="14" cy="18" r="2" stroke="#0066cc" stroke-width="1.5" fill="none"/>
+                <path d="M14 20V23" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3>Human Geography</h3>
+          </div>
           <div class="geography-content">
             <p><strong>Settlements:</strong> Major towns and cities developed along the {river.name} due to access to water, transportation, and trade opportunities.</p>
             <p><strong>Historical Industry:</strong> The river powered mills, supported fishing communities, and served as a vital transport route for goods and people.</p>
@@ -375,7 +535,17 @@ const exploreActivities = [
         </div>
 
         <div class="geography-card">
-          <h3>🌊 Environmental Status</h3>
+          <div class="geography-card-header">
+            <div class="geography-icon">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M4 18C7 14 10 12 14 12C18 12 20 16 24 16" stroke="#0066cc" stroke-width="2" stroke-linecap="round" fill="none"/>
+                <path d="M4 22C7 18 10 16 14 16C18 16 20 20 24 20" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.6"/>
+                <path d="M14 2V10" stroke="#0066cc" stroke-width="2" stroke-linecap="round"/>
+                <path d="M11 5L14 2L17 5" stroke="#0066cc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              </svg>
+            </div>
+            <h3>Environmental Status</h3>
+          </div>
           <div class="geography-content">
             <p><strong>Water Quality:</strong> Regular monitoring ensures the river maintains good ecological status under UK water quality standards.</p>
             <p><strong>Conservation:</strong> Protected habitats along the river support {river.wildlife.length > 0 ? river.wildlife.length : 'numerous'} species of wildlife including rare and endangered species.</p>
@@ -384,7 +554,16 @@ const exploreActivities = [
         </div>
 
         <div class="geography-card">
-          <h3>⚠️ Flood Management</h3>
+          <div class="geography-card-header">
+            <div class="geography-icon">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M14 3L16 8H22L17 12L19 18L14 14L9 18L11 12L6 8H12L14 3Z" stroke="#0066cc" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.5"/>
+                <circle cx="14" cy="18" r="6" stroke="#0066cc" stroke-width="1.75" fill="none"/>
+                <path d="M11 18H17M14 15V21" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3>Flood Management</h3>
+          </div>
           <div class="geography-content">
             <p><strong>Flood Risk:</strong> Like all UK rivers, the {river.name} experiences seasonal variations in flow and occasional flooding during heavy rainfall.</p>
             <p><strong>Defenses:</strong> Flood management schemes protect communities through embankments, flood storage areas, and early warning systems.</p>
@@ -403,7 +582,14 @@ const exploreActivities = [
         <div class="tributaries-grid">
           {riverTributaries.map((tributary) => (
             <div class="tributary-item">
-              <div class="tributary-icon">🌊</div>
+              <div class="tributary-icon">
+                <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <circle cx="18" cy="18" r="18" fill="#e8f4fd"/>
+                  <path d="M8 24C10 21 12 19 15 19C18 19 20 22 23 22C26 22 28 20 28 20" stroke="#0066cc" stroke-width="2" stroke-linecap="round" fill="none"/>
+                  <path d="M18 8V18" stroke="#0066cc" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M14 12L18 8L22 12" stroke="#0066cc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                </svg>
+              </div>
               <h3>{tributary}</h3>
               <p>A significant tributary contributing to the {river.name}'s flow and ecosystem.</p>
             </div>
@@ -462,34 +648,79 @@ const exploreActivities = [
   }
 
   .river-hero {
-    position: relative;
-    height: 400px;
-    background-size: cover;
-    background-position: center;
-    background-color: var(--color-primary);
-    display: flex;
-    align-items: center;
+    background: linear-gradient(135deg, #0a4a8c 0%, #0066cc 50%, #0088a9 100%);
+    padding: calc(var(--spacing-unit) * 10) 0 calc(var(--spacing-unit) * 8);
   }
 
-  .hero-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6));
-    display: flex;
-    align-items: center;
+  .hero-inner {
+    width: 100%;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.95);
+    padding: calc(var(--spacing-unit) * 0.75) calc(var(--spacing-unit) * 2);
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: calc(var(--spacing-unit) * 2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
   }
 
   .river-hero h1 {
     color: white;
     margin-bottom: calc(var(--spacing-unit) * 2);
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    font-size: clamp(2rem, 5vw, 3.5rem);
   }
 
   .hero-subtitle {
-    color: rgba(255, 255, 255, 0.95);
-    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.125rem;
     font-weight: 500;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    gap: calc(var(--spacing-unit) * 2);
+    flex-wrap: wrap;
+    margin-bottom: calc(var(--spacing-unit) * 4);
+  }
+
+  .gold-badge {
+    background: rgba(255, 215, 0, 0.25);
+    color: #ffd700;
+    padding: calc(var(--spacing-unit) * 0.5) calc(var(--spacing-unit) * 1.5);
+    border-radius: 12px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border: 1px solid rgba(255, 215, 0, 0.4);
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: calc(var(--spacing-unit) * 4);
+    flex-wrap: wrap;
+  }
+
+  .hero-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.65);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+
+  .stat-value {
+    font-size: 0.9375rem;
+    color: rgba(255, 255, 255, 0.95);
+    font-weight: 500;
   }
 
   .river-intro {
@@ -510,72 +741,9 @@ const exploreActivities = [
     text-align: center;
   }
 
-  .river-details {
-    padding: calc(var(--spacing-unit) * 8) 0;
-    background: var(--color-background-alt);
-  }
-
-  .details-grid-four {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: calc(var(--spacing-unit) * 3);
-  }
-
-  .detail-card {
-    background: var(--color-background);
-    padding: calc(var(--spacing-unit) * 4);
-    border-radius: 12px;
-    border: 2px solid var(--color-border);
-    transition: all 0.3s ease;
-  }
-
-  .detail-card:hover {
-    border-color: var(--color-primary);
-    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.1);
-    transform: translateY(-4px);
-  }
-
-  .detail-card h3 {
-    margin-bottom: calc(var(--spacing-unit) * 2);
-    font-size: 1.25rem;
-  }
-
-  .detail-content p {
-    margin-bottom: calc(var(--spacing-unit) * 1);
-    color: var(--color-text-light);
-  }
-
-  .detail-content ul {
-    list-style: none;
-    padding: 0;
-  }
-
-  .detail-content ul li {
-    padding: calc(var(--spacing-unit) * 0.75) 0;
-    color: var(--color-text-light);
-    position: relative;
-    padding-left: calc(var(--spacing-unit) * 3);
-  }
-
-  .detail-content ul li::before {
-    content: '✓';
-    position: absolute;
-    left: 0;
-    color: var(--color-secondary);
-    font-weight: 700;
-  }
-
-  .gold-note {
-    background: #fef3c7;
-    color: #92400e;
-    padding: calc(var(--spacing-unit) * 1.5);
-    border-radius: 6px;
-    font-weight: 600;
-    margin-top: calc(var(--spacing-unit) * 2);
-  }
-
   .gallery-section {
-    padding: calc(var(--spacing-unit) * 10) 0;
+    padding: calc(var(--spacing-unit) * 8) 0 calc(var(--spacing-unit) * 10);
+    background: var(--color-background-alt);
   }
 
   .gallery-section h2 {
@@ -613,8 +781,84 @@ const exploreActivities = [
     transform: scale(1.1);
   }
 
+  .river-details {
+    padding: calc(var(--spacing-unit) * 8) 0;
+  }
+
+  .details-grid-four {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: calc(var(--spacing-unit) * 3);
+  }
+
+  .detail-card {
+    background: var(--color-background);
+    padding: calc(var(--spacing-unit) * 4);
+    border-radius: 12px;
+    border: 2px solid var(--color-border);
+    transition: all 0.3s ease;
+  }
+
+  .detail-card:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.1);
+    transform: translateY(-4px);
+  }
+
+  .detail-card-icon {
+    margin-bottom: calc(var(--spacing-unit) * 1.5);
+  }
+
+  .detail-card h3 {
+    margin-bottom: calc(var(--spacing-unit) * 2);
+    font-size: 1.125rem;
+    color: var(--color-text);
+  }
+
+  .detail-content p {
+    margin-bottom: calc(var(--spacing-unit) * 1);
+    color: var(--color-text-light);
+    font-size: 0.9375rem;
+  }
+
+  .detail-content ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .detail-content ul li {
+    padding: calc(var(--spacing-unit) * 0.75) 0;
+    color: var(--color-text-light);
+    position: relative;
+    padding-left: calc(var(--spacing-unit) * 3);
+    font-size: 0.9375rem;
+  }
+
+  .detail-content ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-secondary);
+  }
+
+  .gold-note {
+    background: #fef3c7;
+    color: #92400e;
+    padding: calc(var(--spacing-unit) * 1.5);
+    border-radius: 6px;
+    font-weight: 600;
+    margin-top: calc(var(--spacing-unit) * 2);
+    font-size: 0.9375rem;
+  }
+
   .features-section {
     padding: calc(var(--spacing-unit) * 10) 0;
+    background: var(--color-background-alt);
   }
 
   .features-section h2 {
@@ -633,7 +877,8 @@ const exploreActivities = [
   }
 
   .feature-icon {
-    font-size: 3rem;
+    display: flex;
+    justify-content: center;
     margin-bottom: calc(var(--spacing-unit) * 2);
   }
 
@@ -649,7 +894,6 @@ const exploreActivities = [
 
   .did-you-know-section {
     padding: calc(var(--spacing-unit) * 10) 0;
-    background: var(--color-background-alt);
   }
 
   .did-you-know-section h2 {
@@ -664,7 +908,7 @@ const exploreActivities = [
   }
 
   .fact-item {
-    background: white;
+    background: var(--color-background-alt);
     padding: calc(var(--spacing-unit) * 4);
     border-radius: 12px;
     border: 2px solid var(--color-border);
@@ -679,7 +923,8 @@ const exploreActivities = [
   }
 
   .fact-icon {
-    font-size: 2.5rem;
+    display: flex;
+    justify-content: center;
     margin-bottom: calc(var(--spacing-unit) * 2);
   }
 
@@ -692,6 +937,7 @@ const exploreActivities = [
 
   .explore-section {
     padding: calc(var(--spacing-unit) * 10) 0;
+    background: var(--color-background-alt);
   }
 
   .explore-section h2 {
@@ -719,7 +965,6 @@ const exploreActivities = [
     border: 2px solid var(--color-border);
     transition: all 0.3s ease;
     text-align: center;
-    cursor: pointer;
   }
 
   .explore-card:hover {
@@ -729,7 +974,8 @@ const exploreActivities = [
   }
 
   .explore-icon {
-    font-size: 3rem;
+    display: flex;
+    justify-content: center;
     margin-bottom: calc(var(--spacing-unit) * 2);
   }
 
@@ -746,7 +992,6 @@ const exploreActivities = [
 
   .geography-section {
     padding: calc(var(--spacing-unit) * 10) 0;
-    background: var(--color-background-alt);
   }
 
   .geography-section h2 {
@@ -761,7 +1006,7 @@ const exploreActivities = [
   }
 
   .geography-card {
-    background: white;
+    background: var(--color-background-alt);
     padding: calc(var(--spacing-unit) * 4);
     border-radius: 12px;
     border: 2px solid var(--color-border);
@@ -774,9 +1019,20 @@ const exploreActivities = [
     transform: translateY(-4px);
   }
 
+  .geography-card-header {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--spacing-unit) * 1.5);
+    margin-bottom: calc(var(--spacing-unit) * 2.5);
+  }
+
+  .geography-icon {
+    flex-shrink: 0;
+  }
+
   .geography-card h3 {
-    margin-bottom: calc(var(--spacing-unit) * 2);
-    font-size: 1.375rem;
+    margin-bottom: 0;
+    font-size: 1.25rem;
     color: var(--color-text);
   }
 
@@ -784,6 +1040,7 @@ const exploreActivities = [
     margin-bottom: calc(var(--spacing-unit) * 2);
     color: var(--color-text-light);
     line-height: 1.7;
+    font-size: 0.9375rem;
   }
 
   .geography-content p:last-child {
@@ -796,6 +1053,7 @@ const exploreActivities = [
 
   .tributaries-section {
     padding: calc(var(--spacing-unit) * 10) 0;
+    background: var(--color-background-alt);
   }
 
   .tributaries-section h2 {
@@ -825,7 +1083,8 @@ const exploreActivities = [
   }
 
   .tributary-icon {
-    font-size: 2rem;
+    display: flex;
+    justify-content: center;
     margin-bottom: calc(var(--spacing-unit) * 1.5);
   }
 
@@ -863,6 +1122,7 @@ const exploreActivities = [
 
   .related-section {
     padding: calc(var(--spacing-unit) * 10) 0;
+    background: var(--color-background-alt);
   }
 
   .related-section h2 {
@@ -929,7 +1189,12 @@ const exploreActivities = [
 
   @media (max-width: 768px) {
     .river-hero {
-      height: 300px;
+      padding: calc(var(--spacing-unit) * 7) 0 calc(var(--spacing-unit) * 6);
+    }
+
+    .hero-stats {
+      flex-direction: column;
+      gap: calc(var(--spacing-unit) * 2);
     }
 
     .details-grid-four,
