@@ -88,11 +88,47 @@ const faqs = [
   }
 ];
 
-const galleryImages = [
+const riverGalleries: Record<string, { url: string; alt: string }[]> = {
+  'river-avon-bristol': [
+    { url: '/images/rivers/river-avon-bristol/River_Avon_(Bristol).jpg', alt: 'River Avon Bristol gorge view' },
+    { url: '/images/rivers/river-avon-bristol/River_Avon_(Bristol)2.jpg', alt: 'River Avon Bristol aerial view' }
+  ],
+  'river-avon-warwickshire': [
+    { url: '/images/rivers/river-avon-warwickshire/River_Avon_(Warwickshire).jpg', alt: 'River Avon Warwickshire at Stratford' },
+    { url: '/images/rivers/river-avon-warwickshire/River_Avon_(Warwickshire)2.jpg', alt: 'River Avon Warwickshire riverside' }
+  ],
+  'river-thames': [
+    { url: 'https://images.pexels.com/photos/460672/pexels-photo-460672.jpeg', alt: 'River Thames London' },
+    { url: 'https://images.pexels.com/photos/2376997/pexels-photo-2376997.jpeg', alt: 'River Thames landscape' }
+  ],
+  'river-severn': [
+    { url: 'https://images.pexels.com/photos/534164/pexels-photo-534164.jpeg', alt: 'River Severn view' },
+    { url: 'https://images.pexels.com/photos/1179229/pexels-photo-1179229.jpeg', alt: 'River Severn landscape' }
+  ],
+  'river-tay': [
+    { url: 'https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg', alt: 'River Tay Scotland' },
+    { url: 'https://images.pexels.com/photos/2901209/pexels-photo-2901209.jpeg', alt: 'River Tay highland scenery' }
+  ],
+  'river-wye': [
+    { url: 'https://images.pexels.com/photos/1179229/pexels-photo-1179229.jpeg', alt: 'River Wye valley' },
+    { url: 'https://images.pexels.com/photos/1118877/pexels-photo-1118877.jpeg', alt: 'River Wye landscape' }
+  ],
+  'river-dee-scotland': [
+    { url: 'https://images.pexels.com/photos/1118877/pexels-photo-1118877.jpeg', alt: 'River Dee Scotland' },
+    { url: 'https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg', alt: 'River Dee highland view' }
+  ],
+  'river-spey': [
+    { url: 'https://images.pexels.com/photos/2901209/pexels-photo-2901209.jpeg', alt: 'River Spey Scotland' },
+    { url: 'https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg', alt: 'River Spey landscape' }
+  ]
+};
+
+const defaultGallery = [
   { url: river.image_url || 'https://images.pexels.com/photos/1179229/pexels-photo-1179229.jpeg', alt: `${river.name} main view` },
-  { url: 'https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg', alt: `${river.name} landscape` },
-  { url: 'https://images.pexels.com/photos/1118877/pexels-photo-1118877.jpeg', alt: `${river.name} wildlife habitat` }
+  { url: 'https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg', alt: `${river.name} landscape` }
 ];
+
+const galleryImages = riverGalleries[river.slug] || defaultGallery;
 
 const riverSpecificFacts = {
   'river-thames': [
@@ -753,20 +789,22 @@ const exploreActivities = [
 
   .gallery-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: calc(var(--spacing-unit) * 3);
+    max-width: 960px;
+    margin: 0 auto;
   }
 
   .gallery-item {
-    aspect-ratio: 4/3;
+    aspect-ratio: 16/10;
     overflow: hidden;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
     transition: all 0.3s ease;
   }
 
   .gallery-item:hover {
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
     transform: translateY(-4px);
   }
 
@@ -774,11 +812,11 @@ const exploreActivities = [
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease;
+    transition: transform 0.4s ease;
   }
 
   .gallery-item:hover img {
-    transform: scale(1.1);
+    transform: scale(1.06);
   }
 
   .river-details {
@@ -1198,13 +1236,18 @@ const exploreActivities = [
     }
 
     .details-grid-four,
-    .gallery-grid,
     .features-grid,
     .related-grid,
     .facts-grid,
     .explore-grid,
     .geography-grid,
     .tributaries-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .gallery-grid {
       grid-template-columns: 1fr;
     }
   }
