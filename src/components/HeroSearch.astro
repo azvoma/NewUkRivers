@@ -1,0 +1,517 @@
+---
+import { getRivers } from '../lib/supabase';
+
+export interface Props {
+  placeholder?: string;
+}
+
+const { placeholder = 'Search 44+ UK rivers by name, region or activity...' } = Astro.props;
+
+const riverData = getRivers().map(r => ({
+  name: r.name,
+  slug: r.slug,
+  region: r.region,
+  length_miles: r.length_miles,
+  activities: r.activities,
+}));
+---
+
+<div class="hs-wrapper">
+  <div class="hs-container" id="hs-container">
+    <div class="hs-input-row">
+      <svg class="hs-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <circle cx="9" cy="9" r="6.5" stroke="currentColor" stroke-width="2"/>
+        <path d="M14 14L17.5 17.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <input
+        type="text"
+        id="hs-input"
+        class="hs-input"
+        placeholder={placeholder}
+        autocomplete="off"
+        aria-label="Search UK rivers"
+        aria-haspopup="listbox"
+        aria-autocomplete="list"
+        aria-controls="hs-results"
+        aria-expanded="false"
+        spellcheck="false"
+      />
+      <button id="hs-clear" class="hs-clear" type="button" aria-label="Clear search" hidden>
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+          <path d="M3.5 3.5L11.5 11.5M11.5 3.5L3.5 11.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <a href="/rivers" class="hs-browse-btn">
+        Browse all
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+          <path d="M2.5 6.5H10.5M10.5 6.5L7 3M10.5 6.5L7 10" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+
+    <ul
+      id="hs-results"
+      class="hs-results"
+      role="listbox"
+      aria-label="River suggestions"
+      hidden
+    ></ul>
+  </div>
+
+  <div class="hs-hints" aria-hidden="true">
+    <span class="hs-hints-label">Try:</span>
+    <button class="hs-chip" data-query="Thames">Thames</button>
+    <button class="hs-chip" data-query="Salmon Fishing">Salmon Fishing</button>
+    <button class="hs-chip" data-query="Scotland">Scotland</button>
+    <button class="hs-chip" data-query="Kayaking">Kayaking</button>
+    <button class="hs-chip" data-query="Wales">Wales</button>
+  </div>
+</div>
+
+<script define:vars={{ riverData }}>
+  const input    = document.getElementById('hs-input');
+  const results  = document.getElementById('hs-results');
+  const clearBtn = document.getElementById('hs-clear');
+  const container = document.getElementById('hs-container');
+
+  let matches   = [];
+  let activeIdx = -1;
+
+  const norm = s => s.toLowerCase().trim();
+
+  function score(river, q) {
+    const nq = norm(q);
+    const name = norm(river.name);
+    const region = norm(river.region);
+    const acts = river.activities.map(norm).join(' ');
+    if (name === nq)         return 100;
+    if (name.startsWith(nq)) return 90;
+    if (name.includes(nq))   return 70;
+    if (region.includes(nq)) return 50;
+    if (acts.includes(nq))   return 30;
+    return 0;
+  }
+
+  function hl(text, q) {
+    const i = norm(text).indexOf(norm(q));
+    if (i === -1) return text;
+    return text.slice(0, i) + '<mark>' + text.slice(i, i + q.length) + '</mark>' + text.slice(i + q.length);
+  }
+
+  function show() {
+    results.hidden = false;
+    requestAnimationFrame(() => results.classList.add('hs-results--visible'));
+  }
+
+  function hide() {
+    results.classList.remove('hs-results--visible');
+    input.setAttribute('aria-expanded', 'false');
+    activeIdx = -1;
+    setTimeout(() => { if (!results.classList.contains('hs-results--visible')) results.hidden = true; }, 180);
+  }
+
+  function setActive(idx) {
+    activeIdx = idx;
+    results.querySelectorAll('.hs-item').forEach((el, i) => {
+      const on = i === idx;
+      el.setAttribute('aria-selected', on);
+      el.classList.toggle('hs-item--active', on);
+    });
+  }
+
+  function render(q) {
+    const trimmed = q.trim();
+    if (!trimmed) { hide(); return; }
+
+    const scored = riverData
+      .map(r => ({ r, s: score(r, trimmed) }))
+      .filter(x => x.s > 0)
+      .sort((a, b) => b.s - a.s)
+      .slice(0, 6);
+
+    matches   = scored.map(x => x.r);
+    activeIdx = -1;
+
+    if (matches.length === 0) {
+      results.innerHTML = `
+        <li class="hs-empty" role="option" aria-selected="false">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4" fill="none"/>
+            <path d="M8 5.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="8" cy="11" r="0.75" fill="currentColor"/>
+          </svg>
+          No rivers found for "<strong>${trimmed}</strong>" —
+          <a href="/rivers">browse all</a>
+        </li>`;
+    } else {
+      results.innerHTML = scored.map(({ r }, i) => {
+        const len = r.length_miles ? `${r.length_miles} mi` : '';
+        const actMatch = r.activities.find(a => norm(a).includes(norm(trimmed)));
+        const badge = actMatch || (r.activities[0] || '');
+        return `
+          <li class="hs-item" role="option" aria-selected="false" data-idx="${i}" data-href="/rivers/${r.slug}">
+            <div class="hs-item-icon" aria-hidden="true">
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+                <path d="M1.5 9.5C3 7.5 4.5 6.5 7 6.5C9.5 6.5 11 9 13 9" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                <path d="M1.5 12C3 10 4.5 9 7 9C9.5 9 11 11.5 13 11.5" stroke="#0066cc" stroke-width="1" stroke-linecap="round" fill="none" opacity="0.5"/>
+                <path d="M7 1.5V6.5" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M5 3.5L7 1.5L9 3.5" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              </svg>
+            </div>
+            <div class="hs-item-body">
+              <span class="hs-item-name">${hl(r.name, trimmed)}</span>
+              <span class="hs-item-meta">${r.region}${len ? ' · ' + len : ''}</span>
+            </div>
+            ${badge ? `<span class="hs-badge">${badge}</span>` : ''}
+            <svg class="hs-item-arrow" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+              <path d="M2.5 6.5H10.5M10.5 6.5L7 3M10.5 6.5L7 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </li>`;
+      }).join('') +
+      (scored.length >= 5
+        ? `<li class="hs-view-all" role="option" aria-selected="false">
+             <a href="/rivers?q=${encodeURIComponent(trimmed)}">
+               View all results for "<strong>${trimmed}</strong>"
+               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                 <path d="M2 6H10M10 6L7 3M10 6L7 9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+               </svg>
+             </a>
+           </li>`
+        : '');
+    }
+
+    show();
+    input.setAttribute('aria-expanded', 'true');
+  }
+
+  input.addEventListener('input', e => {
+    const v = e.target.value;
+    clearBtn.hidden = !v;
+    render(v);
+  });
+
+  input.addEventListener('keydown', e => {
+    if (results.hidden) return;
+    const items = results.querySelectorAll('.hs-item');
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setActive(Math.min(activeIdx + 1, items.length - 1));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setActive(Math.max(activeIdx - 1, -1));
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (activeIdx >= 0 && matches[activeIdx]) {
+        console.log('Searching for:', matches[activeIdx].name);
+        window.location.href = `/rivers/${matches[activeIdx].slug}`;
+      } else if (input.value.trim()) {
+        window.location.href = `/rivers?q=${encodeURIComponent(input.value.trim())}`;
+      }
+    } else if (e.key === 'Escape') {
+      hide(); input.blur();
+    }
+  });
+
+  results.addEventListener('click', e => {
+    const item = e.target.closest('.hs-item');
+    if (!item) return;
+    const idx = parseInt(item.dataset.idx, 10);
+    if (!isNaN(idx) && matches[idx]) {
+      console.log('Searching for:', matches[idx].name);
+      window.location.href = item.dataset.href;
+    }
+  });
+
+  clearBtn.addEventListener('click', () => {
+    input.value = '';
+    clearBtn.hidden = true;
+    hide();
+    input.focus();
+  });
+
+  document.addEventListener('click', e => {
+    if (!container.contains(e.target)) hide();
+  });
+
+  document.querySelectorAll('.hs-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      input.value = chip.dataset.query;
+      clearBtn.hidden = false;
+      render(chip.dataset.query);
+      input.focus();
+    });
+  });
+
+  const urlQ = new URLSearchParams(window.location.search).get('q');
+  if (urlQ) { input.value = urlQ; clearBtn.hidden = false; }
+</script>
+
+<style>
+  .hs-wrapper {
+    margin-top: calc(var(--spacing-unit) * 5);
+    max-width: 660px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    z-index: 20;
+  }
+
+  .hs-container {
+    position: relative;
+  }
+
+  /* ---- input bar ---- */
+  .hs-input-row {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 4px 28px rgba(0,0,0,.20), 0 1px 4px rgba(0,0,0,.08);
+    transition: box-shadow .2s ease;
+    overflow: hidden;
+  }
+
+  .hs-input-row:focus-within {
+    box-shadow: 0 6px 36px rgba(0,0,0,.24), 0 0 0 3px rgba(255,255,255,.35);
+  }
+
+  .hs-icon {
+    flex-shrink: 0;
+    margin-left: 18px;
+    color: #0066cc;
+  }
+
+  .hs-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-family: inherit;
+    font-size: 1.0625rem;
+    color: #1a1a1a;
+    padding: 16px 10px;
+    background: transparent;
+    min-width: 0;
+  }
+
+  .hs-input::placeholder { color: #94a3b8; }
+
+  .hs-clear {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 6px;
+    flex-shrink: 0;
+    transition: color .15s;
+  }
+
+  .hs-clear:hover { color: #475569; }
+
+  .hs-browse-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 11px 18px;
+    margin: 6px;
+    background: linear-gradient(135deg, #1a365d 0%, #0066cc 100%);
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 600;
+    font-family: inherit;
+    border-radius: 9px;
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: opacity .2s;
+  }
+
+  .hs-browse-btn:hover { opacity: .87; }
+
+  /* ---- dropdown ---- */
+  .hs-results {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 8px 40px rgba(0,0,0,.15), 0 2px 8px rgba(0,0,0,.07);
+    list-style: none;
+    margin: 0;
+    padding: 6px 0;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: opacity .18s ease, transform .18s ease;
+    overflow: hidden;
+  }
+
+  .hs-results--visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* result items */
+  .hs-item {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 10px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid #f1f5f9;
+    transition: background .12s;
+  }
+
+  .hs-item:last-of-type { border-bottom: none; }
+
+  .hs-item:hover,
+  .hs-item--active {
+    background: #f0f7ff;
+  }
+
+  .hs-item-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: #e8f4fd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .hs-item-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .hs-item-name {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .hs-item-name mark {
+    background: none;
+    color: #0066cc;
+    font-weight: 700;
+  }
+
+  .hs-item-meta {
+    font-size: 0.78rem;
+    color: #64748b;
+  }
+
+  .hs-badge {
+    font-size: 0.73rem;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: #dbeafe;
+    color: #1e40af;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .hs-item-arrow {
+    color: #cbd5e1;
+    flex-shrink: 0;
+    transition: color .12s, transform .12s;
+  }
+
+  .hs-item:hover .hs-item-arrow,
+  .hs-item--active .hs-item-arrow {
+    color: #0066cc;
+    transform: translateX(2px);
+  }
+
+  /* empty state */
+  .hs-empty {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 14px 16px;
+    font-size: 0.875rem;
+    color: #64748b;
+    list-style: none;
+  }
+
+  .hs-empty a { color: #0066cc; font-weight: 500; }
+
+  /* view all footer */
+  .hs-view-all {
+    list-style: none;
+    border-top: 1px solid #e2e8f0;
+  }
+
+  .hs-view-all a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 16px;
+    background: #f8fafc;
+    font-size: 0.835rem;
+    font-weight: 600;
+    color: #0066cc;
+    text-decoration: none;
+    transition: background .12s;
+  }
+
+  .hs-view-all a:hover { background: #f0f7ff; }
+
+  /* hint chips */
+  .hs-hints {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .hs-hints-label {
+    font-size: 0.825rem;
+    color: rgba(255,255,255,.6);
+  }
+
+  .hs-chip {
+    padding: 4px 13px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,.32);
+    background: rgba(255,255,255,.12);
+    color: rgba(255,255,255,.88);
+    font-size: 0.815rem;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background .15s, border-color .15s;
+  }
+
+  .hs-chip:hover {
+    background: rgba(255,255,255,.22);
+    border-color: rgba(255,255,255,.6);
+  }
+
+  /* mobile */
+  @media (max-width: 600px) {
+    .hs-browse-btn {
+      padding: 9px 13px;
+      font-size: 0.825rem;
+    }
+
+    .hs-input {
+      font-size: 0.9375rem;
+      padding: 14px 8px;
+    }
+  }
+</style>
