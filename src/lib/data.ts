@@ -75,7 +75,7 @@ export const rivers: River[] = [
     latitude: 52.5,
     longitude: -2.5,
     featured: true,
-    image_url: 'https://images.pexels.com/photos/534164/pexels-photo-534164.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -97,7 +97,7 @@ export const rivers: River[] = [
     latitude: 56.4,
     longitude: -3.4,
     featured: true,
-    image_url: 'https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -119,7 +119,7 @@ export const rivers: River[] = [
     latitude: 51.8,
     longitude: -2.6,
     featured: true,
-    image_url: 'https://images.pexels.com/photos/1179229/pexels-photo-1179229.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -141,7 +141,7 @@ export const rivers: River[] = [
     latitude: 53.5,
     longitude: -1.0,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -163,7 +163,7 @@ export const rivers: River[] = [
     latitude: 57.1,
     longitude: -2.9,
     featured: true,
-    image_url: 'https://images.pexels.com/photos/1118877/pexels-photo-1118877.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -185,7 +185,7 @@ export const rivers: River[] = [
     latitude: 57.3,
     longitude: -3.3,
     featured: true,
-    image_url: 'https://images.pexels.com/photos/2901209/pexels-photo-2901209.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -207,7 +207,7 @@ export const rivers: River[] = [
     latitude: 53.9,
     longitude: -1.08,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/2376997/pexels-photo-2376997.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -229,7 +229,7 @@ export const rivers: River[] = [
     latitude: 55.9,
     longitude: -4.4,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/1287145/pexels-photo-1287145.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -251,7 +251,7 @@ export const rivers: River[] = [
     latitude: 52.2,
     longitude: -1.7,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -273,7 +273,7 @@ export const rivers: River[] = [
     latitude: 53.4,
     longitude: -3.0,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/534164/pexels-photo-534164.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -295,7 +295,7 @@ export const rivers: River[] = [
     latitude: 54.97,
     longitude: -1.61,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -317,7 +317,7 @@ export const rivers: River[] = [
     latitude: 54.57,
     longitude: -1.24,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -339,7 +339,7 @@ export const rivers: River[] = [
     latitude: 54.9,
     longitude: -1.54,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/1179229/pexels-photo-1179229.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -361,7 +361,7 @@ export const rivers: River[] = [
     latitude: 53.7,
     longitude: -0.3,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/534164/pexels-photo-534164.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -383,7 +383,7 @@ export const rivers: River[] = [
     latitude: 52.35,
     longitude: 0.2,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -405,7 +405,7 @@ export const rivers: River[] = [
     latitude: 51.45,
     longitude: -2.6,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/1179229/pexels-photo-1179229.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -427,7 +427,7 @@ export const rivers: River[] = [
     latitude: 51.4,
     longitude: 0.6,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/460672/pexels-photo-460672.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -449,7 +449,7 @@ export const rivers: River[] = [
     latitude: 51.7,
     longitude: -0.02,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -471,7 +471,7 @@ export const rivers: River[] = [
     latitude: 50.4,
     longitude: -4.2,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -493,7 +493,7 @@ export const rivers: River[] = [
     latitude: 50.6,
     longitude: -3.4,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/1179229/pexels-photo-1179229.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -515,7 +515,7 @@ export const rivers: River[] = [
     latitude: 50.35,
     longitude: -3.85,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/1118877/pexels-photo-1118877.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -537,7 +537,7 @@ export const rivers: River[] = [
     latitude: 53.5,
     longitude: -1.15,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/534164/pexels-photo-534164.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -559,7 +559,7 @@ export const rivers: River[] = [
     latitude: 53.8,
     longitude: -1.55,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -581,7 +581,7 @@ export const rivers: River[] = [
     latitude: 53.7,
     longitude: -1.5,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -603,7 +603,7 @@ export const rivers: River[] = [
     latitude: 54.9,
     longitude: -2.9,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/1118877/pexels-photo-1118877.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -625,7 +625,7 @@ export const rivers: River[] = [
     latitude: 53.7,
     longitude: -2.8,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -647,7 +647,7 @@ export const rivers: River[] = [
     latitude: 54.05,
     longitude: -2.8,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/1179229/pexels-photo-1179229.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -669,7 +669,7 @@ export const rivers: River[] = [
     latitude: 53.0,
     longitude: -1.5,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/1118877/pexels-photo-1118877.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -691,7 +691,7 @@ export const rivers: River[] = [
     latitude: 51.05,
     longitude: -1.3,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -713,7 +713,7 @@ export const rivers: River[] = [
     latitude: 51.0,
     longitude: -1.5,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/1118877/pexels-photo-1118877.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -735,7 +735,7 @@ export const rivers: River[] = [
     latitude: 56.1,
     longitude: -3.9,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/1179229/pexels-photo-1179229.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -757,7 +757,7 @@ export const rivers: River[] = [
     latitude: 55.77,
     longitude: -2.0,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -779,7 +779,7 @@ export const rivers: River[] = [
     latitude: 57.15,
     longitude: -2.1,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/2901209/pexels-photo-2901209.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -801,7 +801,7 @@ export const rivers: River[] = [
     latitude: 57.48,
     longitude: -4.22,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/1118877/pexels-photo-1118877.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -823,7 +823,7 @@ export const rivers: River[] = [
     latitude: 51.6,
     longitude: -2.98,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/1179229/pexels-photo-1179229.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -845,7 +845,7 @@ export const rivers: River[] = [
     latitude: 51.48,
     longitude: -3.18,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/534164/pexels-photo-534164.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -867,7 +867,7 @@ export const rivers: River[] = [
     latitude: 52.1,
     longitude: -4.5,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -889,7 +889,7 @@ export const rivers: River[] = [
     latitude: 51.8,
     longitude: -4.3,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/1118877/pexels-photo-1118877.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -911,7 +911,7 @@ export const rivers: River[] = [
     latitude: 53.0,
     longitude: -3.1,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/1179229/pexels-photo-1179229.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -933,7 +933,7 @@ export const rivers: River[] = [
     latitude: 53.28,
     longitude: -3.83,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -955,7 +955,7 @@ export const rivers: River[] = [
     latitude: 55.1,
     longitude: -6.6,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/1118877/pexels-photo-1118877.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -977,7 +977,7 @@ export const rivers: River[] = [
     latitude: 55.0,
     longitude: -7.3,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/1179229/pexels-photo-1179229.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -999,7 +999,7 @@ export const rivers: River[] = [
     latitude: 54.6,
     longitude: -5.9,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/534164/pexels-photo-534164.jpeg',
+    image_url: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   }
@@ -1013,7 +1013,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Safety',
     excerpt: 'Essential safety tips, best locations, and what you need to know before taking the plunge into Britain\'s rivers.',
     content: null,
-    image_url: 'https://images.pexels.com/photos/1118877/pexels-photo-1118877.jpeg',
+    image_url: null,
     published: true,
     published_at: '2024-03-15T10:00:00Z',
     created_at: '2024-03-15T10:00:00Z'
@@ -1025,7 +1025,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Conservation',
     excerpt: 'Discover why the UK hosts 85% of the world\'s chalk streams and what makes these ecosystems so special.',
     content: null,
-    image_url: 'https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg',
+    image_url: null,
     published: true,
     published_at: '2024-03-10T10:00:00Z',
     created_at: '2024-03-10T10:00:00Z'
@@ -1037,7 +1037,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Fishing',
     excerpt: 'From the Tay to the Spey, explore Scotland\'s premier salmon fishing destinations and learn about seasonal patterns.',
     content: null,
-    image_url: 'https://images.pexels.com/photos/2901209/pexels-photo-2901209.jpeg',
+    image_url: null,
     published: true,
     published_at: '2024-03-05T10:00:00Z',
     created_at: '2024-03-05T10:00:00Z'
@@ -1049,7 +1049,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Wildlife',
     excerpt: 'A comprehensive guide to the diverse wildlife inhabiting Britain\'s most famous river, from kingfishers to seals.',
     content: null,
-    image_url: 'https://images.pexels.com/photos/460672/pexels-photo-460672.jpeg',
+    image_url: null,
     published: true,
     published_at: '2024-02-28T10:00:00Z',
     created_at: '2024-02-28T10:00:00Z'
@@ -1061,7 +1061,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Activities',
     excerpt: 'Learn where to find gold in rivers like the Tay and Dee, plus essential techniques and legal requirements.',
     content: null,
-    image_url: 'https://images.pexels.com/photos/1118877/pexels-photo-1118877.jpeg',
+    image_url: null,
     published: true,
     published_at: '2024-02-20T10:00:00Z',
     created_at: '2024-02-20T10:00:00Z'
@@ -1073,7 +1073,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Geography',
     excerpt: 'Explore how UK rivers form, flow, and shape the landscape from mountain springs to coastal estuaries.',
     content: null,
-    image_url: 'https://images.pexels.com/photos/534164/pexels-photo-534164.jpeg',
+    image_url: null,
     published: true,
     published_at: '2024-02-15T10:00:00Z',
     created_at: '2024-02-15T10:00:00Z'
