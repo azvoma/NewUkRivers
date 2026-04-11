@@ -8,7 +8,7 @@ interface Props {
   keywords: string;
   category: string;
   publishedAt: string;
-  imageUrl?: string;
+  imageUrl: string;
   slug: string;
 }
 
@@ -74,11 +74,9 @@ const schemaData = {
       </div>
     </header>
 
-    {imageUrl && (
-      <div class="featured-image">
-        <img src={imageUrl} alt={title} width="1200" height="600" />
-      </div>
-    )}
+    <div class="featured-image">
+      <img src={imageUrl} alt={title} width="1200" height="600" />
+    </div>
 
     <div class="post-content">
       <div class="container">
