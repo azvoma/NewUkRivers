@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ukrivers.directory/sitemap-index.xml
+Sitemap: https://ukrivers.co.uk/sitemap-index.xml

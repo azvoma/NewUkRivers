@@ -14,7 +14,7 @@ const {
   title,
   description,
   keywords,
-  image = '/favicon.svg',
+  image,
   url,
   type = 'website',
   schemaData,
@@ -22,7 +22,10 @@ const {
 } = Astro.props;
 
 const canonicalURL = url || new URL(Astro.url.pathname, Astro.site).toString();
-const imageURL = image.startsWith('http') ? image : new URL(image, Astro.site).toString();
+const siteUrl = Astro.site?.toString() || "https://ukrivers.co.uk";
+const ogImage = image
+  ? (image.startsWith('http') ? image : new URL(image, Astro.site).toString())
+  : `${siteUrl}og-image.png`;
 const siteName = 'UK Rivers Directory';
 ---
 
@@ -34,23 +37,29 @@ const siteName = 'UK Rivers Directory';
 <title>{title}</title>
 <meta name="description" content={description} />
 {keywords && <meta name="keywords" content={keywords} />}
-
-{noindex && <meta name="robots" content="noindex, nofollow" />}
+{noindex ? <meta name="robots" content="noindex, nofollow" /> : <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />}
 <link rel="canonical" href={canonicalURL} />
 
 <meta property="og:type" content={type} />
 <meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={imageURL} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
 <meta property="og:site_name" content={siteName} />
+<meta property="og:locale" content="en_GB" />
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:url" content={canonicalURL} />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
-<meta name="twitter:image" content={imageURL} />
+<meta name="twitter:image" content={ogImage} />
 
 {schemaData && (
-  <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
+  Array.isArray(schemaData)
+    ? schemaData.map((schema: any) => (
+        <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+      ))
+    : <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
 )}

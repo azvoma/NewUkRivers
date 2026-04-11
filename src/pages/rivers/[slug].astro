@@ -28,33 +28,62 @@ const breadcrumbItems = [
   { label: river.name, href: `/rivers/${river.slug}` }
 ];
 
-const schemaData = {
-  "@context": "https://schema.org",
-  "@type": "Place",
-  "name": river.name,
-  "description": river.description,
-  "url": new URL(`/rivers/${river.slug}`, Astro.site).toString(),
-  "geo": river.origin && {
-    "@type": "GeoCoordinates",
-    "name": river.origin
+const riverUrl = new URL(`/rivers/${river.slug}`, Astro.site).toString();
+const siteUrl = Astro.site?.toString() || "https://ukrivers.co.uk";
+
+const schemaData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Place",
+    "name": river.name,
+    "description": river.description,
+    "url": riverUrl,
+    "geo": river.origin && {
+      "@type": "GeoCoordinates",
+      "name": river.origin
+    },
+    "containedInPlace": {
+      "@type": "AdministrativeArea",
+      "name": river.region
+    },
+    ...(river.image_url && {
+      "image": river.image_url
+    }),
+    ...(river.length_miles && {
+      "additionalProperty": [
+        {
+          "@type": "PropertyValue",
+          "name": "Length",
+          "value": `${river.length_miles} miles (${river.length_km} km)`
+        }
+      ]
+    })
   },
-  "containedInPlace": {
-    "@type": "AdministrativeArea",
-    "name": river.region
-  },
-  ...(river.image_url && {
-    "image": river.image_url
-  }),
-  ...(river.length_miles && {
-    "additionalProperty": [
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
       {
-        "@type": "PropertyValue",
-        "name": "Length",
-        "value": `${river.length_miles} miles (${river.length_km} km)`
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": siteUrl
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Rivers Directory",
+        "item": `${siteUrl}rivers/`
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": river.name,
+        "item": riverUrl
       }
     ]
-  })
-};
+  }
+];
 
 const faqs = [
   {

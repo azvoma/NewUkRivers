@@ -7,21 +7,34 @@ import { getRivers } from '../lib/supabase';
 
 const featuredRivers = getRivers().filter(river => river.featured).slice(0, 6);
 
-const schemaData = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "UK Rivers Directory",
-  "description": "Comprehensive guide to UK rivers with maps, facts, wildlife information, and activities.",
-  "url": Astro.site?.toString() || "https://ukrivers.directory",
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": {
-      "@type": "EntryPoint",
-      "urlTemplate": `${Astro.site?.toString() || "https://ukrivers.directory"}/rivers?q={search_term_string}`
-    },
-    "query-input": "required name=search_term_string"
+const siteUrl = Astro.site?.toString() || "https://ukrivers.co.uk";
+
+const schemaData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "UK Rivers Directory",
+    "description": "Comprehensive guide to UK rivers with maps, facts, wildlife information, and activities.",
+    "url": siteUrl,
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": `${siteUrl}/rivers?q={search_term_string}`
+      },
+      "query-input": "required name=search_term_string"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "UK Rivers Directory",
+    "url": siteUrl,
+    "logo": `${siteUrl}/favicon.svg`,
+    "description": "Your comprehensive guide to UK rivers, wildlife, activities, and outdoor adventures.",
+    "sameAs": []
   }
-};
+];
 
 const faqs = [
   {

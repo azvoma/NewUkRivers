@@ -400,8 +400,9 @@ const riverData = getRivers().map(r => ({
     text-overflow: ellipsis;
   }
 
-  .hs-item-name mark {
-    background: none;
+  .hs-item-name mark,
+  mark {
+    background: transparent !important;
     color: #0066cc;
     font-weight: 700;
   }
