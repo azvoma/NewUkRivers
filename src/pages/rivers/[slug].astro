@@ -5,6 +5,8 @@ import Breadcrumb from '../../components/Breadcrumb.astro';
 import RiverStatsWidget from '../../components/RiverStatsWidget.astro';
 import GearSidebar from '../../components/GearSidebar.astro';
 import WaterLevelWidget from '../../components/WaterLevelWidget.astro';
+import RelatedRivers from '../../components/RelatedRivers.astro';
+import RiverFactFile from '../../components/RiverFactFile.astro';
 import { getRivers, getRiversByRegion } from '../../lib/supabase';
 
 export async function getStaticPaths() {
@@ -25,6 +27,7 @@ const relatedRivers = getRiversByRegion(river.region)
 const breadcrumbItems = [
   { label: 'Home', href: '/' },
   { label: 'Rivers Directory', href: '/rivers' },
+  { label: river.region, href: `/rivers?region=${encodeURIComponent(river.region)}` },
   { label: river.name, href: `/rivers/${river.slug}` }
 ];
 
@@ -78,6 +81,12 @@ const schemaData = [
       {
         "@type": "ListItem",
         "position": 3,
+        "name": `Rivers in ${river.region}`,
+        "item": `${siteUrl}rivers/?region=${encodeURIComponent(river.region)}`
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
         "name": river.name,
         "item": riverUrl
       }
@@ -366,12 +375,14 @@ const exploreActivities = [
           </div>
         </div>
         <div class="river-sidebar-aside">
+          <RiverFactFile river={river} siteUrl={Astro.site?.toString() || 'https://ukrivers.co.uk'} />
           {stationId && (
             <WaterLevelWidget riverName={river.name} stationId={stationId} />
           )}
           {!stationId && (
             <WaterLevelWidget riverName={river.name} />
           )}
+          <RelatedRivers currentRiver={river} />
           <GearSidebar riverName={river.name} activities={river.activities} />
         </div>
       </div>

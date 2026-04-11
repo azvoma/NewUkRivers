@@ -1,0 +1,409 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import { getRivers } from '../lib/supabase';
+
+const allRivers = getRivers().sort((a, b) => a.name.localeCompare(b.name));
+
+const regions = ['England', 'Scotland', 'Wales', 'Northern Ireland'];
+
+const riversByRegion = regions.map(region => ({
+  region,
+  rivers: allRivers.filter(r => r.region === region)
+}));
+
+const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+const riversByLetter = alphabet
+  .map(letter => ({
+    letter,
+    rivers: allRivers.filter(r => r.name.toUpperCase().startsWith(letter))
+  }))
+  .filter(group => group.rivers.length > 0);
+
+const staticPages = [
+  { label: 'Home', href: '/', description: 'UK Rivers Directory homepage' },
+  { label: 'Rivers Directory', href: '/rivers', description: 'Browse and search all UK rivers' },
+  { label: 'About', href: '/about', description: 'About UK Rivers Directory' },
+  { label: 'Blog', href: '/blog', description: 'River guides, tips, and articles' },
+  { label: 'Contact', href: '/contact', description: 'Get in touch with us' },
+  { label: 'Privacy Policy', href: '/privacy', description: 'Our privacy policy' },
+  { label: 'Terms of Service', href: '/terms', description: 'Terms and conditions' },
+  { label: 'Cookie Policy', href: '/cookies', description: 'How we use cookies' },
+];
+
+const breadcrumbItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Sitemap', href: '/sitemap' }
+];
+
+const schemaData = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "UK Rivers Directory Sitemap",
+  "description": "Complete sitemap of all UK river pages, blog posts, and site pages organized by region and alphabet.",
+  "url": new URL('/sitemap', Astro.site).toString()
+};
+---
+
+<Layout
+  title="Sitemap | UK Rivers Directory"
+  description="Complete sitemap of all UK river pages organised by region and alphabet. Find any river in our directory quickly."
+  keywords="uk rivers sitemap, river directory, all uk rivers list"
+  schemaData={schemaData}
+>
+  <Breadcrumb items={breadcrumbItems} />
+
+  <div class="sitemap-hero">
+    <div class="container">
+      <h1>Sitemap</h1>
+      <p>A complete index of every page on UK Rivers Directory — {allRivers.length} rivers across all four nations.</p>
+    </div>
+  </div>
+
+  <div class="sitemap-body">
+    <div class="container">
+      <div class="sitemap-layout">
+
+        <aside class="sitemap-sidebar">
+          <div class="sidebar-widget">
+            <h3>Jump to Section</h3>
+            <nav>
+              <ul>
+                <li><a href="#site-pages">Site Pages</a></li>
+                {regions.map(region => (
+                  <li><a href={`#region-${region.toLowerCase().replace(' ', '-')}`}>{region}</a></li>
+                ))}
+                <li><a href="#by-alphabet">A–Z Index</a></li>
+              </ul>
+            </nav>
+          </div>
+
+          <div class="sidebar-widget">
+            <h3>Quick Stats</h3>
+            <ul class="stats-list">
+              <li><strong>{allRivers.length}</strong> total rivers</li>
+              {regions.map(region => (
+                <li><strong>{allRivers.filter(r => r.region === region).length}</strong> in {region}</li>
+              ))}
+            </ul>
+          </div>
+        </aside>
+
+        <main class="sitemap-main">
+          <section id="site-pages" class="sitemap-section">
+            <h2>Site Pages</h2>
+            <ul class="page-list">
+              {staticPages.map(page => (
+                <li>
+                  <a href={page.href}>{page.label}</a>
+                  <span class="page-desc">{page.description}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          {riversByRegion.map(({ region, rivers }) => (
+            <section id={`region-${region.toLowerCase().replace(' ', '-')}`} class="sitemap-section">
+              <h2>
+                Rivers in {region}
+                <span class="section-count">{rivers.length}</span>
+              </h2>
+              <ul class="river-list">
+                {rivers.map(river => (
+                  <li>
+                    <a href={`/rivers/${river.slug}`}>{river.name}</a>
+                    {river.length_miles && (
+                      <span class="river-meta">{river.length_miles} miles</span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
+
+          <section id="by-alphabet" class="sitemap-section">
+            <h2>All Rivers A–Z</h2>
+            <div class="alphabet-nav">
+              {riversByLetter.map(({ letter }) => (
+                <a href={`#letter-${letter}`} class="alpha-link">{letter}</a>
+              ))}
+            </div>
+            <div class="alpha-sections">
+              {riversByLetter.map(({ letter, rivers }) => (
+                <div class="alpha-group" id={`letter-${letter}`}>
+                  <h3 class="alpha-heading">{letter}</h3>
+                  <ul class="river-list river-list--alpha">
+                    {rivers.map(river => (
+                      <li>
+                        <a href={`/rivers/${river.slug}`}>{river.name}</a>
+                        <span class="river-meta">{river.region}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 calc(var(--spacing-unit) * 3);
+  }
+
+  .sitemap-hero {
+    background: linear-gradient(135deg, #0a4a8c 0%, #0066cc 60%, #0088a9 100%);
+    padding: calc(var(--spacing-unit) * 8) 0 calc(var(--spacing-unit) * 7);
+  }
+
+  .sitemap-hero h1 {
+    color: white;
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    margin-bottom: calc(var(--spacing-unit) * 1.5);
+  }
+
+  .sitemap-hero p {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 1.0625rem;
+    max-width: 580px;
+  }
+
+  .sitemap-body {
+    padding: calc(var(--spacing-unit) * 8) 0 calc(var(--spacing-unit) * 12);
+  }
+
+  .sitemap-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: calc(var(--spacing-unit) * 6);
+    align-items: start;
+  }
+
+  .sitemap-sidebar {
+    position: sticky;
+    top: calc(var(--header-height) + 24px);
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing-unit) * 3);
+  }
+
+  .sidebar-widget {
+    background: var(--color-background-alt);
+    border: 1.5px solid var(--color-border);
+    border-radius: 10px;
+    padding: calc(var(--spacing-unit) * 2.5);
+  }
+
+  .sidebar-widget h3 {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--color-text-light);
+    margin-bottom: calc(var(--spacing-unit) * 1.5);
+  }
+
+  .sidebar-widget nav ul,
+  .stats-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .sidebar-widget nav a {
+    display: block;
+    padding: calc(var(--spacing-unit) * 0.75) calc(var(--spacing-unit) * 1);
+    font-size: 0.875rem;
+    color: var(--color-primary);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background 0.15s ease;
+  }
+
+  .sidebar-widget nav a:hover {
+    background: #dbeafe;
+  }
+
+  .stats-list li {
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+    padding: calc(var(--spacing-unit) * 0.5) 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .stats-list li:last-child {
+    border-bottom: none;
+  }
+
+  .stats-list strong {
+    color: var(--color-text);
+    font-weight: 700;
+    margin-right: 4px;
+  }
+
+  .sitemap-main {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing-unit) * 6);
+  }
+
+  .sitemap-section {
+    background: var(--color-background);
+    border: 1.5px solid var(--color-border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .sitemap-section h2 {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--spacing-unit) * 1.5);
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: white;
+    margin: 0;
+    padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 3);
+    background: linear-gradient(135deg, #1a365d 0%, #0066cc 100%);
+  }
+
+  .section-count {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 12px;
+  }
+
+  .page-list,
+  .river-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .page-list li,
+  .river-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: calc(var(--spacing-unit) * 2);
+    padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 3);
+    border-bottom: 1px solid var(--color-border);
+    transition: background 0.15s ease;
+  }
+
+  .page-list li:last-child,
+  .river-list li:last-child {
+    border-bottom: none;
+  }
+
+  .page-list li:hover,
+  .river-list li:hover {
+    background: var(--color-background-alt);
+  }
+
+  .page-list a,
+  .river-list a {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: color 0.15s ease;
+  }
+
+  .page-list a:hover,
+  .river-list a:hover {
+    color: var(--color-primary-dark);
+    text-decoration: underline;
+  }
+
+  .page-desc,
+  .river-meta {
+    font-size: 0.8rem;
+    color: var(--color-text-light);
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .river-list--alpha {
+    column-count: 2;
+    column-gap: 0;
+  }
+
+  .river-list--alpha li {
+    break-inside: avoid;
+  }
+
+  .alphabet-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 3);
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-background-alt);
+  }
+
+  .alpha-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    text-decoration: none;
+    background: white;
+    border: 1.5px solid var(--color-border);
+    transition: all 0.15s ease;
+  }
+
+  .alpha-link:hover {
+    background: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+  }
+
+  .alpha-sections {
+    padding: calc(var(--spacing-unit) * 2) 0;
+  }
+
+  .alpha-group {
+    padding: 0 calc(var(--spacing-unit) * 3);
+    margin-bottom: calc(var(--spacing-unit) * 3);
+  }
+
+  .alpha-heading {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--color-primary);
+    margin-bottom: calc(var(--spacing-unit) * 1);
+    padding-bottom: calc(var(--spacing-unit) * 1);
+    border-bottom: 2px solid var(--color-border);
+  }
+
+  @media (max-width: 900px) {
+    .sitemap-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .sitemap-sidebar {
+      position: static;
+    }
+
+    .river-list--alpha {
+      column-count: 1;
+    }
+  }
+</style>

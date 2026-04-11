@@ -1,0 +1,209 @@
+---
+import type { River } from '../lib/data';
+import { getRivers } from '../lib/supabase';
+
+interface Props {
+  currentRiver: River;
+  maxResults?: number;
+}
+
+const { currentRiver, maxResults = 4 } = Astro.props;
+
+const allRivers = getRivers();
+
+function scoreRiver(candidate: River): number {
+  let score = 0;
+  if (candidate.slug === currentRiver.slug) return -1;
+  if (candidate.region === currentRiver.region) score += 3;
+  const sharedActivities = candidate.activities.filter(a =>
+    currentRiver.activities.includes(a)
+  );
+  score += sharedActivities.length;
+  if (candidate.has_gold && currentRiver.has_gold) score += 2;
+  return score;
+}
+
+const related = allRivers
+  .map(r => ({ river: r, score: scoreRiver(r) }))
+  .filter(({ score }) => score > 0)
+  .sort((a, b) => b.score - a.score)
+  .slice(0, maxResults)
+  .map(({ river }) => river);
+
+const sharedActivityLabel = (candidate: River): string => {
+  const shared = candidate.activities.filter(a => currentRiver.activities.includes(a));
+  if (shared.length >= 2) return `Great for ${shared[0]} & ${shared[1]}`;
+  if (shared.length === 1) return `Also great for ${shared[0]}`;
+  return candidate.region;
+};
+---
+
+{related.length > 0 && (
+  <section class="related-rivers">
+    <div class="rr-header">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M2 10C4 7.5 5.5 6.5 8 6.5C10.5 6.5 12 9.5 14 9.5" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <path d="M2 13C4 10.5 5.5 9.5 8 9.5C10.5 9.5 12 12.5 14 12.5" stroke="white" stroke-width="1" stroke-linecap="round" fill="none" opacity="0.65"/>
+        <path d="M8 2V6.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M6 4L8 2L10 4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      <h3>Related Rivers</h3>
+    </div>
+    <div class="rr-list">
+      {related.map((river) => (
+        <a href={`/rivers/${river.slug}`} class="rr-item" aria-label={`Explore ${river.name}`}>
+          {river.image_url && (
+            <div class="rr-thumb">
+              <img src={river.image_url} alt={`${river.name}`} width="72" height="56" loading="lazy" />
+            </div>
+          )}
+          {!river.image_url && (
+            <div class="rr-thumb rr-thumb--placeholder" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M3 15C5 12 7 10.5 10 10.5C13 10.5 15 13.5 18 13.5C20 13.5 21.5 12.5 22 12" stroke="#0066cc" stroke-width="1.75" stroke-linecap="round" fill="none"/>
+                <path d="M3 19C5 16 7 14.5 10 14.5C13 14.5 15 17.5 18 17.5C20 17.5 21.5 16.5 22 16" stroke="#0066cc" stroke-width="1.1" stroke-linecap="round" fill="none" opacity="0.55"/>
+              </svg>
+            </div>
+          )}
+          <div class="rr-info">
+            <span class="rr-name">{river.name}</span>
+            <span class="rr-meta">{sharedActivityLabel(river)}</span>
+            {river.length_miles && (
+              <span class="rr-length">{river.length_miles} miles</span>
+            )}
+          </div>
+          <svg class="rr-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M6 4L10 8L6 12" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      ))}
+    </div>
+    <a href="/rivers" class="rr-all-link">Browse all rivers &rarr;</a>
+  </section>
+)}
+
+<style>
+  .related-rivers {
+    background: var(--color-background);
+    border: 2px solid var(--color-border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+
+  .rr-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: calc(var(--spacing-unit) * 1.75) calc(var(--spacing-unit) * 3);
+    background: linear-gradient(135deg, #1a365d 0%, #0066cc 100%);
+  }
+
+  .rr-header h3 {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: white;
+  }
+
+  .rr-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rr-item {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--spacing-unit) * 1.5);
+    padding: calc(var(--spacing-unit) * 1.75) calc(var(--spacing-unit) * 2.5);
+    border-bottom: 1px solid var(--color-border);
+    text-decoration: none;
+    color: var(--color-text);
+    transition: background 0.15s ease;
+  }
+
+  .rr-item:last-child {
+    border-bottom: none;
+  }
+
+  .rr-item:hover {
+    background: var(--color-background-alt);
+  }
+
+  .rr-thumb {
+    width: 56px;
+    height: 44px;
+    border-radius: 6px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: var(--color-background-alt);
+  }
+
+  .rr-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .rr-thumb--placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #dbeafe;
+  }
+
+  .rr-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .rr-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .rr-meta {
+    font-size: 0.775rem;
+    color: var(--color-primary);
+    font-weight: 500;
+  }
+
+  .rr-length {
+    font-size: 0.75rem;
+    color: var(--color-text-light);
+  }
+
+  .rr-chevron {
+    flex-shrink: 0;
+    transition: transform 0.15s ease;
+  }
+
+  .rr-item:hover .rr-chevron path {
+    stroke: var(--color-primary);
+  }
+
+  .rr-all-link {
+    display: block;
+    text-align: center;
+    padding: calc(var(--spacing-unit) * 1.75) calc(var(--spacing-unit) * 3);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    text-decoration: none;
+    border-top: 1px solid var(--color-border);
+    background: var(--color-background-alt);
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .rr-all-link:hover {
+    background: #dbeafe;
+    color: var(--color-primary-dark);
+  }
+</style>

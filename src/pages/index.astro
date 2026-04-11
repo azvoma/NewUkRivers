@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import RiverCard from '../components/RiverCard.astro';
 import FAQ from '../components/FAQ.astro';
+import RegionHub from '../components/RegionHub.astro';
 import { getRivers } from '../lib/supabase';
 
 const featuredRivers = getRivers().filter(river => river.featured).slice(0, 6);
@@ -102,6 +103,8 @@ const faqs = [
       </div>
     </div>
   </section>
+
+  <RegionHub />
 
   <section class="activities-section">
     <div class="container">

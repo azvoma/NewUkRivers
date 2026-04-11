@@ -1,0 +1,294 @@
+---
+import { getRivers } from '../lib/supabase';
+
+const allRivers = getRivers();
+
+const regions = [
+  {
+    name: 'England',
+    slug: 'england',
+    description: 'From the mighty Thames to the scenic Lake District rivers, explore England\'s diverse waterways.',
+    color: '#0066cc',
+    lightColor: '#dbeafe',
+    icon: 'england',
+    subRegions: [
+      { name: 'South East England', query: 'England', activities: ['Kayaking', 'Fishing'] },
+      { name: 'North England', query: 'England', activities: ['Walking', 'Fishing'] },
+      { name: 'Midlands', query: 'England', activities: ['Boating', 'Wildlife Watching'] },
+    ]
+  },
+  {
+    name: 'Scotland',
+    slug: 'scotland',
+    description: 'Wild Highland rivers renowned for salmon fishing, gold panning, and spectacular scenery.',
+    color: '#1d4ed8',
+    lightColor: '#dbeafe',
+    icon: 'scotland',
+    subRegions: [
+      { name: 'Scottish Highlands', query: 'Scotland', activities: ['Fishing', 'Kayaking'] },
+      { name: 'Lowlands', query: 'Scotland', activities: ['Walking', 'Cycling'] },
+    ]
+  },
+  {
+    name: 'Wales',
+    slug: 'wales',
+    description: 'Fast-flowing Welsh rivers carving through ancient mountains and lush green valleys.',
+    color: '#059669',
+    lightColor: '#d1fae5',
+    icon: 'wales',
+    subRegions: [
+      { name: 'North Wales', query: 'Wales', activities: ['Kayaking', 'Walking'] },
+      { name: 'South Wales', query: 'Wales', activities: ['Fishing', 'Wild Swimming'] },
+    ]
+  },
+  {
+    name: 'Northern Ireland',
+    slug: 'northern-ireland',
+    description: 'Peaceful rivers flowing through rolling drumlin country and dramatic coastal landscapes.',
+    color: '#7c3aed',
+    lightColor: '#ede9fe',
+    icon: 'ni',
+    subRegions: [
+      { name: 'River Bann Corridor', query: 'Northern Ireland', activities: ['Fishing', 'Walking'] },
+    ]
+  },
+];
+
+const riverCountByRegion = regions.map(r => ({
+  ...r,
+  count: allRivers.filter(river => river.region === r.name).length
+}));
+---
+
+<section class="region-hub">
+  <div class="container">
+    <div class="hub-header">
+      <h2>Explore UK Rivers by Region</h2>
+      <p>Browse rivers across all four nations of the United Kingdom</p>
+    </div>
+    <div class="regions-grid">
+      {riverCountByRegion.map((region) => (
+        <a href={`/rivers?region=${encodeURIComponent(region.name)}`} class="region-card" style={`--region-color: ${region.color}; --region-light: ${region.lightColor};`}>
+          <div class="region-card-inner">
+            <div class="region-icon" aria-hidden="true">
+              {region.icon === 'england' && (
+                <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+                  <circle cx="18" cy="18" r="18" fill="var(--region-light)"/>
+                  <path d="M9 18C11 15 13.5 13.5 16 13.5C18.5 13.5 20 16 22.5 16C25 16 27 14 27 14" stroke="var(--region-color)" stroke-width="2" stroke-linecap="round" fill="none"/>
+                  <path d="M9 22C11 19 13.5 17.5 16 17.5C18.5 17.5 20 20 22.5 20C25 20 27 18 27 18" stroke="var(--region-color)" stroke-width="1.25" stroke-linecap="round" fill="none" opacity="0.6"/>
+                  <path d="M18 9V14" stroke="var(--region-color)" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M15 11L18 8L21 11" stroke="var(--region-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                </svg>
+              )}
+              {region.icon === 'scotland' && (
+                <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+                  <circle cx="18" cy="18" r="18" fill="var(--region-light)"/>
+                  <path d="M18 8C14 12 11 16 11 20C11 23.3 14.1 26 18 26C21.9 26 25 23.3 25 20C25 16 22 12 18 8Z" stroke="var(--region-color)" stroke-width="2" fill="none" stroke-linejoin="round"/>
+                  <path d="M14 19C15.5 17 17 16 18 16C19 16 20.5 17 22 19" stroke="var(--region-color)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                </svg>
+              )}
+              {region.icon === 'wales' && (
+                <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+                  <circle cx="18" cy="18" r="18" fill="var(--region-light)"/>
+                  <path d="M9 14C11.5 11 14 10 16 10C18 10 20 12 22.5 12C25 12 27 10 27 10" stroke="var(--region-color)" stroke-width="2" stroke-linecap="round" fill="none"/>
+                  <path d="M9 20C11.5 17 14 16 16 16C18 16 20 18 22.5 18C25 18 27 16 27 16" stroke="var(--region-color)" stroke-width="2" stroke-linecap="round" fill="none"/>
+                  <path d="M9 26C11.5 23 14 22 16 22C18 22 20 24 22.5 24C25 24 27 22 27 22" stroke="var(--region-color)" stroke-width="1.25" stroke-linecap="round" fill="none" opacity="0.6"/>
+                </svg>
+              )}
+              {region.icon === 'ni' && (
+                <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+                  <circle cx="18" cy="18" r="18" fill="var(--region-light)"/>
+                  <path d="M10 18C13 15 16 14 18 14C20 14 22.5 16.5 25.5 16.5C27 16.5 28 16 28 16" stroke="var(--region-color)" stroke-width="2" stroke-linecap="round" fill="none"/>
+                  <path d="M8 22C11 19 14 18 16.5 18C19 18 21 20.5 24 20.5C25.5 20.5 27 20 28 19" stroke="var(--region-color)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                </svg>
+              )}
+            </div>
+            <div class="region-info">
+              <div class="region-name-row">
+                <h3>{region.name}</h3>
+                <span class="river-count">{region.count} rivers</span>
+              </div>
+              <p>{region.description}</p>
+            </div>
+            <div class="region-arrow" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M7 10H13M10 7L13 10L10 13" stroke="var(--region-color)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <div class="activity-links">
+      <h3>Explore by Activity</h3>
+      <div class="activity-tags">
+        {['Fishing', 'Kayaking', 'Walking', 'Cycling', 'Wild Swimming', 'Wildlife Watching', 'Canoeing', 'Camping'].map((activity) => (
+          <a href={`/rivers?activity=${encodeURIComponent(activity)}`} class="activity-tag">
+            {activity}
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .region-hub {
+    padding: calc(var(--spacing-unit) * 10) 0;
+    background: var(--color-background-alt);
+  }
+
+  .container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 calc(var(--spacing-unit) * 3);
+  }
+
+  .hub-header {
+    text-align: center;
+    margin-bottom: calc(var(--spacing-unit) * 6);
+  }
+
+  .hub-header h2 {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    margin-bottom: calc(var(--spacing-unit) * 1.5);
+    color: var(--color-text);
+  }
+
+  .hub-header p {
+    color: var(--color-text-light);
+    font-size: 1.0625rem;
+  }
+
+  .regions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: calc(var(--spacing-unit) * 2.5);
+    margin-bottom: calc(var(--spacing-unit) * 6);
+  }
+
+  .region-card {
+    background: var(--color-background);
+    border: 2px solid var(--color-border);
+    border-radius: 14px;
+    text-decoration: none;
+    color: var(--color-text);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    display: block;
+  }
+
+  .region-card:hover {
+    border-color: var(--region-color);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .region-card-inner {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--spacing-unit) * 2);
+    padding: calc(var(--spacing-unit) * 3);
+  }
+
+  .region-icon {
+    flex-shrink: 0;
+  }
+
+  .region-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .region-name-row {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--spacing-unit) * 1.5);
+    margin-bottom: calc(var(--spacing-unit) * 0.75);
+    flex-wrap: wrap;
+  }
+
+  .region-name-row h3 {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .river-count {
+    background: var(--region-light);
+    color: var(--region-color);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .region-info p {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+    line-height: 1.55;
+  }
+
+  .region-arrow {
+    flex-shrink: 0;
+    opacity: 0.5;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .region-card:hover .region-arrow {
+    opacity: 1;
+    transform: translateX(3px);
+  }
+
+  .activity-links {
+    border-top: 1px solid var(--color-border);
+    padding-top: calc(var(--spacing-unit) * 5);
+  }
+
+  .activity-links h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: calc(var(--spacing-unit) * 2.5);
+  }
+
+  .activity-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: calc(var(--spacing-unit) * 1.5);
+  }
+
+  .activity-tag {
+    display: inline-block;
+    background: var(--color-background);
+    border: 1.5px solid var(--color-border);
+    color: var(--color-text);
+    text-decoration: none;
+    padding: calc(var(--spacing-unit) * 1) calc(var(--spacing-unit) * 2.5);
+    border-radius: 24px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+  }
+
+  .activity-tag:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    background: #dbeafe;
+  }
+
+  @media (max-width: 640px) {
+    .regions-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .region-card-inner {
+      padding: calc(var(--spacing-unit) * 2.5);
+    }
+  }
+</style>

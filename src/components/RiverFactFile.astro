@@ -1,0 +1,231 @@
+---
+import type { River } from '../lib/data';
+
+interface Props {
+  river: River;
+  siteUrl?: string;
+}
+
+const { river, siteUrl = 'https://ukrivers.co.uk' } = Astro.props;
+
+const riverUrl = `${siteUrl}/rivers/${river.slug}`;
+
+const datasetSchema = {
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": `${river.name} Fact File`,
+  "description": river.description || `Key facts and statistics for ${river.name} in ${river.region}, UK.`,
+  "url": riverUrl,
+  "keywords": [
+    river.name,
+    river.region,
+    "UK river",
+    ...(river.activities || []),
+    ...(river.wildlife?.slice(0, 3) || [])
+  ],
+  "spatialCoverage": {
+    "@type": "Place",
+    "name": river.region,
+    "containedInPlace": {
+      "@type": "Country",
+      "name": "United Kingdom"
+    }
+  },
+  "variableMeasured": [
+    river.length_km && {
+      "@type": "PropertyValue",
+      "name": "Length (km)",
+      "value": river.length_km,
+      "unitText": "kilometres"
+    },
+    river.length_miles && {
+      "@type": "PropertyValue",
+      "name": "Length (miles)",
+      "value": river.length_miles,
+      "unitText": "miles"
+    },
+    river.origin && {
+      "@type": "PropertyValue",
+      "name": "Source",
+      "value": river.origin
+    },
+    river.mouth && {
+      "@type": "PropertyValue",
+      "name": "Mouth",
+      "value": river.mouth
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Region",
+      "value": river.region
+    },
+    river.fishing_season && {
+      "@type": "PropertyValue",
+      "name": "Fishing Season",
+      "value": river.fishing_season
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Gold Deposits",
+      "value": river.has_gold ? "Yes" : "No"
+    }
+  ].filter(Boolean),
+  "creator": {
+    "@type": "Organization",
+    "name": "UK Rivers Directory",
+    "url": siteUrl
+  }
+};
+
+const stats = [
+  river.length_miles && { label: 'Length', value: `${river.length_miles} miles`, sub: `${river.length_km} km` },
+  river.origin && { label: 'Source', value: river.origin, sub: null },
+  river.mouth && { label: 'Mouth', value: river.mouth, sub: null },
+  { label: 'Region', value: river.region, sub: null },
+  river.fishing_season && { label: 'Fishing Season', value: river.fishing_season, sub: null },
+  { label: 'Gold Deposits', value: river.has_gold ? 'Yes' : 'No', sub: null },
+].filter(Boolean) as { label: string; value: string; sub: string | null }[];
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(datasetSchema)} />
+
+<div class="fact-file">
+  <div class="fact-file-header">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <rect x="3" y="2" width="10" height="12" rx="1.5" stroke="white" stroke-width="1.25" fill="none"/>
+      <path d="M6 5H10M6 8H10M6 11H8.5" stroke="white" stroke-width="1.1" stroke-linecap="round"/>
+    </svg>
+    <h3>{river.name} Fact File</h3>
+  </div>
+  <dl class="fact-grid">
+    {stats.map((stat) => (
+      <div class="fact-row">
+        <dt>{stat.label}</dt>
+        <dd>
+          {stat.value}
+          {stat.sub && <span class="fact-sub">{stat.sub}</span>}
+        </dd>
+      </div>
+    ))}
+  </dl>
+  {river.activities && river.activities.length > 0 && (
+    <div class="fact-activities">
+      <span class="fact-activities-label">Activities</span>
+      <div class="fact-tags">
+        {river.activities.map((activity) => (
+          <a href={`/rivers?activity=${encodeURIComponent(activity)}`} class="fact-tag">{activity}</a>
+        ))}
+      </div>
+    </div>
+  )}
+</div>
+
+<style>
+  .fact-file {
+    background: var(--color-background);
+    border: 2px solid var(--color-border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+
+  .fact-file-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: calc(var(--spacing-unit) * 1.75) calc(var(--spacing-unit) * 3);
+    background: linear-gradient(135deg, #1a365d 0%, #0066cc 100%);
+  }
+
+  .fact-file-header h3 {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: white;
+  }
+
+  .fact-grid {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+  }
+
+  .fact-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: calc(var(--spacing-unit) * 2);
+    padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 3);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .fact-row:last-child {
+    border-bottom: none;
+  }
+
+  .fact-row dt {
+    font-size: 0.825rem;
+    font-weight: 600;
+    color: var(--color-text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .fact-row dd {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-text);
+    text-align: right;
+    line-height: 1.4;
+  }
+
+  .fact-sub {
+    display: block;
+    font-size: 0.775rem;
+    color: var(--color-text-light);
+    font-weight: 400;
+  }
+
+  .fact-activities {
+    padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 3);
+    border-top: 1px solid var(--color-border);
+    background: var(--color-background-alt);
+  }
+
+  .fact-activities-label {
+    display: block;
+    font-size: 0.775rem;
+    font-weight: 600;
+    color: var(--color-text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: calc(var(--spacing-unit) * 1.25);
+  }
+
+  .fact-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .fact-tag {
+    display: inline-block;
+    background: #dbeafe;
+    color: var(--color-primary);
+    font-size: 0.775rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: background 0.15s ease;
+  }
+
+  .fact-tag:hover {
+    background: var(--color-primary);
+    color: white;
+  }
+</style>
