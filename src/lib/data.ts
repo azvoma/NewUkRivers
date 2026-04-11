@@ -53,7 +53,7 @@ export const rivers: River[] = [
     latitude: 51.5074,
     longitude: -0.1278,
     featured: true,
-    image_url: 'https://images.pexels.com/photos/460672/pexels-photo-460672.jpeg',
+    image_url: '/images/rivers/river-thames/River_Thames.jpg',
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
