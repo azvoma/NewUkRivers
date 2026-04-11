@@ -108,6 +108,26 @@ const faqs = [
           <option value="Northern Ireland">Northern Ireland</option>
         </select>
       </div>
+      <div class="activity-filters" role="group" aria-label="Filter by activity">
+        <span class="activity-filters-label">Activities:</span>
+        <button class="activity-toggle" data-activity="Fishing" aria-pressed="false">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 2V10M7 10L4.5 7.5M7 10L9.5 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12C4 10 5.5 9 7 9C8.5 9 10 11 12 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+          Fishing
+        </button>
+        <button class="activity-toggle" data-activity="Kayaking" aria-pressed="false">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 9C4 7 5.5 6 7 6C8.5 6 10 8 12 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/><path d="M5 5L7 3L9 5M7 3V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Kayaking
+        </button>
+        <button class="activity-toggle" data-activity="Walking" aria-pressed="false">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="3.5" r="1.5" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M7 5V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M4 12L6 8L8 10L10 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+          Walking
+        </button>
+        <button class="activity-toggle" data-activity="Wildlife Watching" aria-pressed="false">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="6" r="3" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M1 6C3 4 5 3 7 3C9 3 11 4 13 6C11 8 9 9 7 9C5 9 3 8 1 6Z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+          Wildlife
+        </button>
+        <button id="clear-activities" class="clear-activities" style="display:none">Clear filters</button>
+      </div>
       <div id="results-count" class="results-count" aria-live="polite"></div>
     </div>
   </section>
@@ -146,9 +166,12 @@ const faqs = [
   const riversGrid = document.getElementById('rivers-grid') as HTMLElement;
   const noResults = document.getElementById('no-results') as HTMLElement;
   const resultsCount = document.getElementById('results-count') as HTMLElement;
+  const activityToggles = document.querySelectorAll('.activity-toggle');
+  const clearActivitiesBtn = document.getElementById('clear-activities') as HTMLElement;
 
   const riverCards = Array.from(document.querySelectorAll('.rivers-grid > a'));
   const totalRivers = riverCards.length;
+  const activeActivities = new Set<string>();
 
   function updateResultsCount(count: number) {
     if (resultsCount) {
@@ -163,17 +186,21 @@ const faqs = [
     let visibleCount = 0;
 
     riverCards.forEach((card) => {
+      const el = card as HTMLElement;
       const riverName = card.querySelector('h3')?.textContent?.toLowerCase() || '';
-      const riverRegion = card.querySelector('.region-badge')?.textContent || '';
+      const riverRegion = el.dataset.region || '';
+      const riverActivities = (el.dataset.activities || '').split('|');
 
       const matchesSearch = riverName.includes(searchTerm);
       const matchesRegion = selectedRegion === 'all' || riverRegion === selectedRegion;
+      const matchesActivity = activeActivities.size === 0 ||
+        [...activeActivities].some(act => riverActivities.includes(act));
 
-      if (matchesSearch && matchesRegion) {
-        (card as HTMLElement).style.display = 'flex';
+      if (matchesSearch && matchesRegion && matchesActivity) {
+        el.style.display = 'flex';
         visibleCount++;
       } else {
-        (card as HTMLElement).style.display = 'none';
+        el.style.display = 'none';
       }
     });
 
@@ -187,6 +214,34 @@ const faqs = [
       riversGrid.style.display = 'grid';
     }
   }
+
+  activityToggles.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const activity = (btn as HTMLElement).dataset.activity || '';
+      const isActive = activeActivities.has(activity);
+      if (isActive) {
+        activeActivities.delete(activity);
+        btn.setAttribute('aria-pressed', 'false');
+        btn.classList.remove('active');
+      } else {
+        activeActivities.add(activity);
+        btn.setAttribute('aria-pressed', 'true');
+        btn.classList.add('active');
+      }
+      clearActivitiesBtn.style.display = activeActivities.size > 0 ? 'inline-flex' : 'none';
+      filterRivers();
+    });
+  });
+
+  clearActivitiesBtn?.addEventListener('click', () => {
+    activeActivities.clear();
+    activityToggles.forEach((btn) => {
+      btn.setAttribute('aria-pressed', 'false');
+      btn.classList.remove('active');
+    });
+    clearActivitiesBtn.style.display = 'none';
+    filterRivers();
+  });
 
   updateResultsCount(totalRivers);
   searchInput.addEventListener('input', filterRivers);
@@ -322,6 +377,67 @@ const faqs = [
     margin-bottom: calc(var(--spacing-unit) * 3);
   }
 
+  .activity-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: calc(var(--spacing-unit) * 1);
+    max-width: 600px;
+    margin: calc(var(--spacing-unit) * 1.5) auto 0;
+  }
+
+  .activity-filters-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-text-light);
+  }
+
+  .activity-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: calc(var(--spacing-unit) * 0.75) calc(var(--spacing-unit) * 1.5);
+    border: 2px solid var(--color-border);
+    border-radius: 20px;
+    background: var(--color-background);
+    color: var(--color-text-light);
+    font-size: 0.875rem;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .activity-toggle:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  .activity-toggle.active {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: white;
+  }
+
+  .clear-activities {
+    display: inline-flex;
+    align-items: center;
+    padding: calc(var(--spacing-unit) * 0.75) calc(var(--spacing-unit) * 1.5);
+    border: none;
+    background: none;
+    color: var(--color-primary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    text-decoration: underline;
+    transition: opacity 0.2s ease;
+  }
+
+  .clear-activities:hover {
+    opacity: 0.75;
+  }
+
   @media (max-width: 768px) {
     .filter-controls {
       flex-direction: column;
@@ -333,6 +449,10 @@ const faqs = [
 
     .rivers-grid {
       grid-template-columns: 1fr;
+    }
+
+    .activity-filters {
+      max-width: 100%;
     }
   }
 </style>

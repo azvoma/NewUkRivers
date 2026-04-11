@@ -1,0 +1,264 @@
+---
+import type { River } from '../lib/supabase';
+
+export interface Props {
+  river: River;
+}
+
+const { river } = Astro.props;
+
+function getFlowIndicator(river: River): { label: string; level: number; color: string } {
+  if (!river.length_miles) return { label: 'Unknown', level: 0, color: '#94a3b8' };
+  if (river.length_miles > 200) return { label: 'Very High', level: 5, color: '#0066cc' };
+  if (river.length_miles > 150) return { label: 'High', level: 4, color: '#0284c7' };
+  if (river.length_miles > 100) return { label: 'Moderate', level: 3, color: '#00a86b' };
+  if (river.length_miles > 50) return { label: 'Low-Moderate', level: 2, color: '#f59e0b' };
+  return { label: 'Low', level: 1, color: '#f97316' };
+}
+
+const flow = getFlowIndicator(river);
+---
+
+<div class="river-stats-widget">
+  <div class="widget-header">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <path d="M2 14C4 11 6 9 9 9C12 9 14 12 17 12C18.5 12 19.5 11.5 20 11" stroke="#0066cc" stroke-width="1.75" stroke-linecap="round" fill="none"/>
+      <path d="M2 17C4 14 6 12 9 12C12 12 14 15 17 15C18.5 15 19.5 14.5 20 14" stroke="#0066cc" stroke-width="1.25" stroke-linecap="round" fill="none" opacity="0.55"/>
+    </svg>
+    <h3>River Statistics</h3>
+  </div>
+
+  <dl class="stats-list">
+    {river.length_miles && (
+      <div class="stat-row">
+        <dt>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M2 8H14M2 8L5 5M2 8L5 11M14 8L11 5M14 8L11 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Length
+        </dt>
+        <dd>{river.length_miles} mi <span class="stat-secondary">({river.length_km} km)</span></dd>
+      </div>
+    )}
+
+    {river.origin && (
+      <div class="stat-row">
+        <dt>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <circle cx="8" cy="6" r="2.5" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <path d="M8 1V3.5M8 8.5V15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          Source
+        </dt>
+        <dd>{river.origin}</dd>
+      </div>
+    )}
+
+    {river.mouth && (
+      <div class="stat-row">
+        <dt>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M2 10C4 8 6 7 8 7C10 7 12 9 14 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <path d="M2 13C4 11 6 10 8 10C10 10 12 12 14 12" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" fill="none" opacity="0.55"/>
+            <path d="M8 1V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          Mouth
+        </dt>
+        <dd>{river.mouth}</dd>
+      </div>
+    )}
+
+    <div class="stat-row stat-row--flow">
+      <dt>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M1 8C3 6 5 5 8 5C11 5 13 8 15 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          <path d="M1 11C3 9 5 8 8 8C11 8 13 11 15 11" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" fill="none" opacity="0.55"/>
+        </svg>
+        Avg Flow
+      </dt>
+      <dd>
+        <span class="flow-label" style={`color: ${flow.color}`}>{flow.label}</span>
+        <div class="flow-bars" aria-label={`Flow level: ${flow.label}`}>
+          {[1, 2, 3, 4, 5].map((i) => (
+            <span
+              class="flow-bar"
+              style={i <= flow.level ? `background: ${flow.color}` : 'background: #e2e8f0'}
+            ></span>
+          ))}
+        </div>
+      </dd>
+    </div>
+
+    {river.region && (
+      <div class="stat-row">
+        <dt>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M8 2C5.2 2 3 4.2 3 7C3 10.5 8 14 8 14C8 14 13 10.5 13 7C13 4.2 10.8 2 8 2Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <circle cx="8" cy="7" r="2" stroke="currentColor" stroke-width="1.25" fill="none"/>
+          </svg>
+          Region
+        </dt>
+        <dd>{river.region}</dd>
+      </div>
+    )}
+  </dl>
+
+  {river.activities && river.activities.length > 0 && (
+    <div class="activities-row">
+      <p class="activities-label">Activities</p>
+      <div class="activities-list">
+        {river.activities.slice(0, 4).map((act) => (
+          <span class="activity-pill">{act}</span>
+        ))}
+        {river.activities.length > 4 && (
+          <span class="activity-pill activity-pill--more">+{river.activities.length - 4} more</span>
+        )}
+      </div>
+    </div>
+  )}
+</div>
+
+<style>
+  .river-stats-widget {
+    background: var(--color-background);
+    border: 2px solid var(--color-border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+
+  .widget-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 3);
+    background: linear-gradient(135deg, #1a365d 0%, #0066cc 100%);
+    color: white;
+  }
+
+  .widget-header svg path {
+    stroke: white;
+  }
+
+  .widget-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    letter-spacing: 0.02em;
+  }
+
+  .stats-list {
+    margin: 0;
+    padding: calc(var(--spacing-unit) * 1.5) 0;
+  }
+
+  .stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: calc(var(--spacing-unit) * 2);
+    padding: calc(var(--spacing-unit) * 1.25) calc(var(--spacing-unit) * 3);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .stat-row:last-child {
+    border-bottom: none;
+  }
+
+  .stat-row dt {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+    min-width: 80px;
+    flex-shrink: 0;
+  }
+
+  .stat-row dt svg {
+    color: var(--color-primary);
+    flex-shrink: 0;
+  }
+
+  .stat-row dd {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--color-text);
+    font-weight: 500;
+    text-align: right;
+  }
+
+  .stat-secondary {
+    color: var(--color-text-light);
+    font-weight: 400;
+    font-size: 0.8rem;
+  }
+
+  .stat-row--flow dd {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .flow-label {
+    font-weight: 600;
+    font-size: 0.875rem;
+    white-space: nowrap;
+  }
+
+  .flow-bars {
+    display: flex;
+    gap: 3px;
+    align-items: center;
+  }
+
+  .flow-bar {
+    width: 8px;
+    height: 14px;
+    border-radius: 3px;
+    transition: background 0.2s;
+  }
+
+  .flow-bar:nth-child(1) { height: 8px; }
+  .flow-bar:nth-child(2) { height: 10px; }
+  .flow-bar:nth-child(3) { height: 12px; }
+  .flow-bar:nth-child(4) { height: 14px; }
+  .flow-bar:nth-child(5) { height: 16px; }
+
+  .activities-row {
+    padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 3);
+    border-top: 1px solid var(--color-border);
+    background: var(--color-background-alt);
+  }
+
+  .activities-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 calc(var(--spacing-unit) * 1) 0;
+  }
+
+  .activities-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .activity-pill {
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    background: #dbeafe;
+    color: #1e40af;
+  }
+
+  .activity-pill--more {
+    background: #f1f5f9;
+    color: var(--color-text-light);
+  }
+</style>

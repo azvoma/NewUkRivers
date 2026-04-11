@@ -1,0 +1,317 @@
+---
+export interface GearItem {
+  title: string;
+  description: string;
+  price?: string;
+  rating?: number;
+  affiliateUrl: string;
+  imageUrl?: string;
+  badge?: string;
+}
+
+export interface Props {
+  riverName: string;
+  activities: string[];
+  gearItems?: GearItem[];
+}
+
+const { riverName, activities, gearItems } = Astro.props;
+
+function getDefaultGear(activities: string[]): GearItem[] {
+  const gear: GearItem[] = [];
+
+  if (activities.includes('Fishing')) {
+    gear.push({
+      title: 'Fly Fishing Waders',
+      description: 'Waterproof breathable waders — essential for river fishing.',
+      price: 'From £89',
+      rating: 4.5,
+      affiliateUrl: 'https://www.amazon.co.uk/s?k=fly+fishing+waders&tag=ukrivers-21',
+      badge: 'Best Seller'
+    });
+    gear.push({
+      title: 'Fishing Rod & Reel Combo',
+      description: 'Beginner to intermediate rod & reel set for river fishing.',
+      price: 'From £45',
+      rating: 4.3,
+      affiliateUrl: 'https://www.amazon.co.uk/s?k=river+fishing+rod+reel+combo&tag=ukrivers-21'
+    });
+  }
+
+  if (activities.includes('Kayaking') || activities.includes('Canoeing')) {
+    gear.push({
+      title: 'Recreational Kayak Paddle',
+      description: 'Lightweight aluminium paddle for calm and white-water rivers.',
+      price: 'From £35',
+      rating: 4.4,
+      affiliateUrl: 'https://www.amazon.co.uk/s?k=kayak+paddle+river&tag=ukrivers-21',
+      badge: 'Top Pick'
+    });
+    gear.push({
+      title: 'Buoyancy Aid / Life Jacket',
+      description: 'CE-approved buoyancy aid for kayaking and canoeing.',
+      price: 'From £30',
+      rating: 4.6,
+      affiliateUrl: 'https://www.amazon.co.uk/s?k=buoyancy+aid+kayak&tag=ukrivers-21'
+    });
+  }
+
+  if (activities.includes('Walking') || activities.includes('Hiking')) {
+    gear.push({
+      title: 'Waterproof Walking Boots',
+      description: 'Gore-Tex lined boots for riverside trails and muddy paths.',
+      price: 'From £65',
+      rating: 4.7,
+      affiliateUrl: 'https://www.amazon.co.uk/s?k=waterproof+walking+boots+uk&tag=ukrivers-21',
+      badge: 'Editor\'s Choice'
+    });
+    gear.push({
+      title: 'Lightweight Backpack 30L',
+      description: 'Ideal daypack for riverside walks and nature exploration.',
+      price: 'From £28',
+      rating: 4.2,
+      affiliateUrl: 'https://www.amazon.co.uk/s?k=30l+daypack+walking+uk&tag=ukrivers-21'
+    });
+  }
+
+  if (activities.includes('Wildlife Watching')) {
+    gear.push({
+      title: 'Waterproof Binoculars',
+      description: '8x42 binoculars for birdwatching and wildlife spotting.',
+      price: 'From £55',
+      rating: 4.5,
+      affiliateUrl: 'https://www.amazon.co.uk/s?k=waterproof+binoculars+birdwatching&tag=ukrivers-21'
+    });
+  }
+
+  if (gear.length === 0) {
+    gear.push(
+      {
+        title: 'OS Explorer Map',
+        description: 'Ordnance Survey detailed map for riverside navigation.',
+        price: 'From £9',
+        rating: 4.8,
+        affiliateUrl: 'https://www.amazon.co.uk/s?k=ordnance+survey+explorer+map&tag=ukrivers-21',
+        badge: 'Essential'
+      },
+      {
+        title: 'Waterproof Jacket',
+        description: 'Breathable waterproof jacket for UK river weather.',
+        price: 'From £49',
+        rating: 4.5,
+        affiliateUrl: 'https://www.amazon.co.uk/s?k=waterproof+jacket+outdoor+uk&tag=ukrivers-21'
+      }
+    );
+  }
+
+  return gear.slice(0, 4);
+}
+
+const items = gearItems && gearItems.length > 0 ? gearItems : getDefaultGear(activities);
+
+function renderStars(rating: number): string {
+  const full = Math.floor(rating);
+  const half = rating % 1 >= 0.5;
+  const empty = 5 - full - (half ? 1 : 0);
+  return '★'.repeat(full) + (half ? '½' : '') + '☆'.repeat(empty);
+}
+---
+
+<aside class="gear-sidebar" aria-label="Recommended gear">
+  <div class="sidebar-header">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <path d="M3 6H17L15 15H5L3 6Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" fill="none"/>
+      <path d="M1 3H4L5 7" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="7" cy="17" r="1.25" fill="white"/>
+      <circle cx="13" cy="17" r="1.25" fill="white"/>
+    </svg>
+    <div>
+      <h3>Recommended Gear</h3>
+      <p>For {riverName}</p>
+    </div>
+  </div>
+
+  <ul class="gear-list">
+    {items.map((item) => (
+      <li class="gear-item">
+        <a href={item.affiliateUrl} target="_blank" rel="noopener noreferrer nofollow" class="gear-link">
+          <div class="gear-content">
+            <div class="gear-top">
+              {item.badge && <span class="gear-badge">{item.badge}</span>}
+              <h4>{item.title}</h4>
+            </div>
+            <p class="gear-description">{item.description}</p>
+            <div class="gear-meta">
+              {item.rating && (
+                <span class="gear-rating" aria-label={`Rating: ${item.rating} out of 5`}>
+                  <span class="stars" aria-hidden="true">{renderStars(item.rating)}</span>
+                  {item.rating.toFixed(1)}
+                </span>
+              )}
+              {item.price && <span class="gear-price">{item.price}</span>}
+            </div>
+          </div>
+          <div class="gear-arrow" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </a>
+      </li>
+    ))}
+  </ul>
+
+  <p class="affiliate-notice">
+    Links may earn us a small commission at no extra cost to you.
+  </p>
+</aside>
+
+<style>
+  .gear-sidebar {
+    background: var(--color-background);
+    border: 2px solid var(--color-border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    position: sticky;
+    top: calc(var(--header-height) + 24px);
+  }
+
+  .sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 2.5);
+    background: linear-gradient(135deg, #1a365d 0%, #0066cc 100%);
+    color: white;
+  }
+
+  .sidebar-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: white;
+  }
+
+  .sidebar-header p {
+    margin: 2px 0 0;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .gear-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .gear-item {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .gear-item:last-child {
+    border-bottom: none;
+  }
+
+  .gear-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: calc(var(--spacing-unit) * 1.75) calc(var(--spacing-unit) * 2.5);
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.2s ease;
+  }
+
+  .gear-link:hover {
+    background: var(--color-background-alt);
+  }
+
+  .gear-link:hover .gear-arrow {
+    color: var(--color-primary);
+    transform: translateX(3px);
+  }
+
+  .gear-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .gear-top {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+  }
+
+  .gear-badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 20px;
+    background: #dbeafe;
+    color: #1e40af;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .gear-content h4 {
+    margin: 0;
+    font-size: 0.925rem;
+    font-weight: 600;
+    color: var(--color-text);
+    line-height: 1.3;
+  }
+
+  .gear-description {
+    margin: 0 0 6px;
+    font-size: 0.825rem;
+    color: var(--color-text-light);
+    line-height: 1.45;
+  }
+
+  .gear-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .gear-rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.8rem;
+    color: var(--color-text-light);
+    font-weight: 500;
+  }
+
+  .stars {
+    color: #f59e0b;
+    font-size: 0.75rem;
+    letter-spacing: -1px;
+  }
+
+  .gear-price {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  .gear-arrow {
+    color: var(--color-border);
+    flex-shrink: 0;
+    transition: color 0.2s ease, transform 0.2s ease;
+  }
+
+  .affiliate-notice {
+    margin: 0;
+    padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 2.5);
+    font-size: 0.75rem;
+    color: var(--color-text-light);
+    background: var(--color-background-alt);
+    border-top: 1px solid var(--color-border);
+    font-style: italic;
+  }
+</style>

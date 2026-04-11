@@ -1,5 +1,6 @@
 ---
 import SEOHead from '../components/SEOHead.astro';
+import NewsletterStickyBar from '../components/NewsletterStickyBar.astro';
 
 export interface Props {
 	title?: string;
@@ -114,6 +115,8 @@ const currentPath = Astro.url.pathname;
 				<path d="M10 15V5M10 5L5 10M10 5L15 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 			</svg>
 		</button>
+
+		<NewsletterStickyBar />
 
 		<div id="cookie-banner" class="cookie-banner">
 			<div class="cookie-content">

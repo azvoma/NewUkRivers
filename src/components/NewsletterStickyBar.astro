@@ -1,0 +1,264 @@
+---
+---
+
+<div id="newsletter-sticky-bar" class="newsletter-sticky-bar" role="complementary" aria-label="Newsletter signup">
+  <div class="nsb-content">
+    <div class="nsb-text">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <path d="M3 5C3 4.4 3.4 4 4 4H16C16.6 4 17 4.4 17 5V14C17 14.6 16.6 15 16 15H4C3.4 15 3 14.6 3 14V5Z" stroke="white" stroke-width="1.5" fill="none"/>
+        <path d="M3 5L10 10L17 5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <p><strong>River Guide Newsletter</strong> <span class="nsb-subtext">— Water level alerts, fishing reports & river news</span></p>
+    </div>
+    <form class="nsb-form" id="nsb-form" novalidate>
+      <label for="nsb-email" class="sr-only">Email address</label>
+      <input
+        type="email"
+        id="nsb-email"
+        class="nsb-input"
+        placeholder="Your email address"
+        autocomplete="email"
+        required
+        aria-required="true"
+      />
+      <button type="submit" class="nsb-submit">Subscribe</button>
+    </form>
+    <div class="nsb-success" id="nsb-success" style="display:none">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <circle cx="8" cy="8" r="7" stroke="#48bb78" stroke-width="1.5" fill="none"/>
+        <path d="M5 8L7 10L11 6" stroke="#48bb78" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>You're subscribed — thanks!</span>
+    </div>
+    <button class="nsb-close" id="nsb-close" aria-label="Close newsletter signup">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M4 4L12 12M12 4L4 12" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<script>
+  const bar = document.getElementById('newsletter-sticky-bar') as HTMLElement;
+  const form = document.getElementById('nsb-form') as HTMLFormElement;
+  const success = document.getElementById('nsb-success') as HTMLElement;
+  const closeBtn = document.getElementById('nsb-close') as HTMLElement;
+  const emailInput = document.getElementById('nsb-email') as HTMLInputElement;
+
+  if (localStorage.getItem('nlBarDismissed') === 'true') {
+    bar?.remove();
+  } else {
+    setTimeout(() => {
+      bar?.classList.add('visible');
+    }, 3500);
+  }
+
+  closeBtn?.addEventListener('click', () => {
+    bar?.classList.remove('visible');
+    setTimeout(() => bar?.remove(), 400);
+    localStorage.setItem('nlBarDismissed', 'true');
+  });
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = emailInput?.value.trim();
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      emailInput?.focus();
+      emailInput?.setCustomValidity('Please enter a valid email address.');
+      emailInput?.reportValidity();
+      return;
+    }
+    emailInput?.setCustomValidity('');
+
+    const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+    submitBtn.disabled = true;
+    submitBtn.textContent = '...';
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 800));
+      form.style.display = 'none';
+      success.style.display = 'flex';
+      localStorage.setItem('nlBarDismissed', 'true');
+      setTimeout(() => {
+        bar?.classList.remove('visible');
+        setTimeout(() => bar?.remove(), 400);
+      }, 3000);
+    } catch (_e) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Subscribe';
+    }
+  });
+</script>
+
+<style>
+  .newsletter-sticky-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 900;
+    background: linear-gradient(135deg, #1a365d 0%, #0a4f9e 100%);
+    color: white;
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .newsletter-sticky-bar.visible {
+    transform: translateY(0);
+  }
+
+  .nsb-content {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--spacing-unit) * 2);
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: calc(var(--spacing-unit) * 1.75) calc(var(--spacing-unit) * 3);
+  }
+
+  .nsb-text {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .nsb-text p {
+    margin: 0;
+    font-size: 0.925rem;
+    color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .nsb-subtext {
+    color: rgba(255, 255, 255, 0.75);
+    font-weight: 400;
+  }
+
+  .nsb-form {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .nsb-input {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    outline: none;
+    width: 220px;
+    transition: background 0.2s ease;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+  }
+
+  .nsb-input::placeholder {
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  .nsb-input:focus {
+    background: rgba(255, 255, 255, 0.22);
+    border-color: rgba(255, 255, 255, 0.6);
+  }
+
+  .nsb-submit {
+    padding: 8px 18px;
+    border: none;
+    border-radius: 6px;
+    background: white;
+    color: #1a365d;
+    font-size: 0.9rem;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity 0.2s ease;
+  }
+
+  .nsb-submit:hover {
+    opacity: 0.9;
+  }
+
+  .nsb-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .nsb-success {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: #a7f3d0;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  .nsb-close {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .nsb-close:hover {
+    color: white;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  @media (max-width: 768px) {
+    .nsb-content {
+      flex-wrap: wrap;
+      gap: calc(var(--spacing-unit) * 1.5);
+      padding: calc(var(--spacing-unit) * 1.75) calc(var(--spacing-unit) * 2);
+    }
+
+    .nsb-text p {
+      white-space: normal;
+    }
+
+    .nsb-subtext {
+      display: none;
+    }
+
+    .nsb-form {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .nsb-input {
+      width: 100%;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .nsb-text {
+      flex: none;
+      width: 100%;
+    }
+  }
+</style>

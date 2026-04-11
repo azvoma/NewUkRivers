@@ -2,6 +2,9 @@
 import Layout from '../../layouts/Layout.astro';
 import FAQ from '../../components/FAQ.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
+import RiverStatsWidget from '../../components/RiverStatsWidget.astro';
+import GearSidebar from '../../components/GearSidebar.astro';
+import WaterLevelWidget from '../../components/WaterLevelWidget.astro';
 import { getRivers, getRiversByRegion } from '../../lib/supabase';
 
 export async function getStaticPaths() {
@@ -192,6 +195,18 @@ const tributaries = {
 
 const riverTributaries = tributaries[river.slug] || [];
 
+const eaStationIds: Record<string, string> = {
+  'river-thames': '3400TH',
+  'river-severn': '2621',
+  'river-trent': '3108',
+  'river-wye': '2126',
+  'river-ouse-yorkshire': '2600OA',
+  'river-avon-bristol': '3143TH',
+  'river-medway': '3400ME',
+};
+
+const stationId = eaStationIds[river.slug];
+
 const exploreActivities = [
   {
     title: 'Walking Routes',
@@ -291,6 +306,25 @@ const exploreActivities = [
             <img src={image.url} alt={image.alt} loading="lazy" width="400" height="300" />
           </div>
         ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="river-sidebar-section">
+    <div class="container">
+      <div class="river-sidebar-layout">
+        <div class="river-sidebar-main">
+          <RiverStatsWidget river={river} />
+          {stationId && (
+            <WaterLevelWidget riverName={river.name} stationId={stationId} />
+          )}
+          {!stationId && (
+            <WaterLevelWidget riverName={river.name} />
+          )}
+        </div>
+        <div class="river-sidebar-aside">
+          <GearSidebar riverName={river.name} activities={river.activities} />
+        </div>
       </div>
     </div>
   </section>
@@ -685,6 +719,30 @@ const exploreActivities = [
     max-width: var(--max-width);
     margin: 0 auto;
     padding: 0 calc(var(--spacing-unit) * 3);
+  }
+
+  .river-sidebar-section {
+    padding: calc(var(--spacing-unit) * 6) 0;
+    background: var(--color-background-alt);
+  }
+
+  .river-sidebar-layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: calc(var(--spacing-unit) * 3);
+    align-items: start;
+  }
+
+  .river-sidebar-main {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing-unit) * 3);
+  }
+
+  @media (max-width: 900px) {
+    .river-sidebar-layout {
+      grid-template-columns: 1fr;
+    }
   }
 
   .river-hero {

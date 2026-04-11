@@ -1,0 +1,305 @@
+---
+export interface Props {
+  riverName: string;
+  stationId?: string;
+}
+
+const { riverName, stationId } = Astro.props;
+---
+
+<div class="water-level-widget" id="water-level-widget" data-station-id={stationId} data-river-name={riverName}>
+  <div class="wlw-header">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <path d="M2 13C4 10 6 8 9 8C12 8 14 11 17 11C18.5 11 19.5 10.5 20 10" stroke="white" stroke-width="1.75" stroke-linecap="round" fill="none"/>
+      <path d="M2 16C4 13 6 11 9 11C12 11 14 14 17 14C18.5 14 19.5 13.5 20 13" stroke="rgba(255,255,255,0.6)" stroke-width="1.25" stroke-linecap="round" fill="none"/>
+    </svg>
+    <h3>Live Water Level</h3>
+    <span class="wlw-source">Environment Agency</span>
+  </div>
+
+  <div class="wlw-body">
+    <div class="wlw-loading" id="wlw-loading">
+      <div class="wlw-spinner"></div>
+      <p>Fetching live data...</p>
+    </div>
+
+    <div class="wlw-content" id="wlw-content" style="display:none">
+      <div class="wlw-level-row">
+        <div class="wlw-gauge" id="wlw-gauge" aria-hidden="true">
+          <div class="wlw-gauge-fill" id="wlw-gauge-fill"></div>
+        </div>
+        <div class="wlw-reading">
+          <span class="wlw-value" id="wlw-value">—</span>
+          <span class="wlw-unit">metres</span>
+        </div>
+        <span class="wlw-status-badge" id="wlw-status-badge">—</span>
+      </div>
+      <p class="wlw-description" id="wlw-description"></p>
+      <p class="wlw-updated" id="wlw-updated"></p>
+    </div>
+
+    <div class="wlw-error" id="wlw-error" style="display:none">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <circle cx="10" cy="10" r="8.5" stroke="#f59e0b" stroke-width="1.5" fill="none"/>
+        <path d="M10 6V11" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="10" cy="14" r="1" fill="#f59e0b"/>
+      </svg>
+      <p>Live data unavailable for this river. Check the <a href="https://check-for-flooding.service.gov.uk/" target="_blank" rel="noopener noreferrer">Environment Agency Flood Portal</a>.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  interface EAReading {
+    dateTime: string;
+    value: number;
+  }
+
+  interface EAItem {
+    "@id": string;
+    measures?: Array<{
+      "@id": string;
+      parameterName: string;
+      latestReading?: EAReading;
+    }>;
+  }
+
+  function getStatusFromLevel(value: number, riverName: string): { label: string; color: string; fillPct: number; description: string } {
+    const name = riverName.toLowerCase();
+    let low: number, normal: number, high: number;
+
+    if (name.includes('thames')) { low = 0.5; normal = 1.5; high = 2.5; }
+    else if (name.includes('severn')) { low = 0.8; normal = 2.0; high = 3.5; }
+    else if (name.includes('tay') || name.includes('spey')) { low = 0.3; normal = 0.8; high = 1.8; }
+    else { low = 0.3; normal = 1.0; high = 2.0; }
+
+    if (value < low) {
+      return { label: 'Low', color: '#f59e0b', fillPct: 20, description: `The ${riverName} is running below its typical level.` };
+    } else if (value <= normal) {
+      return { label: 'Normal', color: '#00a86b', fillPct: 50, description: `The ${riverName} is at a normal level — conditions are typical.` };
+    } else if (value <= high) {
+      return { label: 'Above Normal', color: '#f97316', fillPct: 75, description: `The ${riverName} is running higher than usual. Exercise caution near the water.` };
+    } else {
+      return { label: 'High / Alert', color: '#ef4444', fillPct: 95, description: `The ${riverName} is at a high level. Avoid entering the water.` };
+    }
+  }
+
+  async function fetchWaterLevel() {
+    const widget = document.getElementById('water-level-widget') as HTMLElement;
+    const loading = document.getElementById('wlw-loading') as HTMLElement;
+    const content = document.getElementById('wlw-content') as HTMLElement;
+    const error = document.getElementById('wlw-error') as HTMLElement;
+
+    if (!widget) return;
+
+    const stationId = widget.dataset.stationId;
+    const riverName = widget.dataset.riverName || 'this river';
+
+    if (!stationId) {
+      loading.style.display = 'none';
+      error.style.display = 'flex';
+      return;
+    }
+
+    try {
+      const url = `https://environment.data.gov.uk/flood-monitoring/id/stations/${stationId}?_view=full`;
+      const response = await fetch(url, { signal: AbortSignal.timeout(8000) });
+
+      if (!response.ok) throw new Error('API error');
+
+      const data = await response.json();
+      const item: EAItem = data.items;
+
+      const levelMeasure = item.measures?.find(m =>
+        m.parameterName?.toLowerCase().includes('water level') ||
+        m.parameterName?.toLowerCase().includes('stage')
+      );
+
+      if (!levelMeasure?.latestReading) throw new Error('No reading');
+
+      const reading = levelMeasure.latestReading;
+      const value = Math.round(reading.value * 100) / 100;
+      const status = getStatusFromLevel(value, riverName);
+
+      const valueEl = document.getElementById('wlw-value') as HTMLElement;
+      const badge = document.getElementById('wlw-status-badge') as HTMLElement;
+      const desc = document.getElementById('wlw-description') as HTMLElement;
+      const updated = document.getElementById('wlw-updated') as HTMLElement;
+      const gaugeFill = document.getElementById('wlw-gauge-fill') as HTMLElement;
+
+      valueEl.textContent = value.toFixed(2);
+      badge.textContent = status.label;
+      badge.style.background = status.color + '22';
+      badge.style.color = status.color;
+      badge.style.borderColor = status.color + '55';
+      desc.textContent = status.description;
+
+      const readingDate = new Date(reading.dateTime);
+      updated.textContent = `Updated: ${readingDate.toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}`;
+
+      gaugeFill.style.height = status.fillPct + '%';
+      gaugeFill.style.background = status.color;
+
+      loading.style.display = 'none';
+      content.style.display = 'block';
+    } catch (_e) {
+      loading.style.display = 'none';
+      error.style.display = 'flex';
+    }
+  }
+
+  fetchWaterLevel();
+</script>
+
+<style>
+  .water-level-widget {
+    background: var(--color-background);
+    border: 2px solid var(--color-border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+
+  .wlw-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 3);
+    background: linear-gradient(135deg, #0f2a4a 0%, #0066cc 100%);
+    color: white;
+  }
+
+  .wlw-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    flex: 1;
+  }
+
+  .wlw-source {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.65);
+    white-space: nowrap;
+  }
+
+  .wlw-body {
+    padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 3);
+  }
+
+  .wlw-loading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--color-text-light);
+    font-size: 0.9rem;
+    padding: calc(var(--spacing-unit) * 1) 0;
+  }
+
+  .wlw-spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--color-border);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    animation: wlw-spin 0.7s linear infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes wlw-spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .wlw-level-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: calc(var(--spacing-unit) * 1.5);
+  }
+
+  .wlw-gauge {
+    width: 16px;
+    height: 56px;
+    background: #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    flex-shrink: 0;
+  }
+
+  .wlw-gauge-fill {
+    width: 100%;
+    height: 50%;
+    background: var(--color-primary);
+    border-radius: 8px;
+    transition: height 0.6s ease, background 0.3s ease;
+  }
+
+  .wlw-reading {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+  }
+
+  .wlw-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-text);
+    line-height: 1;
+  }
+
+  .wlw-unit {
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+    font-weight: 500;
+  }
+
+  .wlw-status-badge {
+    margin-left: auto;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border: 1px solid transparent;
+    white-space: nowrap;
+  }
+
+  .wlw-description {
+    margin: 0 0 6px;
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+    line-height: 1.5;
+  }
+
+  .wlw-updated {
+    margin: 0;
+    font-size: 0.775rem;
+    color: var(--color-text-light);
+    opacity: 0.7;
+  }
+
+  .wlw-error {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: calc(var(--spacing-unit) * 0.5) 0;
+  }
+
+  .wlw-error svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .wlw-error p {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+    line-height: 1.5;
+  }
+
+  .wlw-error a {
+    color: var(--color-primary);
+    font-weight: 500;
+  }
+</style>
