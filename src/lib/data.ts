@@ -97,7 +97,7 @@ export const rivers: River[] = [
     latitude: 56.4,
     longitude: -3.4,
     featured: true,
-    image_url: null,
+    image_url: '/images/rivers/river-tay/River_Tay.jpg',
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },

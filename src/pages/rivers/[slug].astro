@@ -108,6 +108,10 @@ const riverGalleries: Record<string, { url: string; alt: string }[]> = {
   'river-tweed': [
     { url: '/images/rivers/river-tweed/River_Tweed.jpg', alt: 'River Tweed sweeping meander aerial view' },
     { url: '/images/rivers/river-tweed/River_Tweed2.jpg', alt: 'River Tweed rocky shallows' }
+  ],
+  'river-tay': [
+    { url: '/images/rivers/river-tay/River_Tay.jpg', alt: 'River Tay at Perth with church spire and bridge' },
+    { url: '/images/rivers/river-tay/River_Tay2.jpg', alt: 'River Tay catchment map Scotland' }
   ]
 };
 
@@ -117,7 +121,8 @@ const localImageMap: Record<string, string> = {
   'river-thames': '/images/rivers/river-thames/River_Thames.jpg',
   'river-dee-wales': '/images/rivers/river-dee/River_Dee.jpg',
   'river-dee-scotland': '/images/rivers/river-dee/River_Dee.jpg',
-  'river-tweed': '/images/rivers/river-tweed/River_Tweed.jpg'
+  'river-tweed': '/images/rivers/river-tweed/River_Tweed.jpg',
+  'river-tay': '/images/rivers/river-tay/River_Tay.jpg'
 };
 
 const defaultImage = localImageMap[river.slug] || river.image_url;
