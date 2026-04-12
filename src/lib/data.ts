@@ -515,7 +515,7 @@ export const rivers: River[] = [
     latitude: 50.35,
     longitude: -3.85,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/1118877/pexels-photo-1118877.jpeg',
+    image_url: 'https://i.postimg.cc/15h7fb12/River_Dart.jpg',
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
