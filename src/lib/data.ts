@@ -823,7 +823,7 @@ export const rivers: River[] = [
     latitude: 51.6,
     longitude: -2.98,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/1179229/pexels-photo-1179229.jpeg',
+    image_url: 'https://i.postimg.cc/QCcYxJ4Z/River_Usk_Card.jpg',
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
