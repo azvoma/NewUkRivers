@@ -933,7 +933,7 @@ export const rivers: River[] = [
     latitude: 53.28,
     longitude: -3.83,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg',
+    image_url: 'https://nt.global.ssl.fastly.net/binaries/content/gallery/website/national/regions/wales/places/ysbyty-ifan/library/river-cwm-penmachno-wales-1604343.jpg',
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
