@@ -603,7 +603,7 @@ export const rivers: River[] = [
     latitude: 54.9,
     longitude: -2.9,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/1118877/pexels-photo-1118877.jpeg',
+    image_url: 'https://i.postimg.cc/hjTBFTqy/River-Eden-Card.jpg',
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
