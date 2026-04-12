@@ -845,7 +845,7 @@ export const rivers: River[] = [
     latitude: 51.48,
     longitude: -3.18,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/534164/pexels-photo-534164.jpeg',
+    image_url: 'https://i.postimg.cc/Xq917k2f/River_Taff_Card.jpg',
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
