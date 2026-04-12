@@ -229,7 +229,7 @@ export const rivers: River[] = [
     latitude: 55.9,
     longitude: -4.4,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/1287145/pexels-photo-1287145.jpeg',
+    image_url: 'https://i.postimg.cc/QdGpgW8r/River-Clyde.jpg',
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
