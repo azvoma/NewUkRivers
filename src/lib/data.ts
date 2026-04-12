@@ -911,7 +911,7 @@ export const rivers: River[] = [
     latitude: 53.0,
     longitude: -3.1,
     featured: false,
-    image_url: 'https://i.postimg.cc/QMpw6Sb5/River_Dee_at_Trevor_in_Wales.jpg',
+    image_url: 'https://i.postimg.cc/Gp8GrSNB/River-Dee-Wales-Card.jpg',
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
