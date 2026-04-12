@@ -185,7 +185,7 @@ export const rivers: River[] = [
     latitude: 57.3,
     longitude: -3.3,
     featured: true,
-    image_url: 'https://images.pexels.com/photos/2901209/pexels-photo-2901209.jpeg',
+    image_url: 'https://i.postimg.cc/kGvfKXxG/River_Spey_1.jpg',
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
