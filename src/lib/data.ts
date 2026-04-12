@@ -757,7 +757,7 @@ export const rivers: River[] = [
     latitude: 55.77,
     longitude: -2.0,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg',
+    image_url: 'https://i.postimg.cc/8srjJwJW/River-Tweed.jpg',
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
