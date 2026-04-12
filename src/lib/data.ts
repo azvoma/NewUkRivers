@@ -295,7 +295,7 @@ export const rivers: River[] = [
     latitude: 54.97,
     longitude: -1.61,
     featured: false,
-    image_url: https://i.postimg.cc/6p1qtk83/Tyne-river.jpg',
+    image_url: 'https://i.postimg.cc/6p1qtk83/Tyne-river.jpg',
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
