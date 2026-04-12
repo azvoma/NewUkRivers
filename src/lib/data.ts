@@ -801,7 +801,7 @@ export const rivers: River[] = [
     latitude: 57.48,
     longitude: -4.22,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/1118877/pexels-photo-1118877.jpeg',
+    image_url: 'https://i.postimg.cc/PrpYZqhg/River_Ness.jpg',
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
