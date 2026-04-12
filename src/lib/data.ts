@@ -163,7 +163,7 @@ export const rivers: River[] = [
     latitude: 57.1,
     longitude: -2.9,
     featured: true,
-    image_url: 'https://images.pexels.com/photos/1118877/pexels-photo-1118877.jpeg',
+    image_url: 'https://i.postimg.cc/CMtNySX7/River_Dee_Scot_1.jpg',
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
