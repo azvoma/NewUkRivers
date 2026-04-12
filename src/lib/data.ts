@@ -75,7 +75,7 @@ export const rivers: River[] = [
     latitude: 52.5,
     longitude: -2.5,
     featured: true,
-    image_url: 'https://images.pexels.com/photos/534164/pexels-photo-534164.jpeg',
+    image_url: 'https://i.postimg.cc/s2Htt1WW/River_Severn_Card.jpg',
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
