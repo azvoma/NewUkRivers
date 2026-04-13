@@ -130,53 +130,173 @@ const faqs = [
 ];
 
 const riverGalleries: Record<string, { url: string; alt: string }[]> = {
+ 'river-aire': [
+    { url: 'https://i.postimg.cc/vTJ8M4wQ/river_aire_1.jpg', alt: 'River Aire city view' },
+    { url: 'https://i.postimg.cc/PJgfhCnT/river_aire_2.jpg', alt: 'River Aire Hills view' }
+  ],
   'river-avon-bristol': [
-    { url: '/images/rivers/river-avon-bristol/River_Avon_(Bristol).jpg', alt: 'River Avon Bristol gorge view' },
-    { url: '/images/rivers/river-avon-bristol/River_Avon_(Bristol)2.jpg', alt: 'River Avon Bristol aerial view' }
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/b/b4/Bristol._Clifton_Suspension_Bridge._River_Avon_1.jpg', alt: 'River Avon Bristol gorge and suspension bridge' },
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/9/95/Avon_Gorge,_Bristol_-_DSC05758.JPG', alt: 'River Avon Bristol Avon Gorge landscape' }
   ],
   'river-avon-warwickshire': [
     { url: 'https://i.postimg.cc/y6t33VZg/About_River_Avon_(Bristol)_1.jpg', alt: 'River Avon Warwickshire at Stratford' },
-    { url: 'https://i.postimg.cc/NGS22gHK/About_River_Avon_(Bristol)_2.jpg', alt: 'River Avon Warwickshire riverside' }
+    { url: 'https://i.postimg.cc/NGS22gHK/About_River_Avon_(Bristol)_2.jpg', alt: 'River Avon Warwickshire riverside' },
   ],
-  'river-thames': [
-    { url: '/images/rivers/river-thames/River_Thames.jpg', alt: 'River Thames Tower Bridge at sunset' },
-    { url: '/images/rivers/river-thames/River_Thames_aerial.jpg', alt: 'River Thames aerial sunset view' }
-  ],
-    'river-severn': [
-    { url: 'https://i.postimg.cc/kGvfKXxG/River_Spey_1.jpg', alt: 'River Severn' },
-    { url: 'https://i.postimg.cc/gJvDbktT/River_Spey.jpg', alt: 'River Severn' }
-  ],
-  'river-wye': [
-    { url: 'https://i.postimg.cc/fTfh22qf/River_wye_1.png', alt: 'River Wye valley' },
-    { url: 'https://i.postimg.cc/T32vZVZP/River_wye_2.jpg', alt: 'River Wye landscape' }
-  ],
-  'river-dee-wales': [
-    { url: '/images/rivers/river-dee/River_Dee.jpg', alt: 'River Dee rapids' },
-    { url: '/images/rivers/river-dee/River_Dart2.jpg', alt: 'River Dee aerial view' }
-  ],
-  'river-tweed': [
-    { url: 'https://i.postimg.cc/qRqjmkQH/River_Dee.jpg', alt: 'River Tweed sweeping meander aerial view' },
-    { url: 'https://i.postimg.cc/ydxvfVn4/River_Dee_2.jpg', alt: 'River Tweed rocky shallows' }
-  ],
-    'river-bann': [
+  'river-bann': [
     { url: 'https://i.postimg.cc/GtQdyqWC/River_Bann_1.jpg', alt: 'River bann 1' },
     { url: 'https://i.postimg.cc/Xq84CQRS/River_Bann_2.jpg', alt: 'River Bann View 2' }
-  ],
-  'river-aire': [
-    { url: 'https://i.postimg.cc/vTJ8M4wQ/river_aire_1.jpg', alt: 'River Aire city view' },
-    { url: 'https://i.postimg.cc/PJgfhCnT/river_aire_2.jpg', alt: 'River Aire Hills view' }
   ],
   'river-calder': [
     { url: 'https://i.postimg.cc/vZDhCDHx/River_Calder_1.jpg' },
     { url: 'https://i.postimg.cc/P5Ny0NrC/River_Calder_2.jpg' }
   ],
-    'river-dee-scotland': [
+  'river-clyde': [
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Bonnington_Linn,_River_Clyde,_Lanarkshire.JPG', alt: 'River Clyde Bonnington Linn waterfall Lanarkshire' },
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/7/71/The_Squinty_Bridge,_River_Clyde,_Glasgow.jpg', alt: 'River Clyde at Glasgow Squinty Bridge' }
+  ],
+  'river-conwy': [
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Conwy_Falls_after_heavy_rain.JPG', alt: 'River Conwy at Conwy Falls Wales' },
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/f/fb/Conwy_Suspension_Bridge_from_the_castle.JPG', alt: 'River Conwy at Conwy Suspension Bridge' }
+  ],
+  'river-dart': [
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/5/51/River_Dart_-_geograph.org.uk_-_1559806.jpg', alt: 'River Dart Devon countryside' },
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/7/70/River_Dart_at_Dartington.jpg', alt: 'River Dart at Dartington Devon' }
+  ],
+  'river-dee-scotland': [
     { url: 'https://i.postimg.cc/CMtNySX7/River_Dee_Scot_1.jpg' },
     { url: 'https://i.postimg.cc/jq9XVtmh/River_Dee_Scot_2.jpg' }
+  ],
+  'river-dee-wales': [
+    { url: '/images/rivers/river-dee/River_Dee.jpg', alt: 'River Dee rapids' },
+    { url: '/images/rivers/river-dee/River_Dart2.jpg', alt: 'River Dee aerial view' },
+  ],
+  'river-derwent-derbyshire': [
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/3/3e/St._Anne%27s_Church%2C_Baslow_-_panoramio_%281%29.jpg', alt: 'River Derwent at Baslow Derbyshire Peak District' },
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/5/58/River_Derwent_near_Hathersage.jpg', alt: 'River Derwent at Chatsworth House Derbyshire' }
+  ],
+  'river-don-south-yorkshire': [
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/9/94/Brightside_-_railway_bridge_over_River_Don.jpg', alt: 'River Don at Brightside Sheffield South Yorkshire' },
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/1/13/RiverDonAldwarkeLock.jpg', alt: 'River Don at Oughtibridge South Yorkshire' }
+  ],
+  'river-eden': [
+    { url: 'https://beckstonesartgallery.co.uk/wp-content/uploads/2025/04/41-Golden-glow-the-River-Eden-towards-Lazonby-27-x-40-cm.jpg', alt: 'River Eden Cumbria near Lazonby' },
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/5/5c/River_Eden_Armathwaite.jpg', alt: 'River Eden at Armathwaite gorge Cumbria' }
+  ],
+  'river-exe': [
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/2/2f/Entrance_to_Exeter_Canal_Basin_%281%29.JPG', alt: 'River Exe at Exeter Canal Basin Devon' },
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/c/c8/Countess_Weir%2C_Exeter%2C_England-LCCN2002696734.jpg', alt: 'River Exe at Countess Weir Exeter Devon' }
+  ],
+  'river-foyle': [
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/1/1d/Foyle_River%2C_Derry%2C_September_2010_%2801%29.JPG', alt: 'River Foyle at Derry Londonderry Northern Ireland' },
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/e/e8/The_view_over_the_river_-_panoramio_%281%29.jpg', alt: 'River Foyle panorama Derry Northern Ireland' }
+  ],
+  'river-great-ouse': [
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/8/82/Kings-lynn-river-great-ouse.JPG', alt: "River Great Ouse at King's Lynn Norfolk" },
+    { url: 'https://www.photohound.co/images/30110l.jpg', alt: 'River Great Ouse at Ely Cathedral Cambridgeshire' }
+  ],
+  'river-humber': [
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/1/17/Humber_Bridge_Tower.JPG', alt: 'Humber Bridge tower River Humber estuary' },
+    { url: 'https://scontent.ffab1-1.fna.fbcdn.net/v/t39.30808-6/557186190_24704429382529970_523023978904471918_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=e06c5d&_nc_ohc=NMkqJnm2IEsQ7kNvwEAO7R2&_nc_oc=AdriNc36m3lr_nh1cntIHeUdwAp45kCQS4h-3lN2pEt9x0Arm6zdPc3gE6zDcv-zoME&_nc_zt=23&_nc_ht=scontent.ffab1-1.fna&_nc_gid=zh3CWuaY2n18uHmKiJxLcA&_nc_ss=7a389&oh=00_Af2A49MUms_vcQFJudyq7VArCsjlmbVLAZLix0LHN-RuVg&oe=69E3520A', alt: 'Humber Bridge from north bank River Humber' }
+  ],
+  'river-itchen': [
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/c/c4/River_Itchen%2C_Hampshire.jpg', alt: 'River Itchen Hampshire chalk stream landscape' },
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/e/ef/Itchen_-_north_of_Shawford.jpg', alt: 'River Itchen north of Shawford Hampshire' }
+  ],
+  'river-lagan': [
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/d/d4/Belfast_%28142%29%2C_October_2009.JPG', alt: 'River Lagan Belfast city centre Northern Ireland' },
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/4/49/Alongside_the_River_Lagan_-_geograph.org.uk_-_7882367.jpg', alt: 'River Lagan path alongside Belfast' }
+  ],
+  'river-lea': [
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/b/b7/River_Lee_Navigation_at_Ware_-_geograph.org.uk_-_1518578.jpg', alt: 'River Lea Lee Navigation at Ware Hertfordshire' },
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/8/88/River_Lee%2C_Hackney_Marshes_-_geograph.org.uk_-_1523809.jpg', alt: 'River Lea at Hackney Marshes East London' }
+  ],
+  'river-lune': [
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/2/25/River_Lune_at_Lancaster_-_geograph.org.uk_-_1567893.jpg', alt: 'River Lune at Lancaster Lancashire' },
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/b/b7/Crook_O_Lune_-_geograph.org.uk_-_1017642.jpg', alt: 'River Lune Crook O Lune Lancashire' }
+  ],
+  'river-medway': [
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/e/e3/Rochester_Cathedral_and_Castle_from_across_the_Medway.jpg', alt: 'River Medway Rochester Cathedral and Castle' },
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/e/e9/River_Medway_at_East_Farleigh.jpg', alt: 'River Medway at East Farleigh Kent' }
+  ],
+  'river-mersey': [
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/2/2c/Liverpool_Waterfront_and_River_Mersey.jpg', alt: 'River Mersey Liverpool waterfront panorama' },
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/d/d4/Runcorn_Widnes_bridge_and_River_Mersey.jpg', alt: 'River Mersey at Runcorn Widnes bridge' }
+  ],
+  'river-ness': [
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/9/98/River_Ness_and_Inverness_Castle_from_Ness_Walk_Inverness_Scotland_(EXPLORED)_-_Flickr_-_conner395.jpg', alt: 'River Ness and Inverness Castle Ness Walk Scotland' },
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/8/8a/Huntly_Street_and_the_River_Ness_(26875646573).jpg', alt: 'River Ness at Huntly Street Inverness Scotland' }
+  ],
+  'river-ouse': [
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/9/96/River_Ouse_at_York.jpg', alt: 'River Ouse at York city centre' },
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/0/06/Kings_Pool_River_Ouse_York.jpg', alt: 'River Ouse at Kings Pool York' }
+  ],
+  'river-ribble': [
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/9/94/Helwith_Bridge_Inn_and_the_River_Ribble%2C_Yorkshire_%2834579802532%29.jpg', alt: 'River Ribble at Helwith Bridge Yorkshire' },
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/a/ac/04_Ribble_estuary%2C_Lytham_St_Annes%2C_Lancashire%2C_UK.jpg', alt: 'River Ribble estuary Lytham St Annes Lancashire' }
+  ],
+  'river-severn': [
+    { url: 'https://i.postimg.cc/kGvfKXxG/River_Spey_1.jpg', alt: 'River Severn' },
+    { url: 'https://i.postimg.cc/gJvDbktT/River_Spey.jpg', alt: 'River Severn' },
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/c/c0/Fallen_trees_by_the_infant_Severn_in_Montgomeryshire_-_geograph-2981572.jpg', alt: 'River Severn in Montgomeryshire Wales' },
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/6/6b/River_Severn_-_looking_down_the_estuary_towards_Lydney_-_June_2016_-_panoramio.jpg', alt: 'River Severn estuary looking towards Lydney' }
   ],
   'river-spey': [
     { url: 'https://i.postimg.cc/jqvFQFXx/River_Spei_1.jpg', alt: 'River Spey Scotland' },
     { url: 'https://i.postimg.cc/66zmLm09/River_Spei_2.jpg', alt: 'River Spey landscape' }
+  ],
+  'river-taff': [
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/c/c3/Cardiff_Bay_Barrage_and_Taff_Estuary.jpg', alt: 'River Taff estuary Cardiff Bay barrage' },
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/5/5d/River_Taff_at_Pontypridd.jpg', alt: 'River Taff at Pontypridd Wales' }
+  ],
+  'river-tamar': [
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/0/09/Royal_Albert_Bridge_over_the_River_Tamar.jpg', alt: 'River Tamar Royal Albert Bridge Saltash Plymouth' },
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/1/1c/River_Tamar_at_Gunnislake.jpg', alt: 'River Tamar at Gunnislake Cornwall Devon border' }
+  ],
+  'river-tay': [
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/d/d6/Dundee_%26_the_River_Tay_%2840277532420%29.jpg', alt: 'River Tay at Dundee Scotland panorama' },
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/0/09/Dike_in_Tay_near_Stobhall.jpg', alt: 'River Tay near Stobhall Perthshire Scotland' }
+  ],
+  'river-tees': [
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/8/84/Barnard_Castle_from_across_the_River_Tees.jpg', alt: 'River Tees at Barnard Castle County Durham' },
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/9/9c/Bridges_over_the_Tees_(geograph_6036837).jpg', alt: 'River Tees bridges County Durham' }
+  ],
+  'river-teifi': [
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/d/da/Cenarth_falls_-_River_Teifi.jpg', alt: 'River Teifi at Cenarth Falls Wales' },
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/c/ce/Cilgerran_Castle_from_across_the_Teifi.jpg', alt: 'River Teifi at Cilgerran Castle Wales' }
+  ],
+  'river-thames': [
+    { url: '/images/rivers/river-thames/River_Thames.jpg', alt: 'River Thames Tower Bridge at sunset' },
+    { url: '/images/rivers/river-thames/River_Thames_aerial.jpg', alt: 'River Thames aerial sunset view' },
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/3/3c/River_Thames_at_night_from_Westminster_Bridge.JPG', alt: 'River Thames at Westminster Bridge London' },
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/e/e4/The_Thames_from_the_Victoria_Embankment_-_geograph.org.uk_-_2702881.jpg', alt: 'River Thames from Victoria Embankment London' }
+  ],
+  'river-trent': [
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/2/21/Trent-Bridge-from-County-Hall-2.jpg', alt: 'River Trent at Trent Bridge Nottingham' },
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/e/e8/River_Trent_with_West_Burton_Power_Station_A_and_B_behind_-_geograph.org.uk_-_5090721.jpg', alt: 'River Trent with West Burton Power Station Nottinghamshire' }
+  ],
+  'river-tweed': [
+    { url: 'https://i.postimg.cc/qRqjmkQH/River_Dee.jpg', alt: 'River Tweed sweeping meander aerial view' },
+    { url: 'https://i.postimg.cc/ydxvfVn4/River_Dee_2.jpg', alt: 'River Tweed rocky shallows' }
+  ],
+  'river-tyne': [
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/8/86/Newcastle-upon-Tyne_MMB_03_River_Tyne.jpg', alt: 'River Tyne Newcastle Gateshead bridges panorama' },
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/9/9b/Leaving_Newcastle_(43952138902).jpg', alt: 'River Tyne leaving Newcastle panoramic view' }
+  ],
+  'river-tywi': [
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/9/93/Afon_Tywi_valley_from_the_B4300_-_geograph.org.uk_-_2641093.jpg', alt: 'River Tywi valley Carmarthenshire Wales from B4300' },
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/e/e4/Dryslwyn_Bridge_over_the_River_Tywi_-_geograph.org.uk_-_4148914.jpg', alt: 'River Tywi at Dryslwyn Bridge Carmarthenshire' }
+  ],
+  'river-usk': [
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/5/52/Crickhowell_Bridge,_River_Usk,_Powys._Wales.jpg', alt: 'River Usk at Crickhowell Bridge Powys Wales' },
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/4/4c/Usk_through_Meadow_Trees.jpg', alt: 'River Usk through meadow trees Wales' }
+  ],
+  'river-wear': [
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/f/fe/Durham_Cathedral_and_River_Wear_from_Prebends_Bridge.jpg', alt: 'River Wear at Durham Cathedral from Prebends Bridge' },
+    { url: 'https://upload.wikimedia.org/wikipedia/commons/c/ce/A_South_East_View_of_the_Cast_Iron_Bridge_over_the_River_Wear_at_Sunderland.jpg', alt: 'River Wear at Sunderland Wearmouth iron bridge' }
+  ],
+  'river-wye': [
+    { url: 'https://i.postimg.cc/fTfh22qf/River_wye_1.png', alt: 'River Wye valley' },
+    { url: 'https://i.postimg.cc/T32vZVZP/River_wye_2.jpg', alt: 'River Wye landscape' }
   ]
 };
 
