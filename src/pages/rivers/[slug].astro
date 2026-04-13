@@ -1,39 +1,2269 @@
-const riverSpecificFacts = {
+---
+
+import Layout from '../../layouts/Layout.astro';
+
+import FAQ from '../../components/FAQ.astro';
+
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+import RiverStatsWidget from '../../components/RiverStatsWidget.astro';
+
+import GearSidebar from '../../components/GearSidebar.astro';
+
+import WaterLevelWidget from '../../components/WaterLevelWidget.astro';
+
+import RelatedRivers from '../../components/RelatedRivers.astro';
+
+import RiverFactFile from '../../components/RiverFactFile.astro';
+
+import { getRivers, getRiversByRegion } from '../../lib/supabase';
+
+
+
+export async function getStaticPaths() {
+
+  const rivers = getRivers();
+
+
+
+  return rivers.map((river) => ({
+
+    params: { slug: river.slug },
+
+    props: { river },
+
+  }));
+
+}
+
+
+
+const { river } = Astro.props;
+
+
+
+const relatedRivers = getRiversByRegion(river.region)
+
+  .filter(r => r.slug !== river.slug)
+
+  .slice(0, 3);
+
+
+
+const breadcrumbItems = [
+
+  { label: 'Home', href: '/' },
+
+  { label: 'Rivers Directory', href: '/rivers' },
+
+  { label: river.region, href: `/rivers?region=${encodeURIComponent(river.region)}` },
+
+  { label: river.name, href: `/rivers/${river.slug}` }
+
+];
+
+
+
+const riverUrl = new URL(`/rivers/${river.slug}`, Astro.site).toString();
+
+const siteUrl = Astro.site?.toString() || "https://ukrivers.co.uk";
+
+
+
+const schemaData = [
+
+  {
+
+    "@context": "https://schema.org",
+
+    "@type": "Place",
+
+    "name": river.name,
+
+    "description": river.description,
+
+    "url": riverUrl,
+
+    "geo": river.origin && {
+
+      "@type": "GeoCoordinates",
+
+      "name": river.origin
+
+    },
+
+    "containedInPlace": {
+
+      "@type": "AdministrativeArea",
+
+      "name": river.region
+
+    },
+
+    ...(river.image_url && {
+
+      "image": river.image_url
+
+    }),
+
+    ...(river.length_miles && {
+
+      "additionalProperty": [
+
+        {
+
+          "@type": "PropertyValue",
+
+          "name": "Length",
+
+          "value": `${river.length_miles} miles (${river.length_km} km)`
+
+        }
+
+      ]
+
+    })
+
+  },
+
+  {
+
+    "@context": "https://schema.org",
+
+    "@type": "BreadcrumbList",
+
+    "itemListElement": [
+
+      {
+
+        "@type": "ListItem",
+
+        "position": 1,
+
+        "name": "Home",
+
+        "item": siteUrl
+
+      },
+
+      {
+
+        "@type": "ListItem",
+
+        "position": 2,
+
+        "name": "Rivers Directory",
+
+        "item": `${siteUrl}rivers/`
+
+      },
+
+      {
+
+        "@type": "ListItem",
+
+        "position": 3,
+
+        "name": `Rivers in ${river.region}`,
+
+        "item": `${siteUrl}rivers/?region=${encodeURIComponent(river.region)}`
+
+      },
+
+      {
+
+        "@type": "ListItem",
+
+        "position": 4,
+
+        "name": river.name,
+
+        "item": riverUrl
+
+      }
+
+    ]
+
+  }
+
+];
+
+
+
+const faqs = [
+
+  {
+
+    question: `How long is the ${river.name}?`,
+
+    answer: river.length_miles
+
+      ? `The ${river.name} is ${river.length_miles} miles (${river.length_km} km) long, making it ${river.length_miles > 150 ? 'one of the longer' : 'a significant'} rivers in the UK.`
+
+      : `The ${river.name} flows through ${river.region}, contributing to the UK's diverse river network.`
+
+  },
+
+  {
+
+    question: `Where does the ${river.name} start and end?`,
+
+    answer: `The ${river.name} rises at ${river.origin} and flows to ${river.mouth}. ${river.region === 'Scotland' ? 'Scottish rivers often flow through dramatic highland scenery.' : river.region === 'Wales' ? 'Welsh rivers are known for their beauty and salmon fishing.' : 'English rivers have played crucial roles in history and industry.'}`
+
+  },
+
+  {
+
+    question: `What wildlife can I see along the ${river.name}?`,
+
+    answer: river.wildlife && river.wildlife.length > 0
+
+      ? `The ${river.name} supports diverse wildlife including ${river.wildlife.slice(0, 3).join(', ')}${river.wildlife.length > 3 ? ', and more' : ''}. Bring binoculars for the best wildlife watching experience.`
+
+      : `The ${river.name} supports various wildlife species typical of UK rivers. Check with local wildlife trusts for current sightings.`
+
+  },
+
+  {
+
+    question: `What activities are available on the ${river.name}?`,
+
+    answer: river.activities && river.activities.length > 0
+
+      ? `Popular activities on the ${river.name} include ${river.activities.slice(0, 4).join(', ')}${river.activities.length > 4 ? ', and more' : ''}. Always check local regulations and safety guidelines.`
+
+      : `Various outdoor activities are available along the ${river.name}. Contact local tourism offices for current information.`
+
+  },
+
+  {
+
+    question: `Is it safe to swim in the ${river.name}?`,
+
+    answer: `${river.swimming_safety}. Always check current water quality, avoid swimming after heavy rain, never swim alone, and be aware of currents and underwater hazards.`
+
+  },
+
+  {
+
+    question: river.has_gold ? `Can you find gold in the ${river.name}?` : `What makes the ${river.name} special?`,
+
+    answer: river.has_gold
+
+      ? `Yes, the ${river.name} is known to contain natural gold deposits. Gold panning requires landowner permission and proper equipment. The gold comes from erosion of gold-bearing rocks upstream.`
+
+      : `The ${river.name} is special for its natural beauty, wildlife, and ${river.activities && river.activities.length > 0 ? 'recreational opportunities' : 'cultural significance'}. Each UK river has unique characteristics shaped by its geology and history.`
+
+  }
+
+];
+
+
+
+const riverGalleries: Record<string, { url: string; alt: string }[]> = {
+
+  'river-avon-bristol': [
+
+    { url: '/images/rivers/river-avon-bristol/River_Avon_(Bristol).jpg', alt: 'River Avon Bristol gorge view' },
+
+    { url: '/images/rivers/river-avon-bristol/River_Avon_(Bristol)2.jpg', alt: 'River Avon Bristol aerial view' }
+
+  ],
+
+  'river-avon-warwickshire': [
+
+    { url: 'https://i.postimg.cc/y6t33VZg/About_River_Avon_(Bristol)_1.jpg', alt: 'River Avon Warwickshire at Stratford' },
+
+    { url: 'https://i.postimg.cc/NGS22gHK/About_River_Avon_(Bristol)_2.jpg', alt: 'River Avon Warwickshire riverside' }
+
+  ],
+
   'river-thames': [
-    'The Thames is tidal up to Teddington Lock, making it unique among UK rivers.',
-    'Over 125 species of fish live in the Thames, including seahorses in the estuary.',
-    'The Thames Path is 184 miles long, following the river from source to sea.',
-    'The Thames froze over 23 times between 1408 and 1814.'
+
+    { url: '/images/rivers/river-thames/River_Thames.jpg', alt: 'River Thames Tower Bridge at sunset' },
+
+    { url: '/images/rivers/river-thames/River_Thames_aerial.jpg', alt: 'River Thames aerial sunset view' }
+
   ],
-  'river-severn': [
-    'The River Severn is the longest river in the UK.',
-    'The Severn Bore is a tidal wave that can reach speeds of 13mph and heights of 2 meters.',
-    'The Severn is Britain\'s longest river at 220 miles.',
-    'Five major bridges cross the Severn, including two suspension bridges.',
-    'The river drains an area of 4,409 square miles.'
+
+    'river-severn': [
+
+    { url: 'https://i.postimg.cc/kGvfKXxG/River_Spey_1.jpg', alt: 'River Severn' },
+
+    { url: 'https://i.postimg.cc/gJvDbktT/River_Spey.jpg', alt: 'River Severn' }
+
   ],
-  'river-tay': [
-    'The Tay has the largest discharge of any UK river, flowing at 122 cubic meters per second.',
-    'Gold has been found in the Tay for centuries, with panning still popular today.',
-    'The Tay Rail Bridge disaster of 1879 remains one of Britain\'s worst structural failures.',
-    'Salmon weighing over 60 pounds have been caught in the Tay.'
-  ],
+
   'river-wye': [
-    'The Wye was Britain\'s first Area of Outstanding Natural Beauty.',
-    'The entire river is a Site of Special Scientific Interest (SSSI).',
-    'The Wye Valley inspired Romantic poets like Wordsworth.',
-    'Over 30 species of fish inhabit the Wye, including rare twaite shad.'
+
+    { url: 'https://i.postimg.cc/fTfh22qf/River_wye_1.png', alt: 'River Wye valley' },
+
+    { url: 'https://i.postimg.cc/T32vZVZP/River_wye_2.jpg', alt: 'River Wye landscape' }
+
   ],
-  'river-dee-scotland': [
-    'Queen Victoria\'s love of the Dee helped establish Royal Deeside as a tourist destination.',
-    'Gold nuggets up to 59 grams have been found in the Dee.',
-    'The Dee is one of Scotland\'s premier salmon rivers.',
-    'Balmoral Castle sits beside the River Dee.'
+
+  'river-dee-wales': [
+
+    { url: '/images/rivers/river-dee/River_Dee.jpg', alt: 'River Dee rapids' },
+
+    { url: '/images/rivers/river-dee/River_Dart2.jpg', alt: 'River Dee aerial view' }
+
   ],
+
+  'river-tweed': [
+
+    { url: 'https://i.postimg.cc/qRqjmkQH/River_Dee.jpg', alt: 'River Tweed sweeping meander aerial view' },
+
+    { url: 'https://i.postimg.cc/ydxvfVn4/River_Dee_2.jpg', alt: 'River Tweed rocky shallows' }
+
+  ],
+
+    'river-bann': [
+
+    { url: 'https://i.postimg.cc/GtQdyqWC/River_Bann_1.jpg', alt: 'River bann 1' },
+
+    { url: 'https://i.postimg.cc/Xq84CQRS/River_Bann_2.jpg', alt: 'River Bann View 2' }
+
+  ],
+
+  'river-aire': [
+
+    { url: 'https://i.postimg.cc/vTJ8M4wQ/river_aire_1.jpg', alt: 'River Aire city view' },
+
+    { url: 'https://i.postimg.cc/PJgfhCnT/river_aire_2.jpg', alt: 'River Aire Hills view' }
+
+  ],
+
+  'river-calder': [
+
+    { url: 'https://i.postimg.cc/vZDhCDHx/River_Calder_1.jpg' },
+
+    { url: 'https://i.postimg.cc/P5Ny0NrC/River_Calder_2.jpg' }
+
+  ],
+
+    'river-dee-scotland': [
+
+    { url: 'https://i.postimg.cc/CMtNySX7/River_Dee_Scot_1.jpg' },
+
+    { url: 'https://i.postimg.cc/jq9XVtmh/River_Dee_Scot_2.jpg' }
+
+  ],
+
   'river-spey': [
-    'More whisky distilleries are located along the Spey than any other river in Scotland.',
-    'The Spey is Scotland\'s fastest flowing river.',
-    'Ospreys returned to nest along the Spey in 1959 after 50 years\' absence.',
-    'The Speyside Way follows 65 miles of the river.'
+
+    { url: 'https://i.postimg.cc/jqvFQFXx/River_Spei_1.jpg', alt: 'River Spey Scotland' },
+
+    { url: 'https://i.postimg.cc/66zmLm09/River_Spei_2.jpg', alt: 'River Spey landscape' }
+
   ]
+
 };
+
+
+
+const defaultGallery = [
+
+  { url: river.image_url || 'https://images.pexels.com/photos/1179229/pexels-photo-325807.jpeg', alt: `${river.name} main view` },
+
+  { url: 'https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg', alt: `${river.name} landscape` }
+
+];
+
+
+
+const galleryImages = riverGalleries[river.slug] || defaultGallery;
+
+
+
+const riverSpecificFacts = {
+
+  'river-thames': [
+
+    'The Thames is tidal up to Teddington Lock, making it unique among UK rivers.',
+
+    'Over 125 species of fish live in the Thames, including seahorses in the estuary.',
+
+    'The Thames Path is 184 miles long, following the river from source to sea.',
+
+    'The Thames froze over 23 times between 1408 and 1814.'
+
+  ], // 👈 THIS is what was missing! Closes the Thames array.
+
+  
+
+  'river-severn': [
+
+    // You can add your Severn facts here later!
+
+    'The River Severn is the longest river in the UK.'
+
+  ] 
+
+};
+
+    'The Severn Bore is a tidal wave that can reach speeds of 13mph and heights of 2 meters.',
+
+    'The Severn is Britain\'s longest river at 220 miles.',
+
+    'Five major bridges cross the Severn, including two suspension bridges.',
+
+    'The river drains an area of 4,409 square miles.';
+
+  'river-tay': [
+
+    'The Tay has the largest discharge of any UK river, flowing at 122 cubic meters per second.',
+
+    'Gold has been found in the Tay for centuries, with panning still popular today.',
+
+    'The Tay Rail Bridge disaster of 1879 remains one of Britain\'s worst structural failures.',
+
+    'Salmon weighing over 60 pounds have been caught in the Tay.'
+
+  ],
+
+  'river-wye': [
+
+    'The Wye was Britain\'s first Area of Outstanding Natural Beauty.',
+
+    'The entire river is a Site of Special Scientific Interest (SSSI).',
+
+    'The Wye Valley inspired Romantic poets like Wordsworth.',
+
+    'Over 30 species of fish inhabit the Wye, including rare twaite shad.'
+
+  ],
+
+  'river-dee-scotland': [
+
+    'Queen Victoria\'s love of the Dee helped establish Royal Deeside as a tourist destination.',
+
+    'Gold nuggets up to 59 grams have been found in the Dee.',
+
+    'The Dee is one of Scotland\'s premier salmon rivers.',
+
+    'Balmoral Castle sits beside the River Dee.'
+
+  ],
+
+  'river-spey': [
+
+    'More whisky distilleries are located along the Spey than any other river in Scotland.',
+
+    'The Spey is Scotland\'s fastest flowing river.',
+
+    'Ospreys returned to nest along the Spey in 1959 after 50 years\' absence.',
+
+    'The Speyside Way follows 65 miles of the river.'
+
+  ]
+
+};
+
+
+
+const didYouKnowFacts = riverSpecificFacts[river.slug] || [
+
+  `The ${river.name} has been a vital waterway for centuries, supporting local communities and wildlife.`,
+
+  `${river.region} is home to some of the UK's most beautiful river landscapes.`,
+
+  `Many historical settlements were established along the ${river.name} due to its strategic importance.`,
+
+  `The ${river.name} supports a rich ecosystem that includes rare and protected species.`
+
+];
+
+
+
+const tributaries = {
+
+  'river-thames': ['River Kennet', 'River Wey', 'River Lea', 'River Cherwell'],
+
+  'river-severn': ['River Avon', 'River Teme', 'River Stour', 'River Tern'],
+
+  'river-tay': ['River Tummel', 'River Isla', 'River Earn', 'River Almond'],
+
+  'river-wye': ['River Lugg', 'River Monnow', 'River Irfon'],
+
+  'river-trent': ['River Dove', 'River Derwent', 'River Soar'],
+
+  'river-dee-scotland': ['Water of Tanar', 'Geldie Burn', 'Water of Feugh'],
+
+  'river-spey': ['River Feshie', 'River Dulnain', 'River Avon']
+
+};
+
+
+
+const riverTributaries = tributaries[river.slug] || [];
+
+
+
+const eaStationIds: Record<string, string> = {
+
+  'river-thames': '3400TH',
+
+  'river-severn': '2621',
+
+  'river-trent': '3108',
+
+  'river-wye': '2126',
+
+  'river-ouse-yorkshire': '2600OA',
+
+  'river-avon-bristol': '3143TH',
+
+  'river-medway': '3400ME',
+
+};
+
+
+
+const stationId = eaStationIds[river.slug];
+
+
+
+const exploreActivities = [
+
+  {
+
+    title: 'Walking Routes',
+
+    description: 'Discover scenic riverside paths and national trails that follow the course of the river.',
+
+    available: river.activities.includes('Walking'),
+
+    icon: 'walking'
+
+  },
+
+  {
+
+    title: 'Cycling Paths',
+
+    description: 'Explore dedicated cycle routes and quiet roads alongside the river valley.',
+
+    available: river.activities.includes('Cycling'),
+
+    icon: 'cycling'
+
+  },
+
+  {
+
+    title: 'Water Sports',
+
+    description: 'Kayaking, canoeing, and paddleboarding opportunities along calm sections.',
+
+    available: river.activities.includes('Kayaking') || river.activities.includes('Canoeing'),
+
+    icon: 'watersports'
+
+  },
+
+  {
+
+    title: 'Fishing Spots',
+
+    description: 'Prime locations for coarse and game fishing with proper permits.',
+
+    available: river.activities.includes('Fishing'),
+
+    icon: 'fishing'
+
+  },
+
+  {
+
+    title: 'Wildlife Watching',
+
+    description: 'Birdwatching hides and viewpoints for observing river wildlife.',
+
+    available: river.activities.includes('Wildlife Watching'),
+
+    icon: 'wildlife'
+
+  },
+
+  {
+
+    title: 'Camping Sites',
+
+    description: 'Riverside campsites and wild camping areas for overnight stays.',
+
+    available: river.activities.includes('Camping'),
+
+    icon: 'camping'
+
+  }
+
+].filter(activity => activity.available);
+
+---
+
+
+
+<Layout
+
+  title={`${river.name} | ${river.region} River Guide & Information`}
+
+  description={`Explore ${river.name} in ${river.region}. ${river.description ? river.description.substring(0, 120) : `Discover wildlife, activities, and essential information about this ${river.region} river.`}`}
+
+  keywords={`${river.name}, ${river.slug}, ${river.region} rivers, UK rivers, ${river.activities && river.activities.length > 0 ? river.activities.join(', ') : 'river activities'}`}
+
+  image={river.image_url}
+
+  type="article"
+
+  schemaData={schemaData}
+
+>
+
+  <Breadcrumb items={breadcrumbItems} />
+
+
+
+  <div class="river-hero">
+
+    <div class="hero-inner">
+
+      <div class="container">
+
+        <div class="hero-badge">{river.region}</div>
+
+        <h1>{river.name}</h1>
+
+        <p class="hero-subtitle">
+
+          {river.length_miles ? `${river.length_miles} miles (${river.length_km} km)` : 'Major UK River'}
+
+          {river.has_gold && <span class="gold-badge">Contains Gold</span>}
+
+        </p>
+
+        <div class="hero-stats">
+
+          {river.origin && (
+
+            <div class="hero-stat">
+
+              <span class="stat-label">Source</span>
+
+              <span class="stat-value">{river.origin}</span>
+
+            </div>
+
+          )}
+
+          {river.mouth && (
+
+            <div class="hero-stat">
+
+              <span class="stat-label">Mouth</span>
+
+              <span class="stat-value">{river.mouth}</span>
+
+            </div>
+
+          )}
+
+          {river.activities.length > 0 && (
+
+            <div class="hero-stat">
+
+              <span class="stat-label">Activities</span>
+
+              <span class="stat-value">{river.activities.length} available</span>
+
+            </div>
+
+          )}
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <section class="river-intro">
+
+    <div class="container">
+
+      <h2>About {river.name}</h2>
+
+      <p class="lead">{river.description}</p>
+
+    </div>
+
+  </section>
+
+
+
+  <section class="gallery-section">
+
+    <div class="container">
+
+      <h2>{river.name} Photo Gallery</h2>
+
+      <div class="gallery-grid">
+
+        {galleryImages.map((image) => (
+
+          <div class="gallery-item">
+
+            <img src={image.url} alt={image.alt} loading="lazy" width="400" height="300" />
+
+          </div>
+
+        ))}
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <section class="river-sidebar-section">
+
+    <div class="container">
+
+      <div class="river-sidebar-layout">
+
+        <div class="river-sidebar-main">
+
+          <RiverStatsWidget river={river} />
+
+          <div class="map-widget">
+
+            <div class="map-widget-header">
+
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+
+                <path d="M9 2C6.2 2 4 4.2 4 7C4 10.5 9 16 9 16C9 16 14 10.5 14 7C14 4.2 11.8 2 9 2Z" stroke="white" stroke-width="1.5" fill="none"/>
+
+                <circle cx="9" cy="7" r="2" stroke="white" stroke-width="1.25" fill="none"/>
+
+              </svg>
+
+              <h3>Location Map</h3>
+
+            </div>
+
+            <div class="map-widget-body">
+
+              <iframe
+
+                width="100%"
+
+                height="280"
+
+                style="border:0;display:block;"
+
+                loading="lazy"
+
+                allowfullscreen
+
+                referrerpolicy="no-referrer-when-downgrade"
+
+                src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent(river.origin + ', ' + river.region + ', UK')}&zoom=10`}>
+
+              </iframe>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="details-grid-four">
+
+            <div class="detail-card">
+
+              <div class="detail-card-header">
+
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+
+                  <path d="M8 1C5.8 1 4 2.8 4 5C4 7.8 8 13 8 13C8 13 12 7.8 12 5C12 2.8 10.2 1 8 1Z" stroke="white" stroke-width="1.5" fill="none"/>
+
+                  <circle cx="8" cy="5" r="1.5" stroke="white" stroke-width="1.25" fill="none"/>
+
+                </svg>
+
+                <h3>Location</h3>
+
+              </div>
+
+              <div class="detail-content">
+
+                <p><strong>Region:</strong> {river.region}</p>
+
+                <p><strong>Origin:</strong> {river.origin}</p>
+
+                <p><strong>Mouth:</strong> {river.mouth}</p>
+
+                {river.length_miles && (
+
+                  <p><strong>Length:</strong> {river.length_miles} miles ({river.length_km} km)</p>
+
+                )}
+
+              </div>
+
+            </div>
+
+
+
+            <div class="detail-card">
+
+              <div class="detail-card-header">
+
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+
+                  <path d="M8 2C8 2 4 5 4 9C4 11.2 5.8 13 8 13C10.2 13 12 11.2 12 9C12 5 8 2 8 2Z" stroke="white" stroke-width="1.5" fill="none"/>
+
+                  <path d="M5.5 8L8 5.5L10.5 8" stroke="white" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+                  <path d="M8 5.5V10" stroke="white" stroke-width="1.25" stroke-linecap="round"/>
+
+                </svg>
+
+                <h3>Wildlife</h3>
+
+              </div>
+
+              <div class="detail-content">
+
+                {river.wildlife && river.wildlife.length > 0 ? (
+
+                  <ul>
+
+                    {river.wildlife.map((species) => (
+
+                      <li>{species}</li>
+
+                    ))}
+
+                  </ul>
+
+                ) : (
+
+                  <p>Various wildlife species inhabit this river.</p>
+
+                )}
+
+              </div>
+
+            </div>
+
+
+
+            <div class="detail-card">
+
+              <div class="detail-card-header">
+
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+
+                  <circle cx="8" cy="8" r="6" stroke="white" stroke-width="1.5" fill="none"/>
+
+                  <path d="M8 5V8L10 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+                </svg>
+
+                <h3>Activities</h3>
+
+              </div>
+
+              <div class="detail-content">
+
+                {river.activities && river.activities.length > 0 ? (
+
+                  <ul>
+
+                    {river.activities.map((activity) => (
+
+                      <li>{activity}</li>
+
+                    ))}
+
+                  </ul>
+
+                ) : (
+
+                  <p>Various activities available along this river.</p>
+
+                )}
+
+              </div>
+
+            </div>
+
+
+
+            <div class="detail-card">
+
+              <div class="detail-card-header">
+
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+
+                  <path d="M2 10C4 8 5.5 7 7.5 7C9.5 7 11 9.5 13 9.5C14.2 9.5 15 9 15 9" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+
+                  <path d="M1 13C3 11 4.5 10 6.5 10C8.5 10 10 12.5 12 12.5C13.2 12.5 14 12 15 11" stroke="white" stroke-width="1.1" stroke-linecap="round" fill="none" opacity="0.7"/>
+
+                  <path d="M8 1V7" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+
+                  <path d="M6 3L8 1L10 3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+                </svg>
+
+                <h3>Safety</h3>
+
+              </div>
+
+              <div class="detail-content">
+
+                <p><strong>Swimming Safety:</strong> {river.swimming_safety}</p>
+
+                {river.fishing_season && (
+
+                  <p><strong>Fishing Season:</strong> {river.fishing_season}</p>
+
+                )}
+
+                {river.has_gold && (
+
+                  <p class="gold-note">Contains natural gold deposits</p>
+
+                )}
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="features-widget">
+
+            <div class="features-widget-header">
+
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+
+                <path d="M8 1L10 5.5H15L11 8.5L12.5 13.5L8 10.5L3.5 13.5L5 8.5L1 5.5H6L8 1Z" stroke="white" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+              </svg>
+
+              <h3>Key Features of {river.name}</h3>
+
+            </div>
+
+            <div class="features-grid">
+
+              <div class="feature-box">
+
+                <div class="feature-icon">
+
+                  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+
+                    <circle cx="16" cy="16" r="16" fill="#dbeafe"/>
+
+                    <path d="M5 20C7.5 17 10 15.5 13 15.5C16 15.5 18 18.5 21 18.5C23.5 18.5 25 17.5 27 16" stroke="#0066cc" stroke-width="2" stroke-linecap="round" fill="none"/>
+
+                    <path d="M5 24C7.5 21 10 19.5 13 19.5C16 19.5 18 22.5 21 22.5C23.5 22.5 25 21.5 27 20" stroke="#0066cc" stroke-width="1.25" stroke-linecap="round" fill="none" opacity="0.6"/>
+
+                  </svg>
+
+                </div>
+
+                <h4>River Course</h4>
+
+                <p>The {river.name} flows from {river.origin} through {river.region}, eventually reaching {river.mouth}. {river.length_miles && `At ${river.length_miles} miles long, it traverses diverse landscapes.`}</p>
+
+              </div>
+
+              <div class="feature-box">
+
+                <div class="feature-icon">
+
+                  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+
+                    <circle cx="16" cy="16" r="16" fill="#dbeafe"/>
+
+                    <path d="M8 26L16 8L24 26H8Z" stroke="#0066cc" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+                    <path d="M12 19C13.5 17 15 16.5 16 16.5C17 16.5 18.5 17 20 19" stroke="#0066cc" stroke-width="1.25" stroke-linecap="round" fill="none"/>
+
+                  </svg>
+
+                </div>
+
+                <h4>Natural Beauty</h4>
+
+                <p>The river valley offers stunning scenery, from its source through varied terrain. Perfect for photography, nature walks, and outdoor exploration.</p>
+
+              </div>
+
+              <div class="feature-box">
+
+                <div class="feature-icon">
+
+                  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+
+                    <circle cx="16" cy="16" r="16" fill="#dbeafe"/>
+
+                    <path d="M16 7V20" stroke="#0066cc" stroke-width="2" stroke-linecap="round"/>
+
+                    <path d="M16 20L11 16" stroke="#0066cc" stroke-width="2" stroke-linecap="round"/>
+
+                    <path d="M16 20L21 16" stroke="#0066cc" stroke-width="2" stroke-linecap="round"/>
+
+                    <path d="M9 25C11.5 22.5 13 21.5 15 21.5C17 21.5 18.5 24 21 24C23 24 24 23.5 25 22" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+
+                  </svg>
+
+                </div>
+
+                <h4>Recreation</h4>
+
+                <p>Popular activities include {river.activities && river.activities.length > 0 ? river.activities.slice(0, 3).join(', ') : 'walking, fishing, and wildlife watching'}. Always follow local guidelines and safety advice.</p>
+
+              </div>
+
+              <div class="feature-box">
+
+                <div class="feature-icon">
+
+                  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+
+                    <circle cx="16" cy="16" r="16" fill="#dbeafe"/>
+
+                    <path d="M16 7C12.5 10 10 14 10 18C10 21.3 12.7 24 16 24C19.3 24 22 21.3 22 18C22 14 19.5 10 16 7Z" stroke="#0066cc" stroke-width="1.75" fill="none"/>
+
+                    <path d="M13 16C14 14.5 15 14 16 14C17 14 18 14.5 19 16" stroke="#0066cc" stroke-width="1.25" stroke-linecap="round" fill="none"/>
+
+                    <path d="M16 14V18" stroke="#0066cc" stroke-width="1.25" stroke-linecap="round"/>
+
+                  </svg>
+
+                </div>
+
+                <h4>Ecology</h4>
+
+                <p>The {river.name} supports important ecosystems including {river.wildlife && river.wildlife.length > 0 ? river.wildlife.slice(0, 2).join(' and ') : 'diverse wildlife'}. Conservation efforts help protect these habitats.</p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          {exploreActivities.length > 0 && (
+
+            <div class="explore-widget">
+
+              <div class="explore-widget-header">
+
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+
+                  <path d="M8 1.5C8 1.5 4 4.5 4 8.5C4 10.9 5.8 13 8 13C10.2 13 12 10.9 12 8.5C12 4.5 8 1.5 8 1.5Z" stroke="white" stroke-width="1.25" fill="none"/>
+
+                  <path d="M5 7.5L8 4.5L11 7.5" stroke="white" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+                  <path d="M8 4.5V9" stroke="white" stroke-width="1.25" stroke-linecap="round"/>
+
+                </svg>
+
+                <h3>Explore Along {river.name}</h3>
+
+                <span class="explore-subtitle">Discover activities along the river</span>
+
+              </div>
+
+              <div class="explore-grid">
+
+                {exploreActivities.map((activity) => (
+
+                  <div class="explore-card">
+
+                    <div class="explore-icon">
+
+                      {activity.icon === 'walking' && (
+
+                        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+
+                          <circle cx="14" cy="14" r="14" fill="#dbeafe"/>
+
+                          <circle cx="14" cy="8" r="2.5" stroke="#0066cc" stroke-width="1.5" fill="none"/>
+
+                          <path d="M14 10.5V14" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round"/>
+
+                          <path d="M11.5 12.5L9.5 16M16.5 12.5L18.5 16" stroke="#0066cc" stroke-width="1.25" stroke-linecap="round"/>
+
+                          <path d="M9 21L12 14.5L15 17.5L18 13L21 16" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+                        </svg>
+
+                      )}
+
+                      {activity.icon === 'cycling' && (
+
+                        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+
+                          <circle cx="14" cy="14" r="14" fill="#dbeafe"/>
+
+                          <circle cx="9" cy="18" r="4" stroke="#0066cc" stroke-width="1.5" fill="none"/>
+
+                          <circle cx="19" cy="18" r="4" stroke="#0066cc" stroke-width="1.5" fill="none"/>
+
+                          <path d="M9 18L14 10L19 18" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+                          <path d="M12 10H17" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round"/>
+
+                        </svg>
+
+                      )}
+
+                      {activity.icon === 'watersports' && (
+
+                        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+
+                          <circle cx="14" cy="14" r="14" fill="#dbeafe"/>
+
+                          <path d="M6 18C8 16 10 14.5 12.5 14.5C15 14.5 17 17 20 17C22 17 23 16 23 16" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+
+                          <path d="M10 12L14 9L18 12" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+                          <path d="M14 9V15" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round"/>
+
+                        </svg>
+
+                      )}
+
+                      {activity.icon === 'fishing' && (
+
+                        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+
+                          <circle cx="14" cy="14" r="14" fill="#dbeafe"/>
+
+                          <path d="M14 6V19" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round"/>
+
+                          <path d="M14 19L10 15" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round"/>
+
+                          <path d="M14 19L18 15" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round"/>
+
+                          <path d="M7 22C9 20 11 19 13 19C15 19 17 21.5 19 21.5C21 21.5 22 21 23 20" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+
+                        </svg>
+
+                      )}
+
+                      {activity.icon === 'wildlife' && (
+
+                        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+
+                          <circle cx="14" cy="14" r="14" fill="#dbeafe"/>
+
+                          <path d="M5 14C7.5 11 10 9.5 14 9.5C18 9.5 20.5 12.5 23 12.5" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+
+                          <circle cx="14" cy="14" r="3.5" stroke="#0066cc" stroke-width="1.25" fill="none"/>
+
+                        </svg>
+
+                      )}
+
+                      {activity.icon === 'camping' && (
+
+                        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+
+                          <circle cx="14" cy="14" r="14" fill="#dbeafe"/>
+
+                          <path d="M7 21L14 8L21 21H7Z" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+                          <path d="M11 21V17H17V21" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+                        </svg>
+
+                      )}
+
+                    </div>
+
+                    <div class="explore-text">
+
+                      <h4>{activity.title}</h4>
+
+                      <p>{activity.description}</p>
+
+                    </div>
+
+                  </div>
+
+                ))}
+
+              </div>
+
+            </div>
+
+          )}
+
+        </div>
+
+        <div class="river-sidebar-aside">
+
+          <RiverFactFile river={river} siteUrl={Astro.site?.toString() || 'https://ukrivers.co.uk'} />
+
+          {stationId && (
+
+            <WaterLevelWidget riverName={river.name} stationId={stationId} />
+
+          )}
+
+          {!stationId && (
+
+            <WaterLevelWidget riverName={river.name} />
+
+          )}
+
+          <RelatedRivers currentRiver={river} />
+
+          <GearSidebar riverName={river.name} activities={river.activities} />
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <section class="geography-section">
+
+    <div class="container">
+
+      <h2>River Geography & Education</h2>
+
+      <div class="geography-grid">
+
+        <div class="geography-card">
+
+          <div class="geography-card-header">
+
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+
+              <path d="M8 1L10 5.5H15L11 8.5L12.5 13.5L8 10.5L3.5 13.5L5 8.5L1 5.5H6L8 1Z" stroke="white" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+            </svg>
+
+            <h3>Physical Geography</h3>
+
+          </div>
+
+          <div class="geography-content">
+
+            <p><strong>River Course:</strong> The {river.name} follows a classic river profile from source to mouth, creating diverse habitats along its {river.length_miles || 'considerable'} mile journey.</p>
+
+            <p><strong>Landscape Features:</strong> The river creates distinctive features including meanders, floodplains, and {river.mouth?.includes('Estuary') || river.mouth?.includes('Sea') ? 'an estuary where it meets the sea' : 'its confluence with larger waterways'}.</p>
+
+            <p><strong>Geology:</strong> The river has carved through {river.region} landscape over thousands of years, shaped by the underlying bedrock and glacial activity.</p>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="geography-card">
+
+          <div class="geography-card-header">
+
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+
+              <rect x="2" y="7" width="12" height="8" rx="1.5" stroke="white" stroke-width="1.25" fill="none"/>
+
+              <path d="M5 7V5.5C5 3.6 6.3 2 8 2C9.7 2 11 3.6 11 5.5V7" stroke="white" stroke-width="1.25" stroke-linecap="round" fill="none"/>
+
+              <circle cx="8" cy="10.5" r="1.25" stroke="white" stroke-width="1" fill="none"/>
+
+            </svg>
+
+            <h3>Human Geography</h3>
+
+          </div>
+
+          <div class="geography-content">
+
+            <p><strong>Settlements:</strong> Major towns and cities developed along the {river.name} due to access to water, transportation, and trade opportunities.</p>
+
+            <p><strong>Historical Industry:</strong> The river powered mills, supported fishing communities, and served as a vital transport route for goods and people.</p>
+
+            <p><strong>Modern Use:</strong> Today the river supports recreation, tourism, {river.activities.includes('Fishing') ? 'sport fishing' : 'water sports'}, and remains important for local ecosystems.</p>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="geography-card">
+
+          <div class="geography-card-header">
+
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+
+              <path d="M2 10C4 7.5 5.5 6.5 8 6.5C10.5 6.5 12 9 14 9" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+
+              <path d="M2 12.5C4 10 5.5 9 8 9C10.5 9 12 11.5 14 11.5" stroke="white" stroke-width="1" stroke-linecap="round" fill="none" opacity="0.7"/>
+
+              <path d="M8 1V6.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+
+              <path d="M6 3L8 1L10 3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+            </svg>
+
+            <h3>Environmental Status</h3>
+
+          </div>
+
+          <div class="geography-content">
+
+            <p><strong>Water Quality:</strong> Regular monitoring ensures the river maintains good ecological status under UK water quality standards.</p>
+
+            <p><strong>Conservation:</strong> Protected habitats along the river support {river.wildlife.length > 0 ? river.wildlife.length : 'numerous'} species of wildlife including rare and endangered species.</p>
+
+            <p><strong>Climate Adaptation:</strong> River management includes flood prevention, habitat restoration, and preparing for changing rainfall patterns.</p>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="geography-card">
+
+          <div class="geography-card-header">
+
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+
+              <circle cx="8" cy="10" r="4" stroke="white" stroke-width="1.25" fill="none"/>
+
+              <path d="M6 10H10M8 8V12" stroke="white" stroke-width="1.25" stroke-linecap="round"/>
+
+              <path d="M8 2V6" stroke="white" stroke-width="1.25" stroke-linecap="round" opacity="0.7"/>
+
+            </svg>
+
+            <h3>Flood Management</h3>
+
+          </div>
+
+          <div class="geography-content">
+
+            <p><strong>Flood Risk:</strong> Like all UK rivers, the {river.name} experiences seasonal variations in flow and occasional flooding during heavy rainfall.</p>
+
+            <p><strong>Defenses:</strong> Flood management schemes protect communities through embankments, flood storage areas, and early warning systems.</p>
+
+            <p><strong>Natural Solutions:</strong> Riverside tree planting and wetland restoration help manage water flow naturally while supporting biodiversity.</p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  {riverTributaries.length > 0 && (
+
+    <section class="tributaries-section">
+
+      <div class="container">
+
+        <div class="tributaries-widget">
+
+          <div class="tributaries-widget-header">
+
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+
+              <path d="M2 11C4 8.5 5.5 7.5 8 7.5C10.5 7.5 12 10.5 14 10.5" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+
+              <path d="M8 1V7.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+
+              <path d="M6 3.5L8 1L10 3.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+              <path d="M2 14C4 11.5 5.5 10.5 8 10.5C10.5 10.5 12 13.5 14 13.5" stroke="white" stroke-width="1" stroke-linecap="round" fill="none" opacity="0.65"/>
+
+            </svg>
+
+            <h3>Key Tributaries of {river.name}</h3>
+
+          </div>
+
+          <div class="tributaries-grid">
+
+            {riverTributaries.map((tributary) => (
+
+              <div class="tributary-item">
+
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+
+                  <path d="M2 13C4.5 10 6 9 9 9C12 9 13.5 12 16 12C17.5 12 18.5 11.5 19 11" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+
+                  <path d="M10 2V9" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round"/>
+
+                  <path d="M7.5 4.5L10 2L12.5 4.5" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+                </svg>
+
+                <div>
+
+                  <h4>{tributary}</h4>
+
+                  <p>Tributary of {river.name}</p>
+
+                </div>
+
+              </div>
+
+            ))}
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  )}
+
+
+
+  <FAQ faqs={faqs} />
+
+
+
+  {relatedRivers.length > 0 && (
+
+    <section class="related-section">
+
+      <div class="container">
+
+        <h2>Other Rivers in {river.region}</h2>
+
+        <div class="related-grid">
+
+          {relatedRivers.map((relatedRiver) => (
+
+            <a href={`/rivers/${relatedRiver.slug}`} class="related-card" aria-label={`View ${relatedRiver.name} details`}>
+
+              {relatedRiver.image_url && (
+
+                <div class="related-image">
+
+                  <img src={relatedRiver.image_url} alt={`${relatedRiver.name} river`} width="300" height="180" loading="lazy" />
+
+                </div>
+
+              )}
+
+              <h3>{relatedRiver.name}</h3>
+
+              <p>{relatedRiver.length_miles && `${relatedRiver.length_miles} miles`}</p>
+
+            </a>
+
+          ))}
+
+        </div>
+
+      </div>
+
+    </section>
+
+  )}
+
+</Layout>
+
+
+
+<style>
+
+  .container {
+
+    max-width: var(--max-width);
+
+    margin: 0 auto;
+
+    padding: 0 calc(var(--spacing-unit) * 3);
+
+  }
+
+
+
+  .river-sidebar-section {
+
+    padding: calc(var(--spacing-unit) * 6) 0;
+
+    background: var(--color-background-alt);
+
+  }
+
+
+
+  .river-sidebar-layout {
+
+    display: grid;
+
+    grid-template-columns: 1fr 320px;
+
+    gap: calc(var(--spacing-unit) * 3);
+
+    align-items: start;
+
+  }
+
+
+
+  .river-sidebar-main {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: calc(var(--spacing-unit) * 2.5);
+
+    min-width: 0;
+
+  }
+
+
+
+  .river-sidebar-aside {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: calc(var(--spacing-unit) * 3);
+
+  }
+
+
+
+  .map-widget {
+
+    background: var(--color-background);
+
+    border: 2px solid var(--color-border);
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+  }
+
+
+
+  .map-widget-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 3);
+
+    background: linear-gradient(135deg, #1a365d 0%, #0066cc 100%);
+
+    color: white;
+
+  }
+
+
+
+  .map-widget-header h3 {
+
+    margin: 0;
+
+    font-size: 1rem;
+
+    font-weight: 600;
+
+    color: white;
+
+  }
+
+
+
+  .map-widget-body {
+
+    overflow: hidden;
+
+  }
+
+
+
+  @media (max-width: 900px) {
+
+    .river-sidebar-layout {
+
+      grid-template-columns: 1fr;
+
+    }
+
+  }
+
+
+
+  .river-hero {
+
+    background: linear-gradient(135deg, #0a4a8c 0%, #0066cc 50%, #0088a9 100%);
+
+    padding: calc(var(--spacing-unit) * 10) 0 calc(var(--spacing-unit) * 8);
+
+  }
+
+
+
+  .hero-inner {
+
+    width: 100%;
+
+  }
+
+
+
+  .hero-badge {
+
+    display: inline-block;
+
+    background: rgba(255, 255, 255, 0.2);
+
+    color: rgba(255, 255, 255, 0.95);
+
+    padding: calc(var(--spacing-unit) * 0.75) calc(var(--spacing-unit) * 2);
+
+    border-radius: 20px;
+
+    font-size: 0.875rem;
+
+    font-weight: 600;
+
+    letter-spacing: 0.05em;
+
+    text-transform: uppercase;
+
+    margin-bottom: calc(var(--spacing-unit) * 2);
+
+    border: 1px solid rgba(255, 255, 255, 0.3);
+
+  }
+
+
+
+  .river-hero h1 {
+
+    color: white;
+
+    margin-bottom: calc(var(--spacing-unit) * 2);
+
+    font-size: clamp(2rem, 5vw, 3.5rem);
+
+  }
+
+
+
+  .hero-subtitle {
+
+    color: rgba(255, 255, 255, 0.9);
+
+    font-size: 1.125rem;
+
+    font-weight: 500;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: calc(var(--spacing-unit) * 2);
+
+    flex-wrap: wrap;
+
+    margin-bottom: calc(var(--spacing-unit) * 4);
+
+  }
+
+
+
+  .gold-badge {
+
+    background: rgba(255, 215, 0, 0.25);
+
+    color: #ffd700;
+
+    padding: calc(var(--spacing-unit) * 0.5) calc(var(--spacing-unit) * 1.5);
+
+    border-radius: 12px;
+
+    font-size: 0.875rem;
+
+    font-weight: 600;
+
+    border: 1px solid rgba(255, 215, 0, 0.4);
+
+  }
+
+
+
+  .hero-stats {
+
+    display: flex;
+
+    gap: calc(var(--spacing-unit) * 4);
+
+    flex-wrap: wrap;
+
+  }
+
+
+
+  .hero-stat {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+
+  }
+
+
+
+  .stat-label {
+
+    font-size: 0.75rem;
+
+    color: rgba(255, 255, 255, 0.65);
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.08em;
+
+    font-weight: 600;
+
+  }
+
+
+
+  .stat-value {
+
+    font-size: 0.9375rem;
+
+    color: rgba(255, 255, 255, 0.95);
+
+    font-weight: 500;
+
+  }
+
+
+
+  .river-intro {
+
+    padding: calc(var(--spacing-unit) * 10) 0 calc(var(--spacing-unit) * 8);
+
+  }
+
+
+
+  .river-intro h2 {
+
+    text-align: center;
+
+    margin-bottom: calc(var(--spacing-unit) * 4);
+
+  }
+
+
+
+  .lead {
+
+    font-size: 1.25rem;
+
+    line-height: 1.8;
+
+    color: var(--color-text-light);
+
+    max-width: 900px;
+
+    margin: 0 auto;
+
+    text-align: center;
+
+  }
+
+
+
+  .gallery-section {
+
+    padding: calc(var(--spacing-unit) * 8) 0 calc(var(--spacing-unit) * 10);
+
+    background: var(--color-background-alt);
+
+  }
+
+
+
+  .gallery-section h2 {
+
+    text-align: center;
+
+    margin-bottom: calc(var(--spacing-unit) * 6);
+
+  }
+
+
+
+  .gallery-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: calc(var(--spacing-unit) * 3);
+
+    max-width: 960px;
+
+    margin: 0 auto;
+
+  }
+
+
+
+  .gallery-item {
+
+    aspect-ratio: 16/10;
+
+    overflow: hidden;
+
+    border-radius: 12px;
+
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+
+    transition: all 0.3s ease;
+
+  }
+
+
+
+  .gallery-item:hover {
+
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+
+    transform: translateY(-4px);
+
+  }
+
+
+
+  .gallery-item img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    transition: transform 0.4s ease;
+
+  }
+
+
+
+  .gallery-item:hover img {
+
+    transform: scale(1.06);
+
+  }
+
+
+
+  .details-grid-four {
+
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: calc(var(--spacing-unit) * 2);
+
+  }
+
+
+
+  .detail-card {
+
+    background: var(--color-background);
+
+    border-radius: 12px;
+
+    border: 2px solid var(--color-border);
+
+    overflow: hidden;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  }
+
+
+
+  .detail-card:hover {
+
+    border-color: var(--color-primary);
+
+    box-shadow: 0 4px 16px rgba(0, 102, 204, 0.12);
+
+  }
+
+
+
+  .detail-card-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: calc(var(--spacing-unit) * 1.75) calc(var(--spacing-unit) * 2.5);
+
+    background: linear-gradient(135deg, #1a365d 0%, #0066cc 100%);
+
+  }
+
+
+
+  .detail-card-header h3 {
+
+    margin: 0;
+
+    font-size: 0.95rem;
+
+    font-weight: 600;
+
+    color: white;
+
+  }
+
+
+
+  .detail-content {
+
+    padding: calc(var(--spacing-unit) * 2.5);
+
+  }
+
+
+
+  .detail-content p {
+
+    margin-bottom: calc(var(--spacing-unit) * 1);
+
+    color: var(--color-text-light);
+
+    font-size: 0.9rem;
+
+  }
+
+
+
+  .detail-content p:last-child {
+
+    margin-bottom: 0;
+
+  }
+
+
+
+  .detail-content ul {
+
+    list-style: none;
+
+    padding: 0;
+
+    margin: 0;
+
+  }
+
+
+
+  .detail-content ul li {
+
+    padding: calc(var(--spacing-unit) * 0.65) 0;
+
+    color: var(--color-text-light);
+
+    position: relative;
+
+    padding-left: calc(var(--spacing-unit) * 2.5);
+
+    font-size: 0.9rem;
+
+    border-bottom: 1px solid var(--color-border);
+
+  }
+
+
+
+  .detail-content ul li:last-child {
+
+    border-bottom: none;
+
+  }
+
+
+
+  .detail-content ul li::before {
+
+    content: '';
+
+    position: absolute;
+
+    left: 0;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 6px;
+
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: var(--color-secondary);
+
+  }
+
+
+
+  .gold-note {
+
+    background: #fef3c7;
+
+    color: #92400e;
+
+    padding: calc(var(--spacing-unit) * 1);
+
+    border-radius: 6px;
+
+    font-weight: 600;
+
+    margin-top: calc(var(--spacing-unit) * 1);
+
+    font-size: 0.875rem;
+
+  }
+
+
+
+  .features-widget {
+
+    background: var(--color-background);
+
+    border: 2px solid var(--color-border);
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+  }
+
+
+
+  .features-widget-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: calc(var(--spacing-unit) * 1.75) calc(var(--spacing-unit) * 3);
+
+    background: linear-gradient(135deg, #1a365d 0%, #0066cc 100%);
+
+  }
+
+
+
+  .features-widget-header h3 {
+
+    margin: 0;
+
+    font-size: 0.95rem;
+
+    font-weight: 600;
+
+    color: white;
+
+  }
+
+
+
+  .features-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 0;
+
+  }
+
+
+
+  .feature-box {
+
+    padding: calc(var(--spacing-unit) * 3) calc(var(--spacing-unit) * 3);
+
+    border-right: 1px solid var(--color-border);
+
+    border-bottom: 1px solid var(--color-border);
+
+    transition: background 0.2s ease;
+
+  }
+
+
+
+  .feature-box:hover {
+
+    background: var(--color-background-alt);
+
+  }
+
+
+
+  .feature-box:nth-child(even) {
+
+    border-right: none;
+
+  }
+
+
+
+  .feature-box:nth-last-child(-n+2) {
+
+    border-bottom: none;
+
+  }
+
+
+
+  .feature-icon {
+
+    display: flex;
+
+    margin-bottom: calc(var(--spacing-unit) * 1.5);
+
+  }
+
+
+
+  .feature-box h4 {
+
+    margin: 0 0 calc(var(--spacing-unit) * 1);
+
+    font-size: 1rem;
+
+    font-weight: 600;
+
+    color: var(--color-text);
+
+  }
+
+
+
+  .feature-box p {
+
+    color: var(--color-text-light);
+
+    line-height: 1.65;
+
+    font-size: 0.9rem;
+
+    margin: 0;
+
+  }
+
+
+
+  .dyk-widget {
+
+    background: var(--color-background);
+
+    border: 2px solid var(--color-border);
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+  }
+
+
+
+  .dyk-widget-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: calc(var(--spacing-unit) * 1.75) calc(var(--spacing-unit) * 3);
+
+    background: linear-gradient(135deg, #1a365d 0%, #0066cc 100%);
+
+  }
+
+
+
+  .dyk-widget-header h3 {
+
+    margin: 0;
+
+    font-size: 0.95rem;
+
+    font-weight: 600;
+
+    color: white;
+
+  }
+
+
+
+  .facts-grid {
+
+    display: grid;
