@@ -383,7 +383,7 @@ export const rivers: River[] = [
     latitude: 52.35,
     longitude: 0.2,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg',
+    image_url: 'https://upload.wikimedia.org/wikipedia/commons/d/d4/DSCN1566-goba-mooring-after-brownshill-staunch_1200x900.jpg',
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
