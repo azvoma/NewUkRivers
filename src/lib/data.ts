@@ -361,7 +361,7 @@ export const rivers: River[] = [
     latitude: 53.7,
     longitude: -0.3,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/534164/pexels-photo-534164.jpeg',
+    image_url:'https://upload.wikimedia.org/wikipedia/commons/1/1a/Humber_River_from_the_Dundas_Street_Bridge.jpg',
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
