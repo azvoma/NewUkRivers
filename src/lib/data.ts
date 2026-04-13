@@ -383,7 +383,7 @@ export const rivers: River[] = [
     latitude: 52.35,
     longitude: 0.2,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg',
+    image_url: 'https://i.postimg.cc/XJH7TLgx/River_Great_Ouse_Card.jpg',
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
