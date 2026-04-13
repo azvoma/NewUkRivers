@@ -405,7 +405,7 @@ export const rivers: River[] = [
     latitude: 51.45,
     longitude: -2.6,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/1179229/pexels-photo-1179229.jpeg',
+    image_url: 'https://upload.wikimedia.org/wikipedia/commons/8/8d/Bristol%2C_Avon_Gorge_from_Clifton_Down.jpg',
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
