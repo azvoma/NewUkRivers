@@ -361,7 +361,7 @@ export const rivers: River[] = [
     latitude: 53.7,
     longitude: -0.3,
     featured: false,
-    image_url: 'https://i.postimg.cc/Wpy189zc/River_Humber.jpg',
+    image_url: 'https://images.pexels.com/photos/534164/pexels-photo-534164.jpeg',
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -383,7 +383,7 @@ export const rivers: River[] = [
     latitude: 52.35,
     longitude: 0.2,
     featured: false,
-    image_url: 'https://i.postimg.cc/XJH7TLgx/River_Great_Ouse_Card.jpg',
+    image_url: 'https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg',
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -427,7 +427,7 @@ export const rivers: River[] = [
     latitude: 51.4,
     longitude: 0.6,
     featured: false,
-    image_url: 'https://i.postimg.cc/76R6cXxQ/River-Medway-345.jpg',
+    image_url: 'https://images.pexels.com/photos/460672/pexels-photo-460672.jpeg',
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -493,7 +493,7 @@ export const rivers: River[] = [
     latitude: 50.6,
     longitude: -3.4,
     featured: false,
-    image_url: 'https://i.postimg.cc/vmyB9cBB/River_Exe_1.jpg',
+    image_url: 'https://images.pexels.com/photos/1179229/pexels-photo-1179229.jpeg',
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
