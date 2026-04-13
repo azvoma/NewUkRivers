@@ -493,7 +493,7 @@ export const rivers: River[] = [
     latitude: 50.6,
     longitude: -3.4,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/1179229/pexels-photo-1179229.jpeg',
+    image_url: 'https://assets.simpleviewinc.com/simpleview/image/upload/c_fill,f_avif,h_702,q_65,w_1440/v1/clients/devon/shutterstock_2201950909_2b4af95f-45fd-404c-a30c-9a9424e1b09c.jpg',
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
