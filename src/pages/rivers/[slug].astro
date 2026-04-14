@@ -303,17 +303,25 @@ const riverGalleries: Record<string, { url: string; alt: string }[]> = {
 };
 
 
+const secondaryImages = {
+  'River Don': 'https://www.adaa.org.uk/wp-content/uploads/2021/04/seaton-420.jpg',
+  'River Forth': 'https://upload.wikimedia.org/wikipedia/commons/a/ac/River_Forth_near_Stirling.jpg',
+  'River Eden': 'https://images.squarespace-cdn.com/content/v1/5ce6dfa2c2628700016aef63/1582907288035-5C36NOLOJS1RR2PHP809/DJI_0060+2.jpg'
+};
 
 const defaultGallery = [
   { 
     url: river.image_url || 'https://upload.wikimedia.org/wikipedia/commons/1/19/River_Don_near_Alford.jpg', 
-    alt: `${river.name || 'River Don'} - Near Alford` 
+    alt: `${river.name} main view` 
   },
   { 
-    url: 'https://upload.wikimedia.org/wikipedia/commons/1/13/RiverDonAldwarkeLock.jpg', 
-    alt: `${river.name || 'River Don'} - Aldwarke Lock` 
+    url: secondaryImages[river.name], 
+    alt: `${river.name} landscape view` 
   }
-];
+].filter(item => item.url);
+
+
+
 
 const galleryImages = riverGalleries[river.slug] || defaultGallery;
 
