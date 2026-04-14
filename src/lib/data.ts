@@ -427,7 +427,7 @@ export const rivers: River[] = [
     latitude: 51.4,
     longitude: 0.6,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/460672/pexels-photo-460672.jpeg',
+    image_url: 'https://eu-assets.simpleview-europe.com/maidstone2018/imageresizer/?image=%2Fdmsimgs%2FRiver-Medway_474584790.jpg&action=ProductDetailPro',
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
