@@ -713,7 +713,7 @@ export const rivers: River[] = [
     latitude: 51.0,
     longitude: -1.5,
     featured: false,
-    image_url: 'https://images.pexels.com/photos/1118877/pexels-photo-1118877.jpeg',
+    image_url: 'https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg',
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z'
   },
@@ -1013,7 +1013,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Safety',
     excerpt: 'Essential safety tips, best locations, and what you need to know before taking the plunge into Britain\'s rivers.',
     content: null,
-    image_url: 'https://images.pexels.com/photos/1118877/pexels-photo-1118877.jpeg',
+    image_url: 'https://images.pexels.com/photos/3225517/pexels-photo-3225517.jpeg',
     published: true,
     published_at: '2024-03-15T10:00:00Z',
     created_at: '2024-03-15T10:00:00Z'
@@ -1025,7 +1025,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Conservation',
     excerpt: 'Discover why the UK hosts 85% of the world\'s chalk streams and what makes these ecosystems so special.',
     content: null,
-    image_url: 'https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg',
+    image_url: 'https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg',
     published: true,
     published_at: '2024-03-10T10:00:00Z',
     created_at: '2024-03-10T10:00:00Z'
@@ -1037,7 +1037,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Fishing',
     excerpt: 'From the Tay to the Spey, explore Scotland\'s premier salmon fishing destinations and learn about seasonal patterns.',
     content: null,
-    image_url: 'https://images.pexels.com/photos/2901209/pexels-photo-2901209.jpeg',
+    image_url: 'https://images.pexels.com/photos/2832034/pexels-photo-2832034.jpeg',
     published: true,
     published_at: '2024-03-05T10:00:00Z',
     created_at: '2024-03-05T10:00:00Z'
@@ -1049,7 +1049,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Wildlife',
     excerpt: 'A comprehensive guide to the diverse wildlife inhabiting Britain\'s most famous river, from kingfishers to seals.',
     content: null,
-    image_url: 'https://images.pexels.com/photos/460672/pexels-photo-460672.jpeg',
+    image_url: 'https://images.pexels.com/photos/1124454/pexels-photo-1124454.jpeg',
     published: true,
     published_at: '2024-02-28T10:00:00Z',
     created_at: '2024-02-28T10:00:00Z'
@@ -1061,7 +1061,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Activities',
     excerpt: 'Learn where to find gold in rivers like the Tay and Dee, plus essential techniques and legal requirements.',
     content: null,
-    image_url: 'https://images.pexels.com/photos/1118877/pexels-photo-1118877.jpeg',
+    image_url: 'https://images.pexels.com/photos/346885/pexels-photo-346885.jpeg',
     published: true,
     published_at: '2024-02-20T10:00:00Z',
     created_at: '2024-02-20T10:00:00Z'
@@ -1073,7 +1073,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Geography',
     excerpt: 'Explore how UK rivers form, flow, and shape the landscape from mountain springs to coastal estuaries.',
     content: null,
-    image_url: 'https://images.pexels.com/photos/534164/pexels-photo-534164.jpeg',
+    image_url: 'https://images.pexels.com/photos/3714897/pexels-photo-3714897.jpeg',
     published: true,
     published_at: '2024-02-15T10:00:00Z',
     created_at: '2024-02-15T10:00:00Z'
