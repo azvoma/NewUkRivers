@@ -1054,28 +1054,4 @@ export const blogPosts: BlogPost[] = [
     published_at: '2024-02-28T10:00:00Z',
     created_at: '2024-02-28T10:00:00Z'
   },
-  {
-    id: '5',
-    title: 'Gold Panning in Scottish Rivers: A Beginner\'s Guide',
-    slug: 'gold-panning-scotland-guide',
-    category: 'Activities',
-    excerpt: 'Learn where to find gold in rivers like the Tay and Dee, plus essential techniques and legal requirements.',
-    content: null,
-    image_url: 'https://images.pexels.com/photos/1118877/pexels-photo-1118877.jpeg',
-    published: true,
-    published_at: '2024-02-20T10:00:00Z',
-    created_at: '2024-02-20T10:00:00Z'
-  },
-  {
-    id: '6',
-    title: 'Understanding River Geography: From Source to Sea',
-    slug: 'river-geography-uk-explained',
-    category: 'Geography',
-    excerpt: 'Explore how UK rivers form, flow, and shape the landscape from mountain springs to coastal estuaries.',
-    content: null,
-    image_url: 'https://images.pexels.com/photos/534164/pexels-photo-534164.jpeg',
-    published: true,
-    published_at: '2024-02-15T10:00:00Z',
-    created_at: '2024-02-15T10:00:00Z'
-  }
 ];
