@@ -1,7 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 import FAQ from '../components/FAQ.astro';
+
+const breadcrumbItems = [
+  { label: 'Home', href: '/' },
+  { label: 'About', href: '/about/' }
+];
 
 const faqs = [
   {
@@ -36,6 +42,7 @@ const faqs = [
   description="Learn about our UK rivers directory, explore maps of rivers UK-wide, and discover how our guidebook helps you understand rivers, wildlife, and activities."
   keywords="map of rivers uk, map of uk rivers, rivers uk, uk rivers guidebook"
 >
+  <Breadcrumb items={breadcrumbItems} />
   <Hero
     title="About Our UK Rivers Guidebook & Interactive River Map"
   />
