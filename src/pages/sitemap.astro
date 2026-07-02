@@ -1,9 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
-import { getRivers } from '../lib/supabase';
+import { getRivers, getBlogPosts } from '../lib/supabase';
 
 const allRivers = getRivers().sort((a, b) => a.name.localeCompare(b.name));
+const allBlogPosts = getBlogPosts().filter(p => p.published).sort((a, b) =>
+  new Date(b.published_at!).getTime() - new Date(a.published_at!).getTime()
+);
 
 const regions = ['England', 'Scotland', 'Wales', 'Northern Ireland'];
 
@@ -29,6 +32,13 @@ const staticPages = [
   { label: 'Privacy Policy', href: '/privacy', description: 'Our privacy policy' },
   { label: 'Terms of Service', href: '/terms', description: 'Terms and conditions' },
   { label: 'Cookie Policy', href: '/cookies', description: 'How we use cookies' },
+];
+
+const jumpLinks = [
+  { label: 'Site Pages', href: '#site-pages' },
+  { label: 'Blog Articles', href: '#blog-posts' },
+  ...regions.map(region => ({ label: region, href: `#region-${region.toLowerCase().replace(' ', '-')}` })),
+  { label: 'A–Z Index', href: '#by-alphabet' },
 ];
 
 const breadcrumbItems = [
@@ -69,11 +79,9 @@ const schemaData = {
             <h3>Jump to Section</h3>
             <nav>
               <ul>
-                <li><a href="#site-pages">Site Pages</a></li>
-                {regions.map(region => (
-                  <li><a href={`#region-${region.toLowerCase().replace(' ', '-')}`}>{region}</a></li>
+                {jumpLinks.map(link => (
+                  <li><a href={link.href}>{link.label}</a></li>
                 ))}
-                <li><a href="#by-alphabet">A–Z Index</a></li>
               </ul>
             </nav>
           </div>
@@ -85,6 +93,7 @@ const schemaData = {
               {regions.map(region => (
                 <li><strong>{allRivers.filter(r => r.region === region).length}</strong> in {region}</li>
               ))}
+              <li><strong>{allBlogPosts.length}</strong> blog articles</li>
             </ul>
           </div>
         </aside>
@@ -97,6 +106,21 @@ const schemaData = {
                 <li>
                   <a href={page.href}>{page.label}</a>
                   <span class="page-desc">{page.description}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section id="blog-posts" class="sitemap-section">
+            <h2>
+              Blog Articles
+              <span class="section-count">{allBlogPosts.length}</span>
+            </h2>
+            <ul class="page-list">
+              {allBlogPosts.map(post => (
+                <li>
+                  <a href={`/blog/${post.slug}`}>{post.title}</a>
+                  <span class="page-desc">{post.category}</span>
                 </li>
               ))}
             </ul>
