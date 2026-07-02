@@ -1,12 +1,18 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 import FAQ from '../components/FAQ.astro';
 import { getBlogPosts } from '../lib/supabase';
 
 const blogPosts = getBlogPosts().sort((a, b) =>
   new Date(b.published_at!).getTime() - new Date(a.published_at!).getTime()
 );
+
+const breadcrumbItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Blog', href: '/blog/' }
+];
 
 const categories = ['Wildlife', 'Activities', 'Safety', 'Conservation', 'Geography', 'Fishing'];
 
@@ -43,6 +49,7 @@ const faqs = [
   description="Read expert articles about UK rivers, wildlife, river maps, activities, and fun facts. Learn about fishing seasons, wild swimming, plants, and river safety."
   keywords="uk rivers blog, river wildlife uk, river activities uk, uk rivers guide"
 >
+  <Breadcrumb items={breadcrumbItems} />
   <Hero
     title="UK Rivers Blog: Guides, Wildlife, Maps & Activities"
     subtitle="Educational articles covering river wildlife, conservation, maps, activities, and fun facts"
@@ -75,7 +82,7 @@ const faqs = [
     <div class="container">
       <div class="blog-grid">
         {blogPosts.map((post) => (
-          <a href={`/blog/${post.slug}`} class="blog-card">
+          <a href={`/blog/${post.slug}/`} class="blog-card">
             <div class="blog-category">{post.category}</div>
             <h3>{post.title}</h3>
             {post.excerpt && (
