@@ -6,5 +6,8 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://ukrivers.co.uk',
   trailingSlash: 'never',
+  image: {
+    domains: ['images.pexels.com'],
+  },
   integrations: [sitemap()],
 });
