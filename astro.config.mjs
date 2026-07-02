@@ -5,6 +5,6 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://ukrivers.co.uk',
-  trailingSlash: 'never',
+  trailingSlash: 'always',
   integrations: [sitemap()],
 });

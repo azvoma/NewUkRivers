@@ -10,7 +10,7 @@ const allRivers = getRivers().sort((a, b) => a.name.localeCompare(b.name));
 
 const breadcrumbItems = [
   { label: 'Home', href: '/' },
-  { label: 'Rivers Directory', href: '/rivers' }
+  { label: 'Rivers Directory', href: '/rivers/' }
 ];
 
 const schemaData = {
@@ -18,7 +18,7 @@ const schemaData = {
   "@type": "CollectionPage",
   "name": "UK Rivers Directory",
   "description": "Browse all rivers in the UK with comprehensive information about each waterway.",
-  "url": new URL('/rivers', Astro.site).toString(),
+  "url": new URL('/rivers/', Astro.site).toString(),
   "mainEntity": {
     "@type": "ItemList",
     "itemListElement": allRivers.slice(0, 10).map((river, index) => ({
@@ -27,7 +27,7 @@ const schemaData = {
       "item": {
         "@type": "Place",
         "name": river.name,
-        "url": new URL(`/rivers/${river.slug}`, Astro.site).toString(),
+        "url": new URL(`/rivers/${river.slug}/`, Astro.site).toString(),
         "description": river.description
       }
     }))

@@ -26,12 +26,12 @@ const relatedRivers = getRiversByRegion(river.region)
 
 const breadcrumbItems = [
   { label: 'Home', href: '/' },
-  { label: 'Rivers Directory', href: '/rivers' },
-  { label: river.region, href: `/rivers?region=${encodeURIComponent(river.region)}` },
-  { label: river.name, href: `/rivers/${river.slug}` }
+  { label: 'Rivers Directory', href: '/rivers/' },
+  { label: river.region, href: `/rivers/?region=${encodeURIComponent(river.region)}` },
+  { label: river.name, href: `/rivers/${river.slug}/` }
 ];
 
-const riverUrl = new URL(`/rivers/${river.slug}`, Astro.site).toString();
+const riverUrl = new URL(`/rivers/${river.slug}/`, Astro.site).toString();
 const siteUrl = Astro.site?.toString() || "https://ukrivers.co.uk";
 
 const schemaData = [
@@ -76,13 +76,13 @@ const schemaData = [
         "@type": "ListItem",
         "position": 2,
         "name": "Rivers Directory",
-        "item": `${siteUrl}rivers`
+        "item": `${siteUrl}rivers/`
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": `Rivers in ${river.region}`,
-        "item": `${siteUrl}rivers?region=${encodeURIComponent(river.region)}`
+        "item": `${siteUrl}rivers/?region=${encodeURIComponent(river.region)}`
       },
       {
         "@type": "ListItem",

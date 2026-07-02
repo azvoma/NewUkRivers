@@ -25,13 +25,13 @@ const riversByLetter = alphabet
 
 const staticPages = [
   { label: 'Home', href: '/', description: 'UK Rivers Directory homepage' },
-  { label: 'Rivers Directory', href: '/rivers', description: 'Browse and search all UK rivers' },
-  { label: 'About', href: '/about', description: 'About UK Rivers Directory' },
-  { label: 'Blog', href: '/blog', description: 'River guides, tips, and articles' },
-  { label: 'Contact', href: '/contact', description: 'Get in touch with us' },
-  { label: 'Privacy Policy', href: '/privacy', description: 'Our privacy policy' },
-  { label: 'Terms of Service', href: '/terms', description: 'Terms and conditions' },
-  { label: 'Cookie Policy', href: '/cookies', description: 'How we use cookies' },
+  { label: 'Rivers Directory', href: '/rivers/', description: 'Browse and search all UK rivers' },
+  { label: 'About', href: '/about/', description: 'About UK Rivers Directory' },
+  { label: 'Blog', href: '/blog/', description: 'River guides, tips, and articles' },
+  { label: 'Contact', href: '/contact/', description: 'Get in touch with us' },
+  { label: 'Privacy Policy', href: '/privacy/', description: 'Our privacy policy' },
+  { label: 'Terms of Service', href: '/terms/', description: 'Terms and conditions' },
+  { label: 'Cookie Policy', href: '/cookies/', description: 'How we use cookies' },
 ];
 
 const jumpLinks = [
@@ -43,7 +43,7 @@ const jumpLinks = [
 
 const breadcrumbItems = [
   { label: 'Home', href: '/' },
-  { label: 'Sitemap', href: '/sitemap' }
+  { label: 'Sitemap', href: '/sitemap/' }
 ];
 
 const schemaData = {
@@ -51,7 +51,7 @@ const schemaData = {
   "@type": "WebPage",
   "name": "UK Rivers Directory Sitemap",
   "description": "Complete sitemap of all UK river pages, blog posts, and site pages organized by region and alphabet.",
-  "url": new URL('/sitemap', Astro.site).toString()
+  "url": new URL('/sitemap/', Astro.site).toString()
 };
 ---
 
@@ -119,7 +119,7 @@ const schemaData = {
             <ul class="page-list">
               {allBlogPosts.map(post => (
                 <li>
-                  <a href={`/blog/${post.slug}`}>{post.title}</a>
+                  <a href={`/blog/${post.slug}/`}>{post.title}</a>
                   <span class="page-desc">{post.category}</span>
                 </li>
               ))}
@@ -135,7 +135,7 @@ const schemaData = {
               <ul class="river-list">
                 {rivers.map(river => (
                   <li>
-                    <a href={`/rivers/${river.slug}`}>{river.name}</a>
+                    <a href={`/rivers/${river.slug}/`}>{river.name}</a>
                     {river.length_miles && (
                       <span class="river-meta">{river.length_miles} miles</span>
                     )}
@@ -159,7 +159,7 @@ const schemaData = {
                   <ul class="river-list river-list--alpha">
                     {rivers.map(river => (
                       <li>
-                        <a href={`/rivers/${river.slug}`}>{river.name}</a>
+                        <a href={`/rivers/${river.slug}/`}>{river.name}</a>
                         <span class="river-meta">{river.region}</span>
                       </li>
                     ))}
