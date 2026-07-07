@@ -1,13 +1,13 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import FAQ from '../../components/FAQ.astro';
-import Breadcrumb from '../../components/Breadcrumb.astro';
-import RiverStatsWidget from '../../components/RiverStatsWidget.astro';
-import GearSidebar from '../../components/GearSidebar.astro';
-import WaterLevelWidget from '../../components/WaterLevelWidget.astro';
-import RelatedRivers from '../../components/RelatedRivers.astro';
-import RiverFactFile from '../../components/RiverFactFile.astro';
-import { getRivers, getRiversByRegion } from '../../lib/supabase';
+import Layout from '../../../layouts/Layout.astro';
+import FAQ from '../../../components/FAQ.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import RiverStatsWidget from '../../../components/RiverStatsWidget.astro';
+import GearSidebar from '../../../components/GearSidebar.astro';
+import WaterLevelWidget from '../../../components/WaterLevelWidget.astro';
+import RelatedRivers from '../../../components/RelatedRivers.astro';
+import RiverFactFile from '../../../components/RiverFactFile.astro';
+import { getRivers, getRiversByRegion } from '../../../lib/supabase';
 
 export async function getStaticPaths() {
   const rivers = getRivers();
