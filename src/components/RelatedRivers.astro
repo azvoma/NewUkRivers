@@ -51,7 +51,7 @@ const sharedActivityLabel = (candidate: River): string => {
     </div>
     <div class="rr-list">
       {related.map((river) => (
-        <a href={`/rivers/${river.slug}`} class="rr-item" aria-label={`Explore ${river.name}`}>
+        <a href={`/rivers/${river.slug}/`} class="rr-item" aria-label={`Explore ${river.name}`}>
           {river.image_url && (
             <div class="rr-thumb">
               <img src={river.image_url} alt={`${river.name}`} width="72" height="56" loading="lazy" />

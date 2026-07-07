@@ -149,7 +149,7 @@ const riverData = getRivers().map(r => ({
         const actMatch = r.activities.find(a => norm(a).includes(norm(trimmed)));
         const badge = actMatch || (r.activities[0] || '');
         return `
-          <li class="hs-item" role="option" aria-selected="false" data-idx="${i}" data-href="/rivers/${r.slug}">
+          <li class="hs-item" role="option" aria-selected="false" data-idx="${i}" data-href="/rivers/${r.slug}/">
             <div class="hs-item-icon" aria-hidden="true">
               <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
                 <path d="M1.5 9.5C3 7.5 4.5 6.5 7 6.5C9.5 6.5 11 9 13 9" stroke="#0066cc" stroke-width="1.5" stroke-linecap="round" fill="none"/>
@@ -203,7 +203,7 @@ const riverData = getRivers().map(r => ({
       e.preventDefault();
       if (activeIdx >= 0 && matches[activeIdx]) {
         console.log('Searching for:', matches[activeIdx].name);
-        window.location.href = `/rivers/${matches[activeIdx].slug}`;
+        window.location.href = `/rivers/${matches[activeIdx].slug}/`;
       } else if (input.value.trim()) {
         window.location.href = `/rivers?q=${encodeURIComponent(input.value.trim())}`;
       }

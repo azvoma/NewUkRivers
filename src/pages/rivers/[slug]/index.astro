@@ -870,7 +870,7 @@ const exploreActivities = [
         <h2>Other Rivers in {river.region}</h2>
         <div class="related-grid">
           {relatedRivers.map((relatedRiver) => (
-            <a href={`/rivers/${relatedRiver.slug}`} class="related-card" aria-label={`View ${relatedRiver.name} details`}>
+            <a href={`/rivers/${relatedRiver.slug}/`} class="related-card" aria-label={`View ${relatedRiver.name} details`}>
               {relatedRiver.image_url && (
                 <div class="related-image">
                   <img src={relatedRiver.image_url} alt={`${relatedRiver.name} river`} width="300" height="180" loading="lazy" />

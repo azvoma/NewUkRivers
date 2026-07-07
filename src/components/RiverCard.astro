@@ -17,7 +17,7 @@ const localCardImages: Record<string, string> = {
 const cardImage = localCardImages[river.slug] || river.image_url;
 ---
 
-<a href={`/rivers/${river.slug}`} class="river-card" data-activities={river.activities.join('|')} data-region={river.region}>
+<a href={`/rivers/${river.slug}/`} class="river-card" data-activities={river.activities.join('|')} data-region={river.region}>
   {cardImage && (
     <div class="river-image">
       <img src={cardImage} alt={`${river.name} - UK river flowing through ${river.region}`} width="400" height="200" loading="lazy" />
