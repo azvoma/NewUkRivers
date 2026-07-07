@@ -8,8 +8,8 @@ const regions = [
     name: 'England',
     slug: 'england',
     description: 'From the mighty Thames to the scenic Lake District rivers, explore England\'s diverse waterways.',
-    color: '#0066cc',
-    lightColor: '#dbeafe',
+    color: '#0d3b9e',
+    lightColor: '#dceffe',
     icon: 'england',
     subRegions: [
       { name: 'South East England', query: 'England', activities: ['Kayaking', 'Fishing'] },
@@ -21,8 +21,8 @@ const regions = [
     name: 'Scotland',
     slug: 'scotland',
     description: 'Wild Highland rivers renowned for salmon fishing, gold panning, and spectacular scenery.',
-    color: '#1d4ed8',
-    lightColor: '#dbeafe',
+    color: '#1056c0',
+    lightColor: '#dceffe',
     icon: 'scotland',
     subRegions: [
       { name: 'Scottish Highlands', query: 'Scotland', activities: ['Fishing', 'Kayaking'] },
@@ -45,8 +45,8 @@ const regions = [
     name: 'Northern Ireland',
     slug: 'northern-ireland',
     description: 'Peaceful rivers flowing through rolling drumlin country and dramatic coastal landscapes.',
-    color: '#7c3aed',
-    lightColor: '#ede9fe',
+    color: '#17c0e8',
+    lightColor: '#d0f4fc',
     icon: 'ni',
     subRegions: [
       { name: 'River Bann Corridor', query: 'Northern Ireland', activities: ['Fishing', 'Walking'] },
@@ -277,9 +277,9 @@ const riverCountByRegion = regions.map(r => ({
   }
 
   .activity-tag:hover {
-    border-color: var(--color-primary);
-    color: var(--color-primary);
-    background: #dbeafe;
+    border-color: #0d3b9e;
+    color: #0d3b9e;
+    background: #dceffe;
   }
 
   @media (max-width: 640px) {

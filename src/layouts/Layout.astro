@@ -163,22 +163,22 @@ const currentPath = Astro.url.pathname;
 
 <style is:global>
 	:root {
-		--color-primary: #0066cc;
-		--color-primary-dark: #004d99;
-		--color-secondary: #00a86b;
-		--color-accent: #ff6b35;
-		--color-text: #1a1a1a;
-		--color-text-light: #4a5568;
+		--color-primary: #0d3b9e;
+		--color-primary-dark: #082d7a;
+		--color-secondary: #17c0e8;
+		--color-accent: #17c0e8;
+		--color-text: #12213a;
+		--color-text-light: #4a6080;
 		--color-background: #ffffff;
-		--color-background-alt: #f7fafc;
-		--color-border: #e2e8f0;
+		--color-background-alt: #eef5fb;
+		--color-border: #d0e4f5;
 		--color-success: #48bb78;
 		--color-warning: #ed8936;
 		--color-error: #f56565;
 		--spacing-unit: 8px;
 		--max-width: 1200px;
 		--header-height: 70px;
-		--focus-ring: 0 0 0 3px rgba(0, 102, 204, 0.3);
+		--focus-ring: 0 0 0 3px rgba(13, 59, 158, 0.3);
 	}
 
 	.skip-link {
@@ -282,8 +282,8 @@ const currentPath = Astro.url.pathname;
 		top: 0;
 		left: 0;
 		right: 0;
-		background: var(--color-background);
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+		background: #ffffff;
+		box-shadow: 0 2px 12px rgba(13, 59, 158, 0.1);
 		z-index: 1000;
 		height: var(--header-height);
 	}
@@ -364,11 +364,11 @@ const currentPath = Astro.url.pathname;
 	.nav-links a:hover,
 	.nav-links a.active {
 		color: var(--color-primary);
-		background: rgba(0, 102, 204, 0.1);
+		background: rgba(13, 59, 158, 0.08);
 	}
 
 	.footer {
-		background: var(--color-text);
+		background: #0d2d6e;
 		color: #ffffff;
 		padding: calc(var(--spacing-unit) * 6) 0 calc(var(--spacing-unit) * 3);
 		margin-top: calc(var(--spacing-unit) * 10);
@@ -464,7 +464,7 @@ const currentPath = Astro.url.pathname;
 		bottom: 0;
 		left: 0;
 		right: 0;
-		background: var(--color-text);
+		background: #0d2d6e;
 		color: white;
 		padding: calc(var(--spacing-unit) * 3);
 		transform: translateY(100%);
@@ -494,7 +494,7 @@ const currentPath = Astro.url.pathname;
 	}
 
 	.cookie-content a {
-		color: var(--color-secondary);
+		color: #17c0e8;
 		text-decoration: underline;
 	}
 
@@ -525,7 +525,7 @@ const currentPath = Astro.url.pathname;
 			left: 0;
 			right: 0;
 			flex-direction: column;
-			background: var(--color-background);
+			background: #ffffff;
 			padding: calc(var(--spacing-unit) * 3);
 			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 			opacity: 0;
