@@ -1,0 +1,283 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import heroBadge from '../assets/Hero_Logo.png';
+
+const breadcrumbItems = [
+  { label: 'Home', href: '/' },
+  { label: 'River Heroes', href: '/river-heroes/' }
+];
+
+const riverHeroes = [
+  { name: "River Action", url: "https://riveractionuk.com/", blurb: "National campaign group leading the fight against river pollution and sewage discharge across the UK, backed by a practical 'River Rescue Kit' for grassroots campaigners." },
+  { name: "The Rivers Trust", url: "https://theriverstrust.org/", blurb: "Umbrella charity connecting dozens of local river trusts across England and Wales, coordinating catchment-wide restoration work." },
+  { name: "Surfers Against Sewage", url: "https://www.sas.org.uk/", blurb: "Campaigns nationwide against sewage pollution in rivers and coastal waters, backed by a network of regional volunteer representatives." },
+  { name: "WildFish", url: "https://wildfish.org/", blurb: "Formerly the Salmon and Trout Association, working to protect wild fish populations and the rivers they depend on." },
+  { name: "Wildfowl & Wetlands Trust", url: "https://www.wwt.org.uk/", blurb: "Dedicated to saving wetlands for wildlife and people, running flagship reserves and conservation programmes across the UK." },
+  { name: "The Riverfly Partnership", url: "https://www.riverflies.org/", blurb: "A national network of organisations protecting rivers by monitoring riverfly populations, an early-warning signal for water quality." },
+  { name: "Freshwater Habitats Trust", url: "https://freshwaterhabitats.org.uk/", blurb: "Formerly Pond Conservation, working to protect and restore freshwater habitats — rivers, ponds and wetlands — across the country." },
+  { name: "The Wildlife Trusts", url: "https://www.wildlifetrusts.org/", blurb: "A UK-wide federation of local trusts carrying out hands-on river and wetland conservation, from habitat restoration to community river walks." },
+  { name: "Stormwater Shepherds", url: "https://www.stormwatershepherds.org.uk/", blurb: "Tackling plastic and urban pollution at the source, working with communities to stop waste reaching rivers." },
+  { name: "The Sewage Campaign Network", url: "https://www.sewagecampaignnetwork.org.uk/", blurb: "A coalition of inland water users and campaign groups uniting to end sewage pollution in UK rivers." },
+  { name: "Afonydd Cymru", url: "https://afonyddcymru.org/", blurb: "The umbrella body linking Wales' six river trusts, coordinating conservation work across Welsh catchments." },
+  { name: "Atlantic Salmon Trust", url: "https://atlanticsalmontrust.org/", blurb: "Research-led charity working to restore wild Atlantic salmon and sea trout populations in UK rivers." },
+  { name: "Save the Wye", url: "https://savethewye.org/", blurb: "Grassroots campaign fighting to protect the River Wye, one of Britain's most treasured waterways, from agricultural pollution." },
+  { name: "Ribble Rivers Trust", url: "https://ribbletrust.org.uk/", blurb: "Restoring habitats and water quality across the Ribble catchment in Lancashire through hands-on conservation projects." },
+  { name: "Ouse & Adur Rivers Trust", url: "https://oart.org.uk/", blurb: "Formed from the merger of two Sussex conservation societies, working across the Ouse and Adur catchments to protect local rivers." },
+  { name: "South East Rivers Trust", url: "https://www.southeastriverstrust.org/", blurb: "Leads river restoration projects across South East England, including reviving London's River Wandle." },
+  { name: "Bristol Avon Rivers Trust", url: "https://bristolavonriverstrust.org/", blurb: "Champions the Bristol Avon catchment, running restoration projects to improve habitat and water quality." },
+  { name: "West Country Rivers Trust", url: "https://wrt.org.uk/", blurb: "Works across Cornwall and Devon on catchment-scale conservation, from crayfish protection to river restoration." },
+  { name: "Eden Rivers Trust", url: "https://edenriverstrust.org.uk/", blurb: "Protects and restores the River Eden catchment in Cumbria through habitat and water quality projects." },
+  { name: "Wye and Usk Foundation", url: "https://wyeuskfoundation.org/", blurb: "Works across the Wye and Usk catchments on fisheries and habitat restoration to protect two of Wales' most iconic rivers." },
+  { name: "Thames21", url: "https://www.thames21.org.uk/", blurb: "London's leading river restoration charity, running community clean-ups and habitat projects across the capital's waterways." },
+  { name: "Quaggy Waterways Action Group", url: "https://qwag.org.uk/", blurb: "Community group in South East London that has spent decades restoring the River Quaggy and its waterways." },
+  { name: "The London Waterkeeper", url: "https://www.londonwaterkeeper.org.uk/", blurb: "Monitors and campaigns against pollution across London's rivers, holding polluters accountable." },
+  { name: "Cam Valley Forum", url: "https://camvalleyforum.uk/", blurb: "Works to protect and improve the environment of the River Cam and its tributaries in Cambridgeshire." }
+];
+---
+
+<Layout
+  title="River Heroes | UK Organisations Fighting for Our Rivers"
+  description="Celebrating the UK websites and organisations doing amazing things for our rivers — from national campaigners to grassroots river trusts."
+  keywords="uk river organisations, river conservation uk, river charities, river trusts uk"
+>
+  <Breadcrumb items={breadcrumbItems} />
+
+  <Hero
+    title="River Heroes"
+    subtitle="Celebrating the organisations and campaigns doing extraordinary work for UK rivers"
+  />
+
+  <section class="intro-section">
+    <div class="container">
+      <h2>Standing Up for UK Rivers</h2>
+      <p>
+        These groups, trusts, and campaigns are on the front line — restoring habitats, monitoring water quality, holding polluters to account, and rallying communities around rivers they love. They deserve recognition.
+      </p>
+    </div>
+  </section>
+
+  <section class="heroes-section">
+    <div class="container">
+      <div class="heroes-grid">
+        {riverHeroes.map((hero) => {
+          const initials = hero.name
+            .split(' ')
+            .filter(w => w.length > 2)
+            .slice(0, 2)
+            .map(w => w[0].toUpperCase())
+            .join('');
+          return (
+            <article class="hero-card">
+              <div class="badge-wrap">
+                <img
+                  src={heroBadge.src}
+                  alt="Hero badge"
+                  class="hero-badge"
+                  width="72"
+                  height="72"
+                  loading="lazy"
+                />
+              </div>
+              <div class="monogram" aria-hidden="true">{initials}</div>
+              <h3 class="hero-name">{hero.name}</h3>
+              <p class="hero-blurb">{hero.blurb}</p>
+              <a
+                href={hero.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="visit-link"
+                aria-label={`Visit ${hero.name} website (opens in new tab)`}
+              >
+                Visit site &rarr;
+              </a>
+            </article>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <section class="closing-section">
+    <div class="container">
+      <h2>Know Another River Hero?</h2>
+      <p>
+        If there's an organisation we've missed, get in touch — we'd love to shine a light on more of the brilliant people working to protect UK rivers.
+      </p>
+      <a href="/contact/" class="cta-button">Get in Touch</a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 calc(var(--spacing-unit) * 3);
+  }
+
+  .intro-section {
+    padding: calc(var(--spacing-unit) * 8) 0;
+    background: var(--color-background-alt);
+    text-align: center;
+  }
+
+  .intro-section h2 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    margin-bottom: calc(var(--spacing-unit) * 3);
+  }
+
+  .intro-section p {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: var(--color-text-light);
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .heroes-section {
+    padding: calc(var(--spacing-unit) * 10) 0;
+  }
+
+  .heroes-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: calc(var(--spacing-unit) * 3);
+  }
+
+  .hero-card {
+    position: relative;
+    background: var(--color-background-alt);
+    border: 2px solid var(--color-border);
+    border-radius: 12px;
+    padding: calc(var(--spacing-unit) * 4);
+    padding-top: calc(var(--spacing-unit) * 5);
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    overflow: visible;
+  }
+
+  .hero-card:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 8px 24px rgba(13, 59, 158, 0.12);
+    transform: translateY(-4px);
+  }
+
+  .badge-wrap {
+    position: absolute;
+    top: -18px;
+    right: 16px;
+    transform: rotate(-9deg);
+    transform-origin: center center;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .hero-badge {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    display: block;
+    filter: drop-shadow(0 2px 6px rgba(13, 59, 158, 0.18));
+  }
+
+  .monogram {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: calc(var(--spacing-unit) * 2);
+    flex-shrink: 0;
+    letter-spacing: 0.05em;
+  }
+
+  .hero-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: calc(var(--spacing-unit) * 1.5);
+    line-height: 1.3;
+  }
+
+  .hero-blurb {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: var(--color-text-light);
+    flex: 1;
+    margin-bottom: calc(var(--spacing-unit) * 2.5);
+  }
+
+  .visit-link {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color 0.2s ease, gap 0.2s ease;
+    gap: 4px;
+    margin-top: auto;
+  }
+
+  .visit-link:hover {
+    color: var(--color-primary-dark);
+    gap: 8px;
+  }
+
+  .closing-section {
+    padding: calc(var(--spacing-unit) * 10) 0;
+    background: var(--color-background-alt);
+    text-align: center;
+  }
+
+  .closing-section h2 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    margin-bottom: calc(var(--spacing-unit) * 2);
+  }
+
+  .closing-section p {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: var(--color-text-light);
+    max-width: 600px;
+    margin: 0 auto calc(var(--spacing-unit) * 4);
+  }
+
+  .cta-button {
+    display: inline-block;
+    background: var(--color-primary);
+    color: #ffffff;
+    padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 5);
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+
+  .cta-button:hover {
+    background: var(--color-primary-dark);
+    color: #ffffff;
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 1024px) {
+    .heroes-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .heroes-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
