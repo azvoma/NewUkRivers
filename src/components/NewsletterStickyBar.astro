@@ -39,6 +39,7 @@
 </div>
 
 <script>
+  import { supabase } from '../lib/supabaseClient';
   const bar = document.getElementById('newsletter-sticky-bar') as HTMLElement;
   const form = document.getElementById('nsb-form') as HTMLFormElement;
   const success = document.getElementById('nsb-success') as HTMLElement;
@@ -75,7 +76,16 @@
     submitBtn.textContent = '...';
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 800));
+      const { error } = await supabase
+        .from('newsletter_subscribers')
+        .insert({ email, source: 'sticky_bar' });
+
+      // A duplicate email violates the unique constraint (23505). Treat that
+      // as success: the visitor is already subscribed, so show the thank-you.
+      if (error && error.code !== '23505') {
+        throw error;
+      }
+
       form.style.display = 'none';
       success.style.display = 'flex';
       localStorage.setItem('nlBarDismissed', 'true');
@@ -86,6 +96,9 @@
     } catch (_e) {
       submitBtn.disabled = false;
       submitBtn.textContent = 'Subscribe';
+      emailInput?.focus();
+      emailInput?.setCustomValidity('Something went wrong. Please try again.');
+      emailInput?.reportValidity();
     }
   });
 </script>
