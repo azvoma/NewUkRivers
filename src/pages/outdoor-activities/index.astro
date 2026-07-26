@@ -1,0 +1,898 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const breadcrumbItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Outdoor Activities', href: '/outdoor-activities/' }
+];
+
+const siteUrl = Astro.site?.toString() || 'https://ukrivers.co.uk';
+
+const schemaData = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  'name': 'The Ultimate Guide to UK River Sports & Outdoor Activities',
+  'description': 'Your hub for outdoor activities on UK rivers — wild swimming gear and safety, river fishing tackle and fisheries, plus kayaking, canoeing and paddleboarding essentials.',
+  'url': `${siteUrl}/outdoor-activities/`,
+  'isPartOf': { '@type': 'WebSite', 'name': 'UK Rivers Directory', 'url': siteUrl },
+  'about': [
+    { '@type': 'Thing', 'name': 'Wild swimming in the UK' },
+    { '@type': 'Thing', 'name': 'River fishing in the UK' },
+    { '@type': 'Thing', 'name': 'Kayaking and canoeing in the UK' },
+    { '@type': 'Thing', 'name': 'Stand-up paddleboarding in the UK' }
+  ]
+};
+
+const changingRobes = [
+  { brand: 'Dryrobe Advance 2.0', price: '£155', warmth: 5, url: '#' },
+  { brand: 'Red Original Performance', price: '£120', warmth: 4, url: '#' },
+  { brand: 'Sundried Premium Robe', price: '£65', warmth: 3, url: '#' },
+  { brand: 'Mountain Warehouse Budget', price: '£35', warmth: 2, url: '#' }
+];
+
+const riversideSaunas = [
+  { name: 'Wye Valley Woodland Sauna', location: 'River Wye, Herefordshire', desc: 'Wood-fired sauna with river plunge pool.' },
+  { name: 'Trent Riverside Retreat', location: 'River Trent, Nottinghamshire', desc: 'Mobile sauna hire on the riverbank.' },
+  { name: 'Thamesmead Floating Sauna', location: 'River Thames, Oxfordshire', desc: 'Eco sauna on a restored Thames barge.' },
+  { name: 'Dee Estuary Sauna Society', location: 'River Dee, Aberdeenshire', desc: 'Community sauna with estuary swims.' }
+];
+
+const wadersAndBoots = [
+  { name: 'Fox Eos Waders', price: '£180', pros: 'Breathable, lightweight', cons: 'Slim fit only', url: '#' },
+  { name: 'Greys GTS Wading Boots', price: '£85', pros: 'Grippy sole, durable', cons: 'Heavier than rivals', url: '#' },
+  { name: 'Snowbee Waderfoot', price: '£140', pros: 'Great value, warm', cons: 'Less breathable', url: '#' },
+  { name: 'Vision Ikon', price: '£220', pros: 'Premium build, 4-season', cons: 'Premium price', url: '#' },
+  { name: 'Hardcore STX Wading Boot', price: '£165', pros: 'Rock-solid grip', cons: 'Stiff to break in', url: '#' }
+];
+
+const fisheries = [
+  { name: 'Wye Fisheries Syndicate', catch: 'Barbel & Chub', location: 'River Wye, Wales' },
+  { name: 'Trent Valley Angling', catch: 'Pike & Carp', location: 'River Trent, Midlands' },
+  { name: 'Dee Salmon Club', catch: 'Atlantic Salmon', location: 'River Dee, Scotland' },
+  { name: 'Test & Itchen Estates', catch: 'Brown Trout', location: 'Chalk Streams, Hampshire' }
+];
+
+const supBoards = [
+  { name: 'Red Paddle Co Sport 10\'6"', price: '£399', specs: '32" wide, 4.7" thick, 150kg payload', url: '#' },
+  { name: 'Bluefin Cruise 10\'8"', price: '£379', specs: '32" wide, 4.7" thick, inflatable kayak seat', url: '#' },
+  { name: 'Itiwit Touring 11"', price: '£350', specs: '30" wide, touring shape, 160kg payload', url: '#' },
+  { name: 'Decathlon Egaï 10\'', price: '£299', specs: '33" wide, stable beginner shape', url: '#' }
+];
+---
+
+<Layout
+  title="UK River Outdoor Activities | Wild Swimming, Fishing, Kayaking & SUP"
+  description="The ultimate guide to outdoor activities on UK rivers — wild swimming gear, river fishing tackle, kayaking, canoeing and paddleboarding essentials."
+  keywords="outdoor activities uk rivers, wild swimming uk, river fishing uk, kayaking uk rivers, canoeing uk, paddleboarding uk, inflatable sup uk, changing robes, waders and boots"
+  type="website"
+  schemaData={schemaData}
+>
+  <Breadcrumb items={breadcrumbItems} />
+
+  <!-- HERO / PAGE HEADER -->
+  <section class="hub-hero">
+    <div class="container">
+      <h1>The Ultimate Guide to UK River Sports &amp; Outdoor Activities</h1>
+      <p class="hero-lede">
+        From the chalk streams of Hampshire to the rugged Highland rivers of Scotland, UK rivers offer
+        world-class outdoor activities. This hub covers everything you need for safe, rewarding days on
+        the water — wild swimming gear and safety, river fishing tackle and local fisheries, plus
+        kayaking, canoeing and paddleboarding essentials.
+      </p>
+      <nav class="hub-jump" aria-label="Jump to section">
+        <a href="#wild-swimming">Wild Swimming</a>
+        <a href="#river-fishing">River Fishing</a>
+        <a href="#paddlesports">Kayaking &amp; SUP</a>
+      </nav>
+    </div>
+  </section>
+
+  <!-- SECTION 1: WILD SWIMMING -->
+  <section id="wild-swimming" class="hub-section">
+    <div class="container">
+      <h2>Wild Swimming Gear &amp; Safety</h2>
+      <p class="section-intro">
+        Wild swimming in UK rivers has surged in popularity, and the right gear keeps every dip safe
+        and comfortable. Furthermore, checking live water quality before you swim is essential — so we
+        have built a placeholder water quality tracker below to surface sewage alerts in real time.
+      </p>
+
+      <!-- Feature 1: Live Water Quality & Sewage Alert Tracker -->
+      <div class="feature-block">
+        <h3>Live Water Quality &amp; Sewage Alert Tracker</h3>
+        <p class="feature-caption">
+          Placeholder live data dashboard. Swap the static sample below with your own API data from
+          the Environment Agency or Surfers Against Sewage.
+        </p>
+        <div class="dashboard" data-widget="water-quality">
+          <div class="dashboard-head">
+            <span class="live-dot" aria-hidden="true"></span>
+            <span class="live-label">LIVE</span>
+            <span class="dashboard-title">UK River Water Quality &amp; Sewage Alerts</span>
+          </div>
+          <div class="dashboard-grid">
+            <div class="metric metric--ok">
+              <span class="metric-label">River Wye — Hereford</span>
+              <span class="metric-value">Good</span>
+              <span class="metric-sub">E. coli: Low</span>
+            </div>
+            <div class="metric metric--warn">
+              <span class="metric-label">River Thames — Oxford</span>
+              <span class="metric-value">Caution</span>
+              <span class="metric-sub">Sewage event: 2h ago</span>
+            </div>
+            <div class="metric metric--bad">
+              <span class="metric-label">River Trent — Nottingham</span>
+              <span class="metric-value">Avoid</span>
+              <span class="metric-sub">Active spill: 45 min</span>
+            </div>
+            <div class="metric metric--ok">
+              <span class="metric-label">River Dee — Aberdeen</span>
+              <span class="metric-value">Good</span>
+              <span class="metric-sub">E. coli: Low</span>
+            </div>
+          </div>
+          <p class="dashboard-foot">Data source placeholder — replace with live API feed.</p>
+        </div>
+      </div>
+
+      <!-- Feature 2: Changing Robes Comparison Table -->
+      <div class="feature-block">
+        <h3>Premium Changing Robes vs. Budget Alternatives</h3>
+        <p class="feature-caption">
+          A warm changing robe is the single most important wild swimming accessory for UK rivers.
+          Compare premium and budget options below.
+        </p>
+        <div class="table-wrap">
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th scope="col">Brand</th>
+                <th scope="col">Price</th>
+                <th scope="col">Warmth Rating</th>
+                <th scope="col">Check Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              {changingRobes.map((robe) => (
+                <tr>
+                  <td data-label="Brand">{robe.brand}</td>
+                  <td data-label="Price">{robe.price}</td>
+                  <td data-label="Warmth Rating" aria-label={`Warmth ${robe.warmth} of 5`}>
+                    <span class="stars" aria-hidden="true">
+                      {[1,2,3,4,5].map((n) => (
+                        <span class={n <= robe.warmth ? 'star filled' : 'star'}>★</span>
+                      ))}
+                    </span>
+                  </td>
+                  <td data-label="Check Price">
+                    <a href={robe.url} class="affiliate-btn" rel="sponsored nofollow" target="_blank">Check Price</a>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Feature 3: Featured Riverside Saunas -->
+      <div class="feature-block">
+        <h3>Featured Riverside Saunas</h3>
+        <p class="feature-caption">
+          Premium directory listings for riverside saunas across the UK. Sample listings below —
+          contact us to feature your business here.
+        </p>
+        <div class="cards-grid cards-grid--saunas">
+          {riversideSaunas.map((sauna) => (
+            <article class="directory-card">
+              <div class="directory-logo" aria-hidden="true">SAUNA</div>
+              <h4>{sauna.name}</h4>
+              <p class="directory-loc">{sauna.location}</p>
+              <p class="directory-desc">{sauna.desc}</p>
+              <button type="button" class="cta-accent">Book Now</button>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <!-- Hub-and-Spoke internal links -->
+      <p class="spoke-links">
+        Looking for the best spots? Read our specific guides for the
+        <a href="/rivers/river-wye/">River Wye</a>,
+        <a href="/rivers/river-trent/">River Trent</a>,
+        <a href="/rivers/river-thames/">River Thames</a> and
+        <a href="/rivers/river-dee/">River Dee</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- SECTION 2: RIVER FISHING -->
+  <section id="river-fishing" class="hub-section hub-section--alt">
+    <div class="container">
+      <h2>River Fishing Gear &amp; Local Fisheries</h2>
+      <p class="section-intro">
+        River fishing in the UK rewards anglers with everything from barbel on the Wye to Atlantic
+        salmon on the Dee. However, river conditions change fast — so check live river level data
+        before you head out, then kit up with the right waders and boots and book a beat at a premium
+        local fishery.
+      </p>
+
+      <!-- Feature 1: Live River Level Data -->
+      <div class="feature-block">
+        <h3>Live River Level Data</h3>
+        <p class="feature-caption">
+          Placeholder live data widget. Swap the sample readings below with your own API data from
+          the Environment Agency gauge network.
+        </p>
+        <div class="dashboard" data-widget="river-levels">
+          <div class="dashboard-head">
+            <span class="live-dot" aria-hidden="true"></span>
+            <span class="live-label">LIVE</span>
+            <span class="dashboard-title">UK River Levels — Fishing Gauges</span>
+          </div>
+          <div class="dashboard-grid dashboard-grid--gauge">
+            <div class="gauge">
+              <span class="gauge-label">River Wye — Belmont</span>
+              <span class="gauge-value">0.74 m</span>
+              <span class="gauge-trend trend-up">Rising</span>
+            </div>
+            <div class="gauge">
+              <span class="gauge-label">River Trent — Colwick</span>
+              <span class="gauge-value">1.12 m</span>
+              <span class="gauge-trend trend-down">Falling</span>
+            </div>
+            <div class="gauge">
+              <span class="gauge-label">River Thames — Kingston</span>
+              <span class="gauge-value">2.34 m</span>
+              <span class="gauge-trend trend-flat">Steady</span>
+            </div>
+            <div class="gauge">
+              <span class="gauge-label">River Dee — Park</span>
+              <span class="gauge-value">0.46 m</span>
+              <span class="gauge-trend trend-up">Rising</span>
+            </div>
+          </div>
+          <p class="dashboard-foot">Data source placeholder — replace with live API feed.</p>
+        </div>
+      </div>
+
+      <!-- Feature 2: Top 5 Waders & Boots -->
+      <div class="feature-block">
+        <h3>Top 5 Waders &amp; Boots</h3>
+        <p class="feature-caption">
+          Our top-converting affiliate picks for river fishing waders and boots, with brief pros and
+          cons to help you choose.
+        </p>
+        <div class="cards-grid cards-grid--products">
+          {wadersAndBoots.map((item) => (
+            <article class="product-card">
+              <div class="product-image" aria-hidden="true">PRODUCT</div>
+              <h4>{item.name}</h4>
+              <p class="product-price">{item.price}</p>
+              <ul class="pros-cons">
+                <li class="pros">Pros: {item.pros}</li>
+                <li class="cons">Cons: {item.cons}</li>
+              </ul>
+              <a href={item.url} class="affiliate-btn" rel="sponsored nofollow" target="_blank">Check Price</a>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <!-- Feature 3: Premium Local Fisheries & Syndicates -->
+      <div class="feature-block">
+        <h3>Premium Local Fisheries &amp; Syndicates</h3>
+        <p class="feature-caption">
+          A clean visual grid of premium local fisheries and syndicates. Sample listings below —
+          contact us to feature your fishery.
+        </p>
+        <div class="cards-grid cards-grid--fisheries">
+          {fisheries.map((fishery) => (
+            <article class="directory-card directory-card--fishery">
+              <div class="directory-logo" aria-hidden="true">FISHERY</div>
+              <div class="catch-photo" aria-hidden="true">CATCH</div>
+              <h4>{fishery.name}</h4>
+              <p class="directory-loc">{fishery.location}</p>
+              <p class="directory-desc">Speciality: {fishery.catch}</p>
+              <button type="button" class="cta-accent">Contact</button>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <!-- Hub-and-Spoke internal links -->
+      <p class="spoke-links">
+        Looking for the best spots? Read our specific guides for the
+        <a href="/rivers/river-wye/">River Wye</a>,
+        <a href="/rivers/river-trent/">River Trent</a>,
+        <a href="/rivers/river-dee/">River Dee</a> and
+        <a href="/rivers/">all UK rivers</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- SECTION 3: KAYAKING, CANOEING & SUP -->
+  <section id="paddlesports" class="hub-section">
+    <div class="container">
+      <h2>Paddleboarding &amp; Kayaking Essentials</h2>
+      <p class="section-intro">
+        Kayaking, canoeing and paddleboarding are the most accessible ways to explore UK rivers.
+        Similarly, wind speed makes or breaks a paddling day — so check the live wind data below,
+        book a guided kayak tour, and gear up with a beginner-friendly inflatable SUP.
+      </p>
+
+      <!-- Feature 1: Live Wind Speed API -->
+      <div class="feature-block">
+        <h3>Live Wind Speed API</h3>
+        <p class="feature-caption">
+          Placeholder live data widget. Swap the sample readings below with your own wind speed API
+          feed (e.g. Met Office DataPoint or OpenWeather).
+        </p>
+        <div class="dashboard" data-widget="wind-speed">
+          <div class="dashboard-head">
+            <span class="live-dot" aria-hidden="true"></span>
+            <span class="live-label">LIVE</span>
+            <span class="dashboard-title">UK River Wind Speed — Paddlesports Forecast</span>
+          </div>
+          <div class="dashboard-grid dashboard-grid--wind">
+            <div class="wind">
+              <span class="wind-label">Wye — Symonds Yat</span>
+              <span class="wind-value">8 mph</span>
+              <span class="wind-flag flag-ok">Go</span>
+            </div>
+            <div class="wind">
+              <span class="wind-label">Trent — Nottingham</span>
+              <span class="wind-value">14 mph</span>
+              <span class="wind-flag flag-warn">Careful</span>
+            </div>
+            <div class="wind">
+              <span class="wind-label">Thames — Henley</span>
+              <span class="wind-value">6 mph</span>
+              <span class="wind-flag flag-ok">Go</span>
+            </div>
+            <div class="wind">
+              <span class="wind-label">Dee — Aberdeen</span>
+              <span class="wind-value">22 mph</span>
+              <span class="wind-flag flag-bad">No Go</span>
+            </div>
+          </div>
+          <p class="dashboard-foot">Data source placeholder — replace with live API feed.</p>
+        </div>
+      </div>
+
+      <!-- Feature 2: Embedded Booking Widget -->
+      <div class="feature-block">
+        <h3>Book a Guided Kayak Tour</h3>
+        <p class="feature-caption">
+          Placeholder for an embedded third-party booking widget (such as FareHarbor). Drop in your
+          widget snippet where the framed area below appears.
+        </p>
+        <div class="booking-widget" data-widget="fareharbor">
+          <div class="booking-frame">
+            <p class="booking-placeholder">Your booking widget loads here.</p>
+            <p class="booking-note">e.g. FareHarbor, Peek, or Bokun embed for local UK kayak tours.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 3: Best Beginner Inflatable SUPs Under £400 -->
+      <div class="feature-block">
+        <h3>Best Beginner Inflatable SUPs Under &pound;400</h3>
+        <p class="feature-caption">
+          A visually appealing product grid of beginner inflatable SUPs under £400, with sample board
+          specs and affiliate buttons.
+        </p>
+        <div class="cards-grid cards-grid--products">
+          {supBoards.map((board) => (
+            <article class="product-card">
+              <div class="product-image" aria-hidden="true">SUP</div>
+              <h4>{board.name}</h4>
+              <p class="product-price">{board.price}</p>
+              <p class="product-specs">{board.specs}</p>
+              <a href={board.url} class="affiliate-btn" rel="sponsored nofollow" target="_blank">Check Price</a>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <!-- Hub-and-Spoke internal links -->
+      <p class="spoke-links">
+        Looking for the best spots? Read our specific guides for the
+        <a href="/rivers/river-wye/">River Wye</a>,
+        <a href="/rivers/river-trent/">River Trent</a>,
+        <a href="/rivers/river-thames/">River Thames</a> and
+        <a href="/rivers/river-tweed/">River Tweed</a>.
+      </p>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 calc(var(--spacing-unit) * 3);
+  }
+
+  .hub-hero {
+    padding: calc(var(--spacing-unit) * 10) 0 calc(var(--spacing-unit) * 8);
+    background: linear-gradient(135deg, #0d3b9e 0%, #1767c8 100%);
+    color: #ffffff;
+    text-align: center;
+  }
+
+  .hub-hero h1 {
+    color: #ffffff;
+    font-size: clamp(2rem, 5vw, 3rem);
+    margin-bottom: calc(var(--spacing-unit) * 3);
+  }
+
+  .hub-hero p {
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 820px;
+    margin: 0 auto calc(var(--spacing-unit) * 4);
+    font-size: 1.125rem;
+    line-height: 1.8;
+  }
+
+  .hub-jump {
+    display: flex;
+    gap: calc(var(--spacing-unit) * 2);
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .hub-jump a {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.15);
+    padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 3);
+    border-radius: 999px;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+
+  .hub-jump a:hover {
+    background: rgba(255, 255, 255, 0.28);
+    color: #ffffff;
+    transform: translateY(-2px);
+  }
+
+  .hub-section {
+    padding: calc(var(--spacing-unit) * 10) 0;
+  }
+
+  .hub-section--alt {
+    background: var(--color-background-alt);
+  }
+
+  .hub-section h2 {
+    text-align: center;
+    margin-bottom: calc(var(--spacing-unit) * 3);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+  }
+
+  .section-intro {
+    max-width: 820px;
+    margin: 0 auto calc(var(--spacing-unit) * 6);
+    text-align: center;
+    font-size: 1.0625rem;
+    line-height: 1.8;
+    color: var(--color-text-light);
+  }
+
+  .feature-block {
+    margin-bottom: calc(var(--spacing-unit) * 8);
+  }
+
+  .feature-block:last-child {
+    margin-bottom: 0;
+  }
+
+  .feature-block h3 {
+    font-size: 1.5rem;
+    margin-bottom: calc(var(--spacing-unit) * 1.5);
+  }
+
+  .feature-caption {
+    color: var(--color-text-light);
+    font-size: 0.95rem;
+    margin-bottom: calc(var(--spacing-unit) * 3);
+  }
+
+  /* Live data dashboards */
+  .dashboard {
+    background: var(--color-background);
+    border: 2px solid var(--color-border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(13, 59, 158, 0.08);
+  }
+
+  .dashboard-head {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--spacing-unit) * 1.5);
+    padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 3);
+    background: var(--color-primary);
+    color: #ffffff;
+  }
+
+  .live-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #48bb78;
+    box-shadow: 0 0 0 0 rgba(72, 187, 120, 0.7);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(72, 187, 120, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(72, 187, 120, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(72, 187, 120, 0); }
+  }
+
+  .live-label {
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    font-size: 0.8rem;
+  }
+
+  .dashboard-title {
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--color-border);
+  }
+
+  .metric,
+  .gauge,
+  .wind {
+    background: var(--color-background);
+    padding: calc(var(--spacing-unit) * 2.5);
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing-unit) * 0.5);
+  }
+
+  .metric-label,
+  .gauge-label,
+  .wind-label {
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+    font-weight: 600;
+  }
+
+  .metric-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  .metric--ok .metric-value { color: var(--color-success); }
+  .metric--warn .metric-value { color: var(--color-warning); }
+  .metric--bad .metric-value { color: var(--color-error); }
+
+  .metric-sub {
+    font-size: 0.8rem;
+    color: var(--color-text-light);
+  }
+
+  .gauge-value,
+  .wind-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  .gauge-trend,
+  .wind-flag {
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 999px;
+    width: fit-content;
+  }
+
+  .trend-up { background: rgba(245, 101, 101, 0.12); color: var(--color-error); }
+  .trend-down { background: rgba(72, 187, 120, 0.12); color: var(--color-success); }
+  .trend-flat { background: rgba(237, 137, 54, 0.12); color: var(--color-warning); }
+
+  .flag-ok { background: rgba(72, 187, 120, 0.15); color: var(--color-success); }
+  .flag-warn { background: rgba(237, 137, 54, 0.15); color: var(--color-warning); }
+  .flag-bad { background: rgba(245, 101, 101, 0.15); color: var(--color-error); }
+
+  .dashboard-foot {
+    padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 3);
+    font-size: 0.8rem;
+    color: var(--color-text-light);
+    background: var(--color-background-alt);
+    margin: 0;
+  }
+
+  /* Comparison table */
+  .table-wrap {
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 2px solid var(--color-border);
+    box-shadow: 0 8px 24px rgba(13, 59, 158, 0.08);
+  }
+
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 520px;
+  }
+
+  .compare-table th,
+  .compare-table td {
+    padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 2.5);
+    text-align: left;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .compare-table thead th {
+    background: var(--color-background-alt);
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .compare-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .compare-table tbody tr:hover {
+    background: rgba(23, 192, 232, 0.06);
+  }
+
+  .stars {
+    letter-spacing: 2px;
+    font-size: 1.1rem;
+  }
+
+  .star { color: var(--color-border); }
+  .star.filled { color: var(--color-warning); }
+
+  /* Affiliate + accent buttons */
+  .affiliate-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-accent);
+    color: #062847;
+    font-weight: 700;
+    padding: calc(var(--spacing-unit) * 1.25) calc(var(--spacing-unit) * 2.5);
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .affiliate-btn:hover {
+    background: #0ea5c4;
+    color: #062847;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(23, 192, 232, 0.4);
+  }
+
+  .cta-accent {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-accent);
+    color: #062847;
+    font-weight: 700;
+    padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 3);
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    margin-top: auto;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  }
+
+  .cta-accent:hover {
+    background: #0ea5c4;
+    color: #062847;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(23, 192, 232, 0.4);
+  }
+
+  /* Card grids */
+  .cards-grid {
+    display: grid;
+    gap: calc(var(--spacing-unit) * 3);
+  }
+
+  .cards-grid--saunas,
+  .cards-grid--fisheries {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .cards-grid--products {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+
+  .directory-card,
+  .product-card {
+    background: var(--color-background);
+    border: 2px solid var(--color-border);
+    border-radius: 12px;
+    padding: calc(var(--spacing-unit) * 3);
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  }
+
+  .directory-card:hover,
+  .product-card:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 8px 24px rgba(13, 59, 158, 0.12);
+    transform: translateY(-4px);
+  }
+
+  .directory-logo {
+    background: linear-gradient(135deg, var(--color-primary), #1767c8);
+    color: #ffffff;
+    border-radius: 8px;
+    padding: calc(var(--spacing-unit) * 2);
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    font-size: 0.8rem;
+    margin-bottom: calc(var(--spacing-unit) * 2);
+  }
+
+  .directory-card h4,
+  .product-card h4 {
+    font-size: 1.05rem;
+    margin-bottom: calc(var(--spacing-unit) * 1);
+  }
+
+  .directory-loc {
+    font-size: 0.85rem;
+    color: var(--color-primary);
+    font-weight: 600;
+    margin-bottom: calc(var(--spacing-unit) * 1);
+  }
+
+  .directory-desc {
+    font-size: 0.9rem;
+    color: var(--color-text-light);
+    margin-bottom: calc(var(--spacing-unit) * 2);
+    flex: 1;
+  }
+
+  .catch-photo {
+    background: var(--color-background-alt);
+    border: 1px dashed var(--color-border);
+    border-radius: 8px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-light);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    margin-bottom: calc(var(--spacing-unit) * 2);
+  }
+
+  .product-image {
+    background: var(--color-background-alt);
+    border: 1px dashed var(--color-border);
+    border-radius: 8px;
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-light);
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    margin-bottom: calc(var(--spacing-unit) * 2);
+  }
+
+  .product-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: calc(var(--spacing-unit) * 1);
+  }
+
+  .product-specs {
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+    margin-bottom: calc(var(--spacing-unit) * 2);
+    flex: 1;
+  }
+
+  .pros-cons {
+    list-style: none;
+    font-size: 0.85rem;
+    margin-bottom: calc(var(--spacing-unit) * 2);
+    flex: 1;
+  }
+
+  .pros-cons li {
+    margin-bottom: calc(var(--spacing-unit) * 0.5);
+  }
+
+  .pros-cons .pros { color: var(--color-success); }
+  .pros-cons .cons { color: var(--color-error); }
+
+  /* Booking widget */
+  .booking-widget {
+    border: 2px dashed var(--color-primary);
+    border-radius: 12px;
+    background: var(--color-background-alt);
+    padding: calc(var(--spacing-unit) * 6);
+    text-align: center;
+  }
+
+  .booking-placeholder {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: calc(var(--spacing-unit) * 1);
+  }
+
+  .booking-note {
+    color: var(--color-text-light);
+    font-size: 0.9rem;
+    margin: 0;
+  }
+
+  /* Hub-and-spoke links */
+  .spoke-links {
+    margin-top: calc(var(--spacing-unit) * 6);
+    padding-top: calc(var(--spacing-unit) * 4);
+    border-top: 1px solid var(--color-border);
+    text-align: center;
+    color: var(--color-text-light);
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  .spoke-links a {
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: underline;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .dashboard-grid,
+    .cards-grid--saunas,
+    .cards-grid--fisheries {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .dashboard-grid,
+    .dashboard-grid--gauge,
+    .dashboard-grid--wind,
+    .cards-grid--saunas,
+    .cards-grid--fisheries,
+    .cards-grid--products {
+      grid-template-columns: 1fr;
+    }
+
+    .hub-jump a {
+      width: 100%;
+    }
+
+    .compare-table thead { display: none; }
+    .compare-table tr { display: block; padding: calc(var(--spacing-unit) * 2) 0; border-bottom: 1px solid var(--color-border); }
+    .compare-table td { display: flex; justify-content: space-between; gap: calc(var(--spacing-unit) * 2); border: none; padding: calc(var(--spacing-unit) * 1) 0; }
+    .compare-table td::before {
+      content: attr(data-label);
+      font-weight: 700;
+      color: var(--color-text);
+    }
+  }
+</style>
