@@ -1054,4 +1054,76 @@ export const blogPosts: BlogPost[] = [
     published_at: '2024-02-28T10:00:00Z',
     created_at: '2024-02-28T10:00:00Z'
   },
+  {
+    id: '5',
+    title: 'Wild Swimming Gear UK: Essential Kit for River Swims',
+    slug: 'wild-swimming-gear-uk',
+    category: 'Activities',
+    excerpt: 'Looking for the best wild swimming gear UK? Discover top-rated tow floats, neoprene socks, and changing robes to stay safe and warm.',
+    content: null,
+    image_url: 'https://images.pexels.com/photos/1118877/pexels-photo-1118877.jpeg',
+    published: true,
+    published_at: '2026-07-27T10:00:00Z',
+    created_at: '2026-07-27T10:00:00Z'
+  },
+  {
+    id: '6',
+    title: 'Is It Safe to Swim in the River Today? Water Quality Guide',
+    slug: 'is-it-safe-to-swim-in-the-river-today',
+    category: 'Safety',
+    excerpt: 'Wondering "is it safe to swim in the river today?" Learn how to check UK river water quality, spot dangers, and follow expert wild swimming safety tips.',
+    content: null,
+    image_url: 'https://images.pexels.com/photos/2901209/pexels-photo-2901209.jpeg',
+    published: true,
+    published_at: '2026-07-27T10:00:00Z',
+    created_at: '2026-07-27T10:00:00Z'
+  },
+  {
+    id: '7',
+    title: 'Best Beginner SUP UK: Choosing Your First Paddleboard',
+    slug: 'best-beginner-sup-uk',
+    category: 'Activities',
+    excerpt: 'Searching for the best beginner SUP UK? Read our guide on cheap inflatable paddle boards, size charts, and beginner kits to start your river adventures.',
+    content: null,
+    image_url: 'https://images.pexels.com/photos/3028030/pexels-photo-3028030.jpeg',
+    published: true,
+    published_at: '2026-07-27T10:00:00Z',
+    created_at: '2026-07-27T10:00:00Z'
+  },
+  {
+    id: '8',
+    title: 'Do I Need a License to Paddleboard on a River? UK Rules',
+    slug: 'do-i-need-a-license-to-paddleboard-on-a-river',
+    category: 'Activities',
+    excerpt: 'Asking "do I need a license to paddleboard on a river?" Find out about the British Canoeing SUP license, river etiquette, and rules for UK waterways.',
+    content: null,
+    image_url: 'https://images.pexels.com/photos/1658746/pexels-photo-1658746.jpeg',
+    published: true,
+    published_at: '2026-07-27T10:00:00Z',
+    created_at: '2026-07-27T10:00:00Z'
+  },
+  {
+    id: '9',
+    title: 'River Kayaking Near Me: Find Launch Points & Routes',
+    slug: 'river-kayaking-near-me',
+    category: 'Activities',
+    excerpt: 'Searching for "river kayaking near me"? Discover the best rivers for kayaking UK, locate free river kayak launch points, and plan your next adventure.',
+    content: null,
+    image_url: 'https://images.pexels.com/photos/2592800/pexels-photo-2592800.jpeg',
+    published: true,
+    published_at: '2026-07-27T10:00:00Z',
+    created_at: '2026-07-27T10:00:00Z'
+  },
+  {
+    id: '10',
+    title: 'River Kayaking Safety for Beginners: Essential Guide',
+    slug: 'river-kayaking-safety-for-beginners',
+    category: 'Safety',
+    excerpt: 'Learn essential river kayaking safety for beginners. Understand the UK river grading system, inflatable kayak safety, and the essential kayak safety gear you need.',
+    content: null,
+    image_url: 'https://images.pexels.com/photos/2592800/pexels-photo-2592800.jpeg',
+    published: true,
+    published_at: '2026-07-27T10:00:00Z',
+    created_at: '2026-07-27T10:00:00Z'
+  },
 ];
