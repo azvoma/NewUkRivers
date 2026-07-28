@@ -1043,18 +1043,6 @@ export const blogPosts: BlogPost[] = [
     created_at: '2024-03-05T10:00:00Z'
   },
   {
-    id: '4',
-    title: 'Wildlife Spotting Along the River Thames',
-    slug: 'thames-wildlife-guide',
-    category: 'Wildlife',
-    excerpt: 'A comprehensive guide to the diverse wildlife inhabiting Britain\'s most famous river, from kingfishers to seals.',
-    content: null,
-    image_url: 'https://images.pexels.com/photos/460672/pexels-photo-460672.jpeg',
-    published: true,
-    published_at: '2024-02-28T10:00:00Z',
-    created_at: '2024-02-28T10:00:00Z'
-  },
-  {
     id: '5',
     title: 'Wild Swimming Gear UK: Essential Kit for River Swims',
     slug: 'wild-swimming-gear-uk',
