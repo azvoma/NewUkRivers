@@ -84,7 +84,7 @@ import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
 
   <section id="seasons">
     <h2>Understanding Scottish Salmon Fishing Seasons</h2>
-    <img src="/images/blog/scotland-salmon-fishing-packages/Salmon_Fishing_Scotland.png" alt="Seasonal salmon fishing on a Scottish river showing different water conditions for fishing holidays" width="800" height="500" loading="lazy" decoding="async" />
+
     <p>
       Salmon fishing seasons vary between rivers in the UK, with most Scottish rivers opening between January and March and closing between October and November. <strong>Spring fishing</strong> targets early-run salmon that enter rivers from February through May. These fresh silver fish average larger sizes than later runs, and spring salmon are prized for their prime condition. However, spring runs have declined on many rivers, making autumn fishing increasingly important for major rivers in the UK [Source: Pending Authority Link].
     </p>
@@ -114,14 +114,9 @@ import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
   </aside>
 
   <div class="author-byline">
-    <img src="/images/blog/scotland-salmon-fishing-packages/Salmon_Fishing_Scotland.png" alt="Expert Angling Team avatar" class="author-avatar" width="80" height="80" loading="lazy" />
-    <div class="author-info">
-      <p class="author-name">Expert Angling Team</p>
-      <p class="author-bio">
-        Our team brings over 20 years of hands-on experience fishing and studying UK river ecosystems, with specialist knowledge of Scottish salmon rivers and Atlantic salmon conservation. We are dedicated to helping anglers book responsible, rewarding Scotland salmon fishing packages.
-      </p>
-      <p class="last-updated">Last Updated: 28 July 2026</p>
-    </div>
+    <p><strong>Author:</strong> Expert Angling Team, UK Rivers Directory</p>
+    <p class="author-bio">Our team brings over 20 years of hands-on experience fishing and studying UK river ecosystems, with specialist knowledge of Scottish salmon rivers and Atlantic salmon conservation. We are dedicated to helping anglers book responsible, rewarding Scotland salmon fishing packages.</p>
+    <p class="last-updated"><em>Last Updated: 28 July 2026</em></p>
   </div>
 </BlogPostLayout>
 
@@ -150,49 +145,25 @@ import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
     margin-bottom: 0.5rem;
   }
   .author-byline {
-    display: flex;
-    gap: 1.5rem;
-    align-items: flex-start;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 2rem;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 1.5rem;
     margin-top: 3rem;
   }
-  .author-avatar {
-    border-radius: 50%;
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    flex-shrink: 0;
-  }
-  .author-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  .author-name {
-    font-weight: 700;
-    font-size: 1.125rem;
-    color: #0f172a;
-    margin: 0;
-  }
-  .author-bio {
-    font-size: 0.95rem;
+  .author-byline p {
+    font-size: 1rem;
     line-height: 1.7;
     color: #475569;
-    margin: 0;
+    margin-bottom: 0.75rem;
   }
-  .last-updated {
-    font-size: 0.85rem;
+  .author-byline strong {
+    color: #0f172a;
+  }
+  .author-bio {
+    color: #475569;
+  }
+  .last-updated em {
+    font-style: italic;
     color: #94a3b8;
-    margin: 0;
-  }
-  @media (max-width: 600px) {
-    .author-byline {
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
+    font-size: 0.95rem;
   }
 </style>

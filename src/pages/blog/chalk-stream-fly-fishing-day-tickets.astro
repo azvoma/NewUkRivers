@@ -130,14 +130,9 @@ import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
   </aside>
 
   <div class="author-byline">
-    <img src="/images/blog/chalk-stream-fly-fishing-day-tickets/Chalk_Rivers.png" alt="Expert Angling Team avatar" class="author-avatar" width="80" height="80" loading="lazy" />
-    <div class="author-info">
-      <p class="author-name">Expert Angling Team</p>
-      <p class="author-bio">
-        Our team brings over 20 years of hands-on experience fishing and studying UK river ecosystems, with specialist knowledge of chalk stream fisheries and conservation. We are dedicated to helping anglers book responsible, rewarding chalk stream fly fishing trips.
-      </p>
-      <p class="last-updated">Last Updated: 28 July 2026</p>
-    </div>
+    <p><strong>Author:</strong> Expert Angling Team, UK Rivers Directory</p>
+    <p class="author-bio">Our team brings over 20 years of hands-on experience fishing and studying UK river ecosystems, with specialist knowledge of chalk stream fisheries and conservation. We are dedicated to helping anglers book responsible, rewarding chalk stream fly fishing trips.</p>
+    <p class="last-updated"><em>Last Updated: 28 July 2026</em></p>
   </div>
 </BlogPostLayout>
 
@@ -166,49 +161,25 @@ import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
     margin-bottom: 0.5rem;
   }
   .author-byline {
-    display: flex;
-    gap: 1.5rem;
-    align-items: flex-start;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 2rem;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 1.5rem;
     margin-top: 3rem;
   }
-  .author-avatar {
-    border-radius: 50%;
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    flex-shrink: 0;
-  }
-  .author-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  .author-name {
-    font-weight: 700;
-    font-size: 1.125rem;
-    color: #0f172a;
-    margin: 0;
-  }
-  .author-bio {
-    font-size: 0.95rem;
+  .author-byline p {
+    font-size: 1rem;
     line-height: 1.7;
     color: #475569;
-    margin: 0;
+    margin-bottom: 0.75rem;
   }
-  .last-updated {
-    font-size: 0.85rem;
+  .author-byline strong {
+    color: #0f172a;
+  }
+  .author-bio {
+    color: #475569;
+  }
+  .last-updated em {
+    font-style: italic;
     color: #94a3b8;
-    margin: 0;
-  }
-  @media (max-width: 600px) {
-    .author-byline {
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
+    font-size: 0.95rem;
   }
 </style>
