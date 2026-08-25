@@ -2,6 +2,8 @@
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import AdNativeLink from '../../components/ads/AdNativeLink.astro';
+import AdLeaderboard from '../../components/ads/AdLeaderboard.astro';
+import AdWidgetCard from '../../components/ads/AdWidgetCard.astro';
 
 const breadcrumbItems = [
   { label: 'Home', href: '/' },
@@ -146,6 +148,7 @@ const supBoards = [
           Compare premium and budget options below.
         </p>
         <div class="table-wrap">
+          <AdLeaderboard />
           <table class="compare-table">
             <thead>
               <tr>
@@ -175,6 +178,7 @@ const supBoards = [
             </tbody>
           </table>
         </div>
+        <AdWidgetCard />
       </div>
 
       <!-- Feature 3: Featured Riverside Saunas -->
@@ -280,6 +284,7 @@ const supBoards = [
             </article>
           ))}
         </div>
+        <AdLeaderboard />
       </div>
 
       <!-- Feature 3: Premium Local Fisheries & Syndicates -->
@@ -396,6 +401,7 @@ const supBoards = [
             </article>
           ))}
         </div>
+        <AdWidgetCard />
       </div>
 
       <!-- Hub-and-Spoke internal links -->

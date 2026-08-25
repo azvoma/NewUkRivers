@@ -8,6 +8,7 @@ import WaterLevelWidget from '../../../components/WaterLevelWidget.astro';
 import RelatedRivers from '../../../components/RelatedRivers.astro';
 import RiverFactFile from '../../../components/RiverFactFile.astro';
 import AdSidebarSticky from '../../../components/ads/AdSidebarSticky.astro';
+import AdSquareInline from '../../../components/ads/AdSquareInline.astro';
 import AdMobileStickyFooter from '../../../components/ads/AdMobileStickyFooter.astro';
 import { getRivers, getRiversByRegion } from '../../../lib/supabase';
 
@@ -747,6 +748,7 @@ const exploreActivities = [
           )}
         </div>
         <div class="river-sidebar-aside">
+          <AdSquareInline />
           <RiverFactFile river={river} siteUrl={Astro.site?.toString() || 'https://ukrivers.co.uk'} />
           {stationId && (
             <WaterLevelWidget riverName={river.name} stationId={stationId} />
