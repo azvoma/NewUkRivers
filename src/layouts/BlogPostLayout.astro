@@ -1,6 +1,8 @@
 ---
 import Layout from './Layout.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
+import AdSquareInline from '../components/ads/AdSquareInline.astro';
+import AdMobileStickyFooter from '../components/ads/AdMobileStickyFooter.astro';
 
 interface Props {
   title: string;
@@ -89,6 +91,7 @@ const schemaData = {
           </aside>
           <div class="main-content">
             <slot />
+            <slot name="ad-inline" />
           </div>
         </div>
       </div>
@@ -106,6 +109,8 @@ const schemaData = {
       </div>
     </footer>
   </article>
+
+  <AdMobileStickyFooter />
 </Layout>
 
 <style>

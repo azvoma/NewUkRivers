@@ -1,0 +1,45 @@
+---
+interface Props {
+	label?: string;
+}
+const { label = 'Advertisement' } = Astro.props;
+---
+
+<div class="ad-widget-card">
+	<div class="ad-inner" data-ad-size="300x250">
+		<span class="ad-label">{label}</span>
+		<slot />
+	</div>
+</div>
+
+<style>
+	.ad-widget-card {
+		display: flex;
+		justify-content: center;
+	}
+
+	.ad-inner {
+		background: var(--color-background-alt);
+		border: 1px dashed var(--color-border);
+		border-radius: 12px;
+		width: 300px;
+		height: 250px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: relative;
+		overflow: hidden;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+	}
+
+	.ad-label {
+		position: absolute;
+		top: 4px;
+		left: 8px;
+		font-size: 0.625rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--color-text-light);
+		opacity: 0.6;
+	}
+</style>

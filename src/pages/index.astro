@@ -4,6 +4,8 @@ import Hero from '../components/Hero.astro';
 import RiverCard from '../components/RiverCard.astro';
 import FAQ from '../components/FAQ.astro';
 import RegionHub from '../components/RegionHub.astro';
+import AdLeaderboard from '../components/ads/AdLeaderboard.astro';
+import AdWidgetCard from '../components/ads/AdWidgetCard.astro';
 import { getRivers } from '../lib/supabase';
 
 const featuredRivers = getRivers().filter(river => river.featured).slice(0, 6);
@@ -78,6 +80,10 @@ const faqs = [
     showSearch={true}
   />
 
+  <div class="container">
+    <AdLeaderboard />
+  </div>
+
   <section class="intro-section">
     <div class="container">
       <h2>Your Complete Guide to Rivers in the United Kingdom</h2>
@@ -105,6 +111,12 @@ const faqs = [
   </section>
 
   <RegionHub />
+
+  <div class="mid-page-ad">
+    <div class="container">
+      <AdWidgetCard />
+    </div>
+  </div>
 
   <section class="activities-section">
     <div class="container">
@@ -397,6 +409,10 @@ const faqs = [
     font-size: 1.125rem;
     margin: 0;
     line-height: 1.5;
+  }
+
+  .mid-page-ad {
+    padding: calc(var(--spacing-unit) * 6) 0;
   }
 
   .bottom-text {

@@ -1,0 +1,52 @@
+---
+interface Props {
+	label?: string;
+}
+const { label = 'Advertisement' } = Astro.props;
+---
+
+<aside class="ad-sidebar-sticky">
+	<div class="ad-inner" data-ad-size="300x600">
+		<span class="ad-label">{label}</span>
+		<slot />
+	</div>
+</aside>
+
+<style>
+	.ad-sidebar-sticky {
+		position: sticky;
+		top: calc(var(--spacing-unit) * 3);
+		display: flex;
+		justify-content: center;
+	}
+
+	.ad-inner {
+		background: var(--color-background-alt);
+		border: 1px dashed var(--color-border);
+		border-radius: 8px;
+		width: 300px;
+		height: 600px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.ad-label {
+		position: absolute;
+		top: 4px;
+		left: 8px;
+		font-size: 0.625rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--color-text-light);
+		opacity: 0.6;
+	}
+
+	@media (max-width: 1023px) {
+		.ad-sidebar-sticky {
+			display: none;
+		}
+	}
+</style>
