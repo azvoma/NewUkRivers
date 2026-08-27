@@ -1,12 +1,13 @@
 ---
 interface Props {
 	label?: string;
+	size?: '300x250' | '400x400';
 }
-const { label = 'Advertisement' } = Astro.props;
+const { label = 'Advertisement', size = '300x250' } = Astro.props;
 ---
 
-<div class="ad-square-inline">
-	<div class="ad-inner" data-ad-size="400x400">
+<div class:list={['ad-square-inline', `ad-square-inline--${size}`]}>
+	<div class="ad-inner" data-ad-size={size}>
 		<span class="ad-label">{label}</span>
 		<slot />
 	</div>
@@ -23,14 +24,19 @@ const { label = 'Advertisement' } = Astro.props;
 		background: var(--color-background-alt);
 		border: 1px dashed var(--color-border);
 		border-radius: 8px;
-		width: 400px;
+		width: 300px;
 		max-width: 100%;
-		height: 400px;
+		height: 250px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		position: relative;
 		overflow: hidden;
+	}
+
+	.ad-square-inline--400x400 .ad-inner {
+		width: 400px;
+		height: 400px;
 	}
 
 	.ad-label {
@@ -45,7 +51,7 @@ const { label = 'Advertisement' } = Astro.props;
 	}
 
 	@media (max-width: 767px) {
-		.ad-inner {
+		.ad-square-inline--400x400 .ad-inner {
 			width: 300px;
 			height: 250px;
 		}
