@@ -1,6 +1,7 @@
 ---
 import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
 import AdSquareInline from '../../components/ads/AdSquareInline.astro';
+import { affiliates } from '../../lib/affiliates';
 ---
 
 <BlogPostLayout
@@ -32,7 +33,12 @@ import AdSquareInline from '../../components/ads/AdSquareInline.astro';
     </p>
   </section>
 
-  <AdSquareInline slot="ad-inline" />
+  <AdSquareInline slot="ad-inline">
+    <a href={affiliates.totalFishingTackle.trackingUrl} rel="sponsored nofollow" target="_blank" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:1rem;font-size:0.9rem;color:var(--color-text-light);text-decoration:none;line-height:1.5;">
+      <strong style="font-size:1.1rem;color:var(--color-primary);margin-bottom:0.25rem;">{affiliates.totalFishingTackle.name}</strong>
+      {affiliates.totalFishingTackle.ctaText}
+    </a>
+  </AdSquareInline>
 
   <section id="river-tay">
     <h2>River Tay - Scotland's Premier Salmon River</h2>

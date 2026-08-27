@@ -4,6 +4,7 @@ import Breadcrumb from '../../components/Breadcrumb.astro';
 import AdNativeLink from '../../components/ads/AdNativeLink.astro';
 import AdLeaderboard from '../../components/ads/AdLeaderboard.astro';
 import AdWidgetCard from '../../components/ads/AdWidgetCard.astro';
+import { affiliates } from '../../lib/affiliates';
 
 const breadcrumbItems = [
   { label: 'Home', href: '/' },
@@ -178,7 +179,12 @@ const supBoards = [
             </tbody>
           </table>
         </div>
-        <AdWidgetCard />
+        <AdWidgetCard>
+          <a href={affiliates.redEquipment.trackingUrl} rel="sponsored nofollow" target="_blank" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:1rem;font-size:0.9rem;color:var(--color-text-light);text-decoration:none;line-height:1.5;">
+            <strong style="font-size:1.1rem;color:var(--color-primary);margin-bottom:0.25rem;">{affiliates.redEquipment.name}</strong>
+            {affiliates.redEquipment.ctaText}
+          </a>
+        </AdWidgetCard>
       </div>
 
       <!-- Feature 3: Featured Riverside Saunas -->
@@ -199,7 +205,7 @@ const supBoards = [
             </article>
           ))}
         </div>
-        <AdNativeLink href="#" text="Check Riverside Sauna Availability" />
+        <AdNativeLink href={affiliates.redEquipment.trackingUrl} text={affiliates.redEquipment.ctaText} />
       </div>
 
       <!-- Hub-and-Spoke internal links -->
@@ -284,7 +290,15 @@ const supBoards = [
             </article>
           ))}
         </div>
-        <AdLeaderboard />
+        <AdLeaderboard>
+          <a href={affiliates.totalFishingTackle.trackingUrl} rel="sponsored nofollow" target="_blank" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-size:0.9rem;color:var(--color-text-light);text-decoration:none;">
+            <strong style="color:var(--color-primary);margin-right:0.5rem;">{affiliates.totalFishingTackle.name}</strong>
+            {affiliates.totalFishingTackle.ctaText}
+          </a>
+          <a slot="mobile" href={affiliates.totalFishingTackle.trackingUrl} rel="sponsored nofollow" target="_blank" style="display:flex;align-items:center;font-size:0.7rem;color:var(--color-primary);text-decoration:none;font-weight:600;">
+            {affiliates.totalFishingTackle.name}
+          </a>
+        </AdLeaderboard>
       </div>
 
       <!-- Feature 3: Premium Local Fisheries & Syndicates -->
@@ -401,7 +415,12 @@ const supBoards = [
             </article>
           ))}
         </div>
-        <AdWidgetCard />
+        <AdWidgetCard>
+          <a href={affiliates.redEquipment.trackingUrl} rel="sponsored nofollow" target="_blank" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:1rem;font-size:0.9rem;color:var(--color-text-light);text-decoration:none;line-height:1.5;">
+            <strong style="font-size:1.1rem;color:var(--color-primary);margin-bottom:0.25rem;">{affiliates.redEquipment.name}</strong>
+            {affiliates.redEquipment.ctaText}
+          </a>
+        </AdWidgetCard>
       </div>
 
       <!-- Hub-and-Spoke internal links -->

@@ -1,6 +1,7 @@
 ---
 import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
 import AdSquareInline from '../../components/ads/AdSquareInline.astro';
+import { affiliates } from '../../lib/affiliates';
 ---
 
 <BlogPostLayout
@@ -42,7 +43,12 @@ import AdSquareInline from '../../components/ads/AdSquareInline.astro';
     <img src="/images/blog/river-kayaking-safety-for-beginners/Kayaking_Safety_for_Beginners.png" alt="Two beginners paddling a tandem kayak in calm harbour water" width="800" height="500" loading="lazy" decoding="async" />
   </section>
 
-  <AdSquareInline slot="ad-inline" />
+  <AdSquareInline slot="ad-inline">
+    <a href={affiliates.redEquipment.trackingUrl} rel="sponsored nofollow" target="_blank" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:1rem;font-size:0.9rem;color:var(--color-text-light);text-decoration:none;line-height:1.5;">
+      <strong style="font-size:1.1rem;color:var(--color-primary);margin-bottom:0.25rem;">{affiliates.redEquipment.name}</strong>
+      {affiliates.redEquipment.ctaText}
+    </a>
+  </AdSquareInline>
 
   <section id="grading">
     <h2>Navigating the River Grading System UK</h2>

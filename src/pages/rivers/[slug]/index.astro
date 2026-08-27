@@ -10,6 +10,7 @@ import RiverFactFile from '../../../components/RiverFactFile.astro';
 import AdSidebarSticky from '../../../components/ads/AdSidebarSticky.astro';
 import AdSquareInline from '../../../components/ads/AdSquareInline.astro';
 import AdMobileStickyFooter from '../../../components/ads/AdMobileStickyFooter.astro';
+import { affiliates } from '../../../lib/affiliates';
 import { getRivers, getRiversByRegion } from '../../../lib/supabase';
 
 export async function getStaticPaths() {
@@ -748,7 +749,12 @@ const exploreActivities = [
           )}
         </div>
         <div class="river-sidebar-aside">
-          <AdSquareInline />
+          <AdSquareInline>
+            <a href={affiliates.macdonaldHotels.trackingUrl} rel="sponsored nofollow" target="_blank" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:1rem;font-size:0.9rem;color:var(--color-text-light);text-decoration:none;line-height:1.5;">
+              <strong style="font-size:1.1rem;color:var(--color-primary);margin-bottom:0.25rem;">{affiliates.macdonaldHotels.name}</strong>
+              {affiliates.macdonaldHotels.ctaText}
+            </a>
+          </AdSquareInline>
           <RiverFactFile river={river} siteUrl={Astro.site?.toString() || 'https://ukrivers.co.uk'} />
           {stationId && (
             <WaterLevelWidget riverName={river.name} stationId={stationId} />
@@ -758,7 +764,12 @@ const exploreActivities = [
           )}
           <RelatedRivers currentRiver={river} />
           <GearSidebar riverName={river.name} activities={river.activities} />
-          <AdSidebarSticky />
+          <AdSidebarSticky>
+            <a href={affiliates.macdonaldHotels.trackingUrl} rel="sponsored nofollow" target="_blank" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:1rem;font-size:0.9rem;color:var(--color-text-light);text-decoration:none;line-height:1.5;">
+              <strong style="font-size:1.1rem;color:var(--color-primary);margin-bottom:0.25rem;">{affiliates.macdonaldHotels.name}</strong>
+              {affiliates.macdonaldHotels.ctaText}
+            </a>
+          </AdSidebarSticky>
         </div>
       </div>
     </div>
@@ -891,7 +902,11 @@ const exploreActivities = [
   )}
 </Layout>
 
-<AdMobileStickyFooter />
+<AdMobileStickyFooter>
+  <a href={affiliates.macdonaldHotels.trackingUrl} rel="sponsored nofollow" target="_blank" style="font-size:0.75rem;font-weight:600;color:var(--color-primary);text-decoration:none;">
+    {affiliates.macdonaldHotels.name} — {affiliates.macdonaldHotels.ctaText}
+  </a>
+</AdMobileStickyFooter>
 
 <style>
   .container {

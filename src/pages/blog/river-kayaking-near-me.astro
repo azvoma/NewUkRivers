@@ -1,6 +1,7 @@
 ---
 import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
 import AdSquareInline from '../../components/ads/AdSquareInline.astro';
+import { affiliates } from '../../lib/affiliates';
 ---
 
 <BlogPostLayout
@@ -39,7 +40,12 @@ import AdSquareInline from '../../components/ads/AdSquareInline.astro';
     <img src="/images/blog/river-kayaking-near-me/River_Kayaking_1.png" alt="Kayaker navigating whitewater rapids in a bright orange kayak" width="800" height="500" loading="lazy" decoding="async" />
   </section>
 
-  <AdSquareInline slot="ad-inline" />
+  <AdSquareInline slot="ad-inline">
+    <a href={affiliates.redEquipment.trackingUrl} rel="sponsored nofollow" target="_blank" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:1rem;font-size:0.9rem;color:var(--color-text-light);text-decoration:none;line-height:1.5;">
+      <strong style="font-size:1.1rem;color:var(--color-primary);margin-bottom:0.25rem;">{affiliates.redEquipment.name}</strong>
+      {affiliates.redEquipment.ctaText}
+    </a>
+  </AdSquareInline>
 
   <section id="free-launch">
     <h2>Where is a Free River Kayak Launch?</h2>
