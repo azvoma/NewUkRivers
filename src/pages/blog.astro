@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
 import FAQ from '../components/FAQ.astro';
+import AdWidgetCard from '../components/ads/AdWidgetCard.astro';
 import { getBlogPosts } from '../lib/supabase';
 
 const blogPosts = getBlogPosts().sort((a, b) =>
@@ -54,6 +55,16 @@ const faqs = [
     title="UK Rivers Blog: Guides, Wildlife, Maps & Activities"
     subtitle="Educational articles covering river wildlife, conservation, maps, activities, and fun facts"
   />
+
+  <div class="blog-banner-ad">
+    <div class="container">
+      <AdWidgetCard>
+        <a class="ad-creative" href="https://www.awin1.com/cread.php?s=4739011&v=1963&q=334515&r=3008603" rel="sponsored" target="_blank">
+          <img src="/images/ads/imgsummer-mdh-300x250px-1781194981092%20copy.jpg" alt="Macdonald Hotels — Summer stays in Britain" border="0" loading="lazy" />
+        </a>
+      </AdWidgetCard>
+    </div>
+  </div>
 
   <section class="intro-section">
     <div class="container">
@@ -126,6 +137,10 @@ const faqs = [
     max-width: var(--max-width);
     margin: 0 auto;
     padding: 0 calc(var(--spacing-unit) * 3);
+  }
+
+  .blog-banner-ad {
+    padding: calc(var(--spacing-unit) * 2) 0;
   }
 
   .intro-section {
