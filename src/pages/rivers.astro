@@ -4,6 +4,7 @@ import Hero from '../components/Hero.astro';
 import RiverCard from '../components/RiverCard.astro';
 import FAQ from '../components/FAQ.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
+import AdLeaderboard from '../components/ads/AdLeaderboard.astro';
 import { getRivers } from '../lib/supabase';
 
 const allRivers = getRivers().sort((a, b) => a.name.localeCompare(b.name));
@@ -75,6 +76,14 @@ const faqs = [
     title="Explore All Rivers in the UK: A–Z River Directory"
     subtitle="Hundreds of rivers flowing through England, Scotland, Wales, and Northern Ireland"
   />
+
+  <div class="container">
+    <AdLeaderboard>
+      <a class="ad-creative" href="https://www.awin1.com/cread.php?s=4523963&v=27393&q=440124&r=3008603" rel="sponsored" target="_blank">
+        <img src="https://www.awin1.com/cshow.php?s=4523963&v=27393&q=440124&r=3008603" alt="Red Equipment — Life's Better By The Water" border="0" loading="lazy" />
+      </a>
+    </AdLeaderboard>
+  </div>
 
   <section class="intro-section">
     <div class="container">
