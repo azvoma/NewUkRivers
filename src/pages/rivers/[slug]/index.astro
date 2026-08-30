@@ -7,10 +7,6 @@ import GearSidebar from '../../../components/GearSidebar.astro';
 import WaterLevelWidget from '../../../components/WaterLevelWidget.astro';
 import RelatedRivers from '../../../components/RelatedRivers.astro';
 import RiverFactFile from '../../../components/RiverFactFile.astro';
-import AdSidebarSticky from '../../../components/ads/AdSidebarSticky.astro';
-import AdSquareInline from '../../../components/ads/AdSquareInline.astro';
-import AdWidgetCard from '../../../components/ads/AdWidgetCard.astro';
-import AdMobileStickyFooter from '../../../components/ads/AdMobileStickyFooter.astro';
 import { affiliates } from '../../../lib/affiliates';
 import { getRivers, getRiversByRegion } from '../../../lib/supabase';
 
@@ -750,12 +746,11 @@ const exploreActivities = [
           )}
         </div>
         <div class="river-sidebar-aside">
-          <AdWidgetCard>
-            <a class="ad-creative" href={affiliates.macdonaldHotels.tracking.square300x250} rel="sponsored nofollow" target="_blank">
-              <img src="/images/ads/imgsummer-mdh-300x250px-1781194981092.jpg" alt={affiliates.macdonaldHotels.name} loading="lazy" />
-              <span class="ad-creative__copy"><strong>{affiliates.macdonaldHotels.name}</strong>{affiliates.macdonaldHotels.ctaText}</span>
+          <div class="mt-6 mb-8 flex justify-center p-4 bg-slate-50 border border-slate-100 rounded-xl">
+            <a rel="sponsored" href={affiliates.macdonaldHotels.tracking.square300x250} target="_blank">
+              <img src="/images/ads/imgsummer-mdh-300x250px-1781194981092.jpg" alt={affiliates.macdonaldHotels.name} border="0" loading="lazy" />
             </a>
-          </AdWidgetCard>
+          </div>
           <RiverFactFile river={river} siteUrl={Astro.site?.toString() || 'https://ukrivers.co.uk'} />
           {stationId && (
             <WaterLevelWidget riverName={river.name} stationId={stationId} />
@@ -765,12 +760,11 @@ const exploreActivities = [
           )}
           <RelatedRivers currentRiver={river} />
           <GearSidebar riverName={river.name} activities={river.activities} />
-          <AdSidebarSticky>
-            <a class="ad-creative" href={affiliates.macdonaldHotels.tracking.sidebar300x600} rel="sponsored nofollow" target="_blank">
-              <img src="/images/ads/imgsummer-mdh-300x250px-1781194981092.jpg" alt={affiliates.macdonaldHotels.name} loading="lazy" />
-              <span class="ad-creative__copy"><strong>{affiliates.macdonaldHotels.name}</strong>{affiliates.macdonaldHotels.ctaText}</span>
+          <div class="sticky top-8 flex justify-center">
+            <a rel="sponsored" href={affiliates.macdonaldHotels.tracking.sidebar300x600} target="_blank">
+              <img src="/images/ads/img300x600-1752502271580.png" alt="Macdonald Hotels — Riverside stays" border="0" loading="lazy" />
             </a>
-          </AdSidebarSticky>
+          </div>
         </div>
       </div>
     </div>
@@ -903,11 +897,11 @@ const exploreActivities = [
   )}
 </Layout>
 
-<AdMobileStickyFooter>
-  <a class="ad-creative" href={affiliates.macdonaldHotels.tracking.mobile320x50} rel="sponsored nofollow" target="_blank">
-    <img src="/images/ads/imgsummer-mdh-320x50px-1781195066075.jpg" alt={affiliates.macdonaldHotels.name} loading="lazy" />
+<div class="flex md:hidden justify-center my-6 w-full">
+  <a rel="sponsored" href={affiliates.macdonaldHotels.tracking.mobile320x50} target="_blank">
+    <img src="/images/ads/imgsummer-mdh-320x50px-1781195066075.jpg" alt={affiliates.macdonaldHotels.name} border="0" loading="lazy" />
   </a>
-</AdMobileStickyFooter>
+</div>
 
 <style>
   .container {

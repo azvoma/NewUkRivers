@@ -1,7 +1,5 @@
 ---
 import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
-import AdSquareInline from '../../components/ads/AdSquareInline.astro';
-import { affiliates } from '../../lib/affiliates';
 ---
 
 <BlogPostLayout
@@ -33,13 +31,17 @@ import { affiliates } from '../../lib/affiliates';
     </p>
   </section>
 
-  <AdSquareInline slot="ad-inline" size="300x250">
-    <a href={affiliates.redEquipment.tracking.square300x250} rel="sponsored nofollow" target="_blank" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:1rem;font-size:0.9rem;color:var(--color-text-light);text-decoration:none;line-height:1.5;">
-      <img src="/images/blog/wild-swimming-gear-uk/Red.png" alt="Red Equipment" style="max-width:100%;max-height:180px;object-fit:contain;margin-bottom:0.5rem;" loading="lazy" />
-      <strong style="font-size:1.1rem;color:var(--color-primary);margin-bottom:0.25rem;">{affiliates.redEquipment.name}</strong>
-      {affiliates.redEquipment.ctaText}
+  <div class="hidden md:flex justify-center my-8 w-full">
+    <a rel="sponsored" href="https://www.awin1.com/cread.php?s=4523963&v=27393&q=440124&r=3008603" target="_blank">
+      <img src="/images/ads/imglifesbetterbythewater_728x90-1758622475381.gif" alt="Red Equipment — Life's Better By The Water" border="0" loading="lazy" />
     </a>
-  </AdSquareInline>
+  </div>
+
+  <div class="flex md:hidden justify-center my-6 w-full">
+    <a rel="sponsored" href="https://www.awin1.com/cread.php?s=4523942&v=27393&q=582264&r=3008603" target="_blank">
+      <img src="/images/ads/imglifesbetterbythewater_120x600-1758622135989.gif" alt="Red Equipment — Life's Better By The Water" border="0" loading="lazy" />
+    </a>
+  </div>
 
   <section id="safety">
     <h2>Essential Safety Guidelines for River Swimming</h2>

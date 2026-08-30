@@ -1,6 +1,5 @@
 ---
 import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
-import AdSquareInline from '../../components/ads/AdSquareInline.astro';
 import { affiliates } from '../../lib/affiliates';
 ---
 
@@ -23,22 +22,27 @@ import { affiliates } from '../../lib/affiliates';
     <li><a href="#regulations">Regulations & Permits</a></li>
   </ul>
 
+  <div slot="ad-toc" class="sticky top-8 flex justify-center">
+    <a rel="sponsored" href={affiliates.fishingTackleBait.tracking.square300x250} target="_blank">
+      <img src="/images/ads/img300x600-1752502271580.png" alt="Fishing Tackle & Bait" border="0" loading="lazy" />
+    </a>
+  </div>
+
   <section id="introduction">
     <h2>Top 4 Rivers for Scotland Salmon Fishing Packages</h2>
     <p>
       In our experience, Scotland salmon fishing packages offer the finest Atlantic salmon angling experiences available anywhere in the world, and we have found that booking a structured river holiday on one of Scotland's top four salmon rivers — the Tay, Spey, Dee, or Tweed — delivers the best combination of productive fishing, expert guidance, and stunning Highland scenery. The combination of pristine environments, excellent water quality, and centuries of fishing tradition make Scottish rivers the ultimate destination for salmon enthusiasts. From the mighty River Tay holding records for the largest rod-caught salmon ever landed in Britain, to the fast-flowing River Spey famous for its spring runs, these four major rivers offer diverse and exceptional fishing opportunities throughout the season.
     </p>
     <p>
-      Understanding Scottish salmon rivers requires knowledge of their unique characteristics, seasonal patterns, and the fascinating life cycle of Atlantic salmon that connects these rivers to the vast Atlantic Ocean. Salmon are anadromous fish, born in freshwater, migrating to sea to grow, then returning to their natal rivers to spawn. This remarkable journey covering thousands of miles makes salmon fishing a pursuit combining skill, patience, knowledge, and deep respect for one of nature's most extraordinary fish species.
+      Understanding Scottish salmon rivers requires knowledge of their unique characteristics, seasonal patterns, and the fascinating life cycle of Atlantic salmon that connects these rivers to the vast Atlantic Ocean. Salmon are anadromous fish, born in freshwater, migrating to sea to grow, then returning to their natal rivers to spawn. This remarkable journey covering thousands of miles makes salmon fishing a pursuit combining skill, patience, knowledge, and deep respect for one of nature's most extraordinary fish species. For all your angling needs, <a rel="sponsored" href={affiliates.totalFishingTackle.trackingUrl} target="_blank">Total Fishing Tackle</a> offers a wide selection of rods, reels, and waders.
     </p>
   </section>
 
-  <AdSquareInline slot="ad-inline" size="300x250">
-    <a class="ad-creative" href={affiliates.fishingTackleBait.tracking.square300x250} rel="sponsored nofollow" target="_blank">
-      <img src="/images/ads/img300x250-1752501717111.png" alt={affiliates.fishingTackleBait.name} loading="lazy" />
-      <span class="ad-creative__copy"><strong>{affiliates.fishingTackleBait.name}</strong>{affiliates.fishingTackleBait.ctaText}</span>
+  <div class="my-8 flex justify-center w-full overflow-hidden rounded-lg">
+    <a rel="sponsored" href={affiliates.fishingTackleBait.tracking.square300x250} target="_blank">
+      <img src="/images/ads/img300x250-1752501717111.png" alt="Fishing Tackle & Bait" border="0" loading="lazy" />
     </a>
-  </AdSquareInline>
+  </div>
 
   <section id="river-tay">
     <h2>River Tay - Scotland's Premier Salmon River</h2>

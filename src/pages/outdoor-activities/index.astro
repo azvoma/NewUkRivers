@@ -1,9 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
-import AdNativeLink from '../../components/ads/AdNativeLink.astro';
-import AdLeaderboard from '../../components/ads/AdLeaderboard.astro';
-import AdWidgetCard from '../../components/ads/AdWidgetCard.astro';
 import { affiliates } from '../../lib/affiliates';
 
 const breadcrumbItems = [
@@ -149,7 +146,11 @@ const supBoards = [
           Compare premium and budget options below.
         </p>
         <div class="table-wrap">
-          <AdLeaderboard />
+          <div class="hidden md:flex justify-center my-8 w-full">
+            <a rel="sponsored" href="https://www.awin1.com/cread.php?s=4523963&v=27393&q=440124&r=3008603" target="_blank">
+              <img src="/images/ads/imglifesbetterbythewater_728x90-1758622475381.gif" alt="Red Equipment — Life's Better By The Water" border="0" loading="lazy" />
+            </a>
+          </div>
           <table class="compare-table">
             <thead>
               <tr>
@@ -179,12 +180,11 @@ const supBoards = [
             </tbody>
           </table>
         </div>
-        <AdWidgetCard>
-          <a class="ad-creative" href={affiliates.redEquipment.tracking.square300x250} rel="sponsored nofollow" target="_blank">
-            <img src="/images/ads/imgred_300x250-1786369014592.gif" alt={affiliates.redEquipment.name} loading="lazy" />
-            <span class="ad-creative__copy"><strong>{affiliates.redEquipment.name}</strong>{affiliates.redEquipment.ctaText}</span>
+        <div class="mt-6 mb-8 flex justify-center p-4 bg-slate-50 border border-slate-100 rounded-xl">
+          <a rel="sponsored" href={affiliates.redEquipment.tracking.square300x250} target="_blank">
+            <img src="/images/ads/imgred_300x250-1786369014592.gif" alt={affiliates.redEquipment.name} border="0" loading="lazy" />
           </a>
-        </AdWidgetCard>
+        </div>
       </div>
 
       <!-- Feature 3: Featured Riverside Saunas -->
@@ -205,7 +205,9 @@ const supBoards = [
             </article>
           ))}
         </div>
-        <AdNativeLink href={affiliates.redEquipment.tracking.textLink} text={affiliates.redEquipment.ctaText} />
+        <p class="mt-4 text-center">
+          <a rel="sponsored" href={affiliates.redEquipment.tracking.textLink} target="_blank" class="text-blue-700 font-semibold hover:text-blue-900">{affiliates.redEquipment.ctaText}</a>
+        </p>
       </div>
 
       <!-- Hub-and-Spoke internal links -->
@@ -290,14 +292,11 @@ const supBoards = [
             </article>
           ))}
         </div>
-        <AdLeaderboard>
-          <a class="ad-creative" href={affiliates.fishingTackleBait.tracking.leaderboard728x90} rel="sponsored nofollow" target="_blank">
-            <img src="/images/blog/scotland-salmon-fishing-packages/Fishing_Tackle.png" alt={affiliates.fishingTackleBait.name} loading="lazy" />
+        <div class="my-8 flex justify-center w-full overflow-hidden rounded-lg">
+          <a rel="sponsored" href={affiliates.fishingTackleBait.tracking.square300x250} target="_blank">
+            <img src="/images/ads/img300x250-1752501717111.png" alt="Fishing Tackle & Bait" border="0" loading="lazy" />
           </a>
-          <a slot="mobile" class="ad-creative" href={affiliates.fishingTackleBait.tracking.mobile320x50} rel="sponsored nofollow" target="_blank">
-            <img src="/images/ads/img320x50mb-1752502306005.png" alt={affiliates.fishingTackleBait.name} loading="lazy" />
-          </a>
-        </AdLeaderboard>
+        </div>
       </div>
 
       <!-- Feature 3: Premium Local Fisheries & Syndicates -->
@@ -414,12 +413,11 @@ const supBoards = [
             </article>
           ))}
         </div>
-        <AdWidgetCard>
-          <a class="ad-creative" href={affiliates.redEquipment.tracking.square300x250} rel="sponsored nofollow" target="_blank">
-            <img src="/images/ads/imgred_300x250-1786369014592.gif" alt={affiliates.redEquipment.name} loading="lazy" />
-            <span class="ad-creative__copy"><strong>{affiliates.redEquipment.name}</strong>{affiliates.redEquipment.ctaText}</span>
+        <div class="mt-6 mb-8 flex justify-center p-4 bg-slate-50 border border-slate-100 rounded-xl">
+          <a rel="sponsored" href={affiliates.redEquipment.tracking.square300x250} target="_blank">
+            <img src="/images/ads/imgred_300x250-1786369014592.gif" alt={affiliates.redEquipment.name} border="0" loading="lazy" />
           </a>
-        </AdWidgetCard>
+        </div>
       </div>
 
       <!-- Hub-and-Spoke internal links -->

@@ -1,7 +1,5 @@
 ---
 import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
-import AdSquareInline from '../../components/ads/AdSquareInline.astro';
-import { affiliates } from '../../lib/affiliates';
 ---
 
 <BlogPostLayout
@@ -42,12 +40,17 @@ import { affiliates } from '../../lib/affiliates';
     <img src="/images/blog/best-beginner-sup-uk/SUP_UK_Best_Beginner.png" alt="Beginner paddleboarder maintaining balance on a wide, stable SUP on a calm river" width="800" height="500" loading="lazy" decoding="async" />
   </section>
 
-  <AdSquareInline slot="ad-inline" size="300x250">
-    <a class="ad-creative" href={affiliates.redEquipment.tracking.square300x250} rel="sponsored nofollow" target="_blank">
-      <img src="/images/ads/imgred_300x250-1786369014592.gif" alt={affiliates.redEquipment.name} loading="lazy" />
-      <span class="ad-creative__copy"><strong>{affiliates.redEquipment.name}</strong>{affiliates.redEquipment.ctaText}</span>
+  <div class="hidden md:flex justify-center my-8 w-full">
+    <a rel="sponsored" href="https://www.awin1.com/cread.php?s=4523963&v=27393&q=440124&r=3008603" target="_blank">
+      <img src="/images/ads/imglifesbetterbythewater_728x90-1758622475381.gif" alt="Red Equipment — Life's Better By The Water" border="0" loading="lazy" />
     </a>
-  </AdSquareInline>
+  </div>
+
+  <div class="flex md:hidden justify-center my-6 w-full">
+    <a rel="sponsored" href="https://www.awin1.com/cread.php?s=4523942&v=27393&q=582264&r=3008603" target="_blank">
+      <img src="/images/ads/imglifesbetterbythewater_120x600-1758622135989.gif" alt="Red Equipment — Life's Better By The Water" border="0" loading="lazy" />
+    </a>
+  </div>
 
   <section id="cheap-inflatables">
     <h2>Are Cheap Inflatable Paddle Boards UK Worth It?</h2>

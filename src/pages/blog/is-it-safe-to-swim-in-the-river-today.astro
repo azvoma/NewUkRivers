@@ -1,6 +1,5 @@
 ---
 import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
-import AdLeaderboard from '../../components/ads/AdLeaderboard.astro';
 ---
 
 <BlogPostLayout
@@ -19,9 +18,11 @@ import AdLeaderboard from '../../components/ads/AdLeaderboard.astro';
     <li><a href="#takeaways">Key Takeaways</a></li>
   </ul>
 
-  <a slot="ad-toc" class="article-sidebar-ad" href="https://www.awin1.com/cread.php?s=4523942&v=27393&q=582264&r=3008603" rel="sponsored" target="_blank">
-    <img src="/images/ads/imglifesbetterbythewater_120x600-1758622135989.gif" alt="Red Equipment — Life's Better By The Water" loading="lazy" />
-  </a>
+  <div slot="ad-toc" class="sticky top-8 flex justify-center">
+    <a rel="sponsored" href="https://www.awin1.com/cread.php?s=4523942&v=27393&q=582264&r=3008603" target="_blank">
+      <img src="/images/ads/imglifesbetterbythewater_120x600-1758622135989.gif" alt="Red Equipment — Life's Better By The Water" border="0" loading="lazy" />
+    </a>
+  </div>
 
   <section id="quality-check">
     <h2>How to Perform a River Water Quality Check UK</h2>
@@ -54,14 +55,17 @@ import AdLeaderboard from '../../components/ads/AdLeaderboard.astro';
       <li><strong>Cold Water Shock:</strong> Sudden immersion in water below 15°C can cause involuntary gasping and hyperventilation. [Source: National Water Safety Forum]</li>
     </ul>
 
-    <AdLeaderboard>
-      <a class="ad-creative" href="https://www.awin1.com/cread.php?s=4523963&v=27393&q=440124&r=3008603" rel="sponsored" target="_blank">
+    <div class="hidden md:flex justify-center my-8 w-full">
+      <a rel="sponsored" href="https://www.awin1.com/cread.php?s=4523963&v=27393&q=440124&r=3008603" target="_blank">
         <img src="/images/ads/imglifesbetterbythewater_728x90-1758622475381.gif" alt="Red Equipment — Life's Better By The Water" border="0" loading="lazy" />
       </a>
-      <a slot="mobile" class="ad-creative" href="https://www.awin1.com/cread.php?s=4523963&v=27393&q=440124&r=3008603" rel="sponsored" target="_blank">
-        <img src="/images/ads/imglifesbetterbythewater_728x90-1758622475381.gif" alt="Red Equipment — Life's Better By The Water" border="0" loading="lazy" />
+    </div>
+
+    <div class="flex md:hidden justify-center my-6 w-full">
+      <a rel="sponsored" href="https://www.awin1.com/cread.php?s=4523942&v=27393&q=582264&r=3008603" target="_blank">
+        <img src="/images/ads/imglifesbetterbythewater_120x600-1758622135989.gif" alt="Red Equipment — Life's Better By The Water" border="0" loading="lazy" />
       </a>
-    </AdLeaderboard>
+    </div>
   </section>
 
   <section id="safety-tips">

@@ -1,6 +1,5 @@
 ---
 import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
-import AdSquareInline from '../../components/ads/AdSquareInline.astro';
 import { affiliates } from '../../lib/affiliates';
 ---
 
@@ -22,22 +21,27 @@ import { affiliates } from '../../lib/affiliates';
     <li><a href="#visiting">Booking Your Day Ticket</a></li>
   </ul>
 
+  <div slot="ad-toc" class="sticky top-8 flex justify-center">
+    <a rel="sponsored" href={affiliates.fishingTackleBait.tracking.square300x250} target="_blank">
+      <img src="/images/ads/img300x600-1752502271580.png" alt="Fishing Tackle & Bait" border="0" loading="lazy" />
+    </a>
+  </div>
+
   <section id="what-are-chalk-rivers">
     <h2>What Are Chalk Rivers?</h2>
     <p>
       In our experience securing chalk stream fly fishing day tickets is the single best way to access some of the world's rarest and most productive trout waters, and the UK is extraordinarily fortunate to be home to approximately 85% of the world's remaining chalk streams [Source: Pending Authority Link]. We have found that booking a guided chalk stream fishing UK trip gives you access to crystal-clear, spring-fed rivers where wild brown trout thrive in their natural habitat. These unique rivers form when rainwater percolates through permeable chalk bedrock, emerging as springs that flow through the landscape creating waterways of exceptional purity.
     </p>
     <p>
-      The formation of chalk rivers occurs primarily in southeastern England where thick deposits of chalk geology dominate the landscape. As rainfall slowly filters through the porous chalk, it becomes naturally purified and enriched with calcium carbonate and other minerals. This geological filtration process creates water of exceptional quality with stable temperatures that fluctuate minimally between seasons. The consistent spring-fed flow means chalk streams maintain relatively constant water levels and temperatures, creating ideal conditions for specialized aquatic life that cannot survive in more variable river environments.
+      The formation of chalk rivers occurs primarily in southeastern England where thick deposits of chalk geology dominate the landscape. As rainfall slowly filters through the porous chalk, it becomes naturally purified and enriched with calcium carbonate and other minerals. This geological filtration process creates water of exceptional quality with stable temperatures that fluctuate minimally between seasons. The consistent spring-fed flow means chalk streams maintain relatively constant water levels and temperatures, creating ideal conditions for specialized aquatic life that cannot survive in more variable river environments. Stock up on quality fly fishing gear from <a rel="sponsored" href={affiliates.totalFishingTackle.trackingUrl} target="_blank">Total Fishing Tackle</a> before your trip.
     </p>
   </section>
 
-  <AdSquareInline slot="ad-inline" size="300x250">
-    <a class="ad-creative" href={affiliates.macdonaldHotels.tracking.square300x250} rel="sponsored nofollow" target="_blank">
-      <img src="/images/ads/imgsummer-mdh-300x250px-1781194981092.jpg" alt={affiliates.macdonaldHotels.name} loading="lazy" />
-      <span class="ad-creative__copy"><strong>{affiliates.macdonaldHotels.name}</strong>{affiliates.macdonaldHotels.ctaText}</span>
+  <div class="my-8 flex justify-center w-full overflow-hidden rounded-lg">
+    <a rel="sponsored" href={affiliates.fishingTackleBait.tracking.square300x250} target="_blank">
+      <img src="/images/ads/img300x250-1752501717111.png" alt="Fishing Tackle & Bait" border="0" loading="lazy" />
     </a>
-  </AdSquareInline>
+  </div>
 
   <section id="why-book">
     <h2>Why Book Chalk Stream Fly Fishing Day Tickets</h2>

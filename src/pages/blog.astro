@@ -3,7 +3,6 @@ import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
 import FAQ from '../components/FAQ.astro';
-import AdLeaderboard from '../components/ads/AdLeaderboard.astro';
 import { getBlogPosts } from '../lib/supabase';
 
 const blogPosts = getBlogPosts().sort((a, b) =>
@@ -56,15 +55,10 @@ const faqs = [
     subtitle="Educational articles covering river wildlife, conservation, maps, activities, and fun facts"
   />
 
-  <div class="blog-banner-ad container">
-    <AdLeaderboard>
-      <a class="ad-creative" href="https://www.awin1.com/cread.php?s=4739010&v=1963&q=334516&r=3008603" rel="sponsored" target="_blank">
-        <img src="/images/ads/imgsummer-mdh-728x90px-1781194789865.jpg" alt="Macdonald Hotels — Summer staycations" border="0" loading="lazy" />
-      </a>
-      <a slot="mobile" class="ad-creative" href="https://www.awin1.com/cread.php?s=4739010&v=1963&q=334516&r=3008603" rel="sponsored" target="_blank">
-        <img src="/images/ads/imgsummer-mdh-728x90px-1781194789865.jpg" alt="Macdonald Hotels — Summer staycations" border="0" loading="lazy" />
-      </a>
-    </AdLeaderboard>
+  <div class="hidden md:flex justify-center my-8 w-full">
+    <a rel="sponsored" href="https://www.awin1.com/cread.php?s=4739010&v=1963&q=334516&r=3008603" target="_blank">
+      <img src="/images/ads/imgsummer-mdh-728x90px-1781194789865.jpg" alt="Macdonald Hotels — Summer staycations" border="0" loading="lazy" />
+    </a>
   </div>
 
   <section class="intro-section">
@@ -137,10 +131,6 @@ const faqs = [
   .container {
     max-width: var(--max-width);
     margin: 0 auto;
-    padding: 0 calc(var(--spacing-unit) * 3);
-  }
-
-  .blog-banner-ad {
     padding: 0 calc(var(--spacing-unit) * 3);
   }
 
