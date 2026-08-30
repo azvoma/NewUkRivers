@@ -1,7 +1,6 @@
 ---
 import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
-import AdSquareInline from '../../components/ads/AdSquareInline.astro';
-import { affiliates } from '../../lib/affiliates';
+import AdLeaderboard from '../../components/ads/AdLeaderboard.astro';
 ---
 
 <BlogPostLayout
@@ -19,6 +18,10 @@ import { affiliates } from '../../lib/affiliates';
     <li><a href="#safety-tips">Essential Wild Swimming Safety Tips</a></li>
     <li><a href="#takeaways">Key Takeaways</a></li>
   </ul>
+
+  <a slot="ad-toc" class="article-sidebar-ad" href="https://www.awin1.com/cread.php?s=4523942&v=27393&q=582264&r=3008603" rel="sponsored" target="_blank">
+    <img src="/images/ads/imglifesbetterbythewater_120x600-1758622135989.gif" alt="Red Equipment — Life's Better By The Water" loading="lazy" />
+  </a>
 
   <section id="quality-check">
     <h2>How to Perform a River Water Quality Check UK</h2>
@@ -40,14 +43,6 @@ import { affiliates } from '../../lib/affiliates';
     <img src="/images/blog/is-it-safe-to-swim-in-the-river-today/Is_It_Safe_to_Swim_in_the_River_Today.png" alt="Swimmers enjoying a safe wild swim in a UK river" width="800" height="500" loading="lazy" decoding="async" />
   </section>
 
-  <AdSquareInline slot="ad-inline" size="300x250">
-    <a href={affiliates.redEquipment.tracking.square300x250} rel="sponsored nofollow" target="_blank" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:1rem;font-size:0.9rem;color:var(--color-text-light);text-decoration:none;line-height:1.5;">
-      <img src="/images/blog/wild-swimming-gear-uk/Red.png" alt="Red Equipment" style="max-width:100%;max-height:180px;object-fit:contain;margin-bottom:0.5rem;" loading="lazy" />
-      <strong style="font-size:1.1rem;color:var(--color-primary);margin-bottom:0.25rem;">{affiliates.redEquipment.name}</strong>
-      {affiliates.redEquipment.ctaText}
-    </a>
-  </AdSquareInline>
-
   <section id="dangers">
     <h2>The Dangers of Wild Swimming Rivers</h2>
     <p>
@@ -58,6 +53,15 @@ import { affiliates } from '../../lib/affiliates';
       <li><strong>Weirs:</strong> These man-made structures create a recirculating current at the base, known as a "washing machine," which can trap even the strongest swimmers.</li>
       <li><strong>Cold Water Shock:</strong> Sudden immersion in water below 15°C can cause involuntary gasping and hyperventilation. [Source: National Water Safety Forum]</li>
     </ul>
+
+    <AdLeaderboard>
+      <a class="ad-creative" href="https://www.awin1.com/cread.php?s=4523963&v=27393&q=440124&r=3008603" rel="sponsored" target="_blank">
+        <img src="/images/ads/imglifesbetterbythewater_728x90-1758622475381.gif" alt="Red Equipment — Life's Better By The Water" border="0" loading="lazy" />
+      </a>
+      <a slot="mobile" class="ad-creative" href="https://www.awin1.com/cread.php?s=4523963&v=27393&q=440124&r=3008603" rel="sponsored" target="_blank">
+        <img src="/images/ads/imglifesbetterbythewater_728x90-1758622475381.gif" alt="Red Equipment — Life's Better By The Water" border="0" loading="lazy" />
+      </a>
+    </AdLeaderboard>
   </section>
 
   <section id="safety-tips">

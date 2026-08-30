@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
+import AdLeaderboard from '../components/ads/AdLeaderboard.astro';
 import heroBadge from '../assets/Hero_Logo.png';
 
 const breadcrumbItems = [
@@ -48,6 +49,17 @@ const riverHeroes = [
     title="River Heroes"
     subtitle="Celebrating the organisations and campaigns doing extraordinary work for UK rivers"
   />
+
+  <div class="container header-ad">
+    <AdLeaderboard>
+      <a class="ad-creative" href="https://www.awin1.com/cread.php?s=4739010&v=1963&q=334516&r=3008603" rel="sponsored" target="_blank">
+        <img src="/images/ads/imgsummer-mdh-728x90px-1781194789865.jpg" alt="Macdonald Hotels — Summer staycations" border="0" loading="lazy" />
+      </a>
+      <a slot="mobile" class="ad-creative" href="https://www.awin1.com/cread.php?s=4739010&v=1963&q=334516&r=3008603" rel="sponsored" target="_blank">
+        <img src="/images/ads/imgsummer-mdh-728x90px-1781194789865.jpg" alt="Macdonald Hotels — Summer staycations" border="0" loading="lazy" />
+      </a>
+    </AdLeaderboard>
+  </div>
 
   <section class="intro-section">
     <div class="container">
@@ -98,6 +110,12 @@ const riverHeroes = [
       </div>
     </div>
   </section>
+
+  <div class="river-heroes-ad" aria-label="Red Equipment advert">
+    <a href="https://www.awin1.com/cread.php?s=4523925&v=27393&q=582261&r=3008603" rel="sponsored" target="_blank">
+      <img src="/images/ads/imgadventureisinthebag_120x60-1758621977340.gif" alt="Red Equipment — Adventure is in the bag" loading="lazy" />
+    </a>
+  </div>
 
   <section class="closing-section">
     <div class="container">
@@ -230,6 +248,19 @@ const riverHeroes = [
   .visit-link:hover {
     color: var(--color-primary-dark);
     gap: 8px;
+  }
+
+  .river-heroes-ad {
+    display: flex;
+    justify-content: center;
+    margin: calc(var(--spacing-unit) * 4) 0;
+  }
+
+  .river-heroes-ad a,
+  .river-heroes-ad img {
+    display: block;
+    width: 120px;
+    height: 60px;
   }
 
   .closing-section {
