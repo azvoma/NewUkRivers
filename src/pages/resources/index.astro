@@ -12,76 +12,178 @@ const siteUrl = Astro.site?.toString().replace(/\/$/, '') || 'https://ukrivers.c
 
 const resources = [
   {
-    title: 'Where can I find UK river conservation organisations?',
-    answer: 'Our UK River Heroes Directory profiles over 20 national charities, local river trusts and grassroots campaigns working to protect British waterways.',
-    detail: 'Browse the full directory to find river trusts in your area, learn about their work, and visit their websites to support or volunteer.',
+    title: 'UK River Heroes Directory',
+    question: 'Where can I find UK river conservation organisations near me?',
+    answer: 'Our UK River Heroes Directory profiles over 20 national charities, local river trusts and grassroots campaigns working to protect British waterways — from The Rivers Trust and Surfers Against Sewage to Afonydd Cymru and Thames21.',
     href: '/river-heroes/',
     internal: true,
-    icon: 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm14 10v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75',
-    label: 'River Heroes'
+    image: 'https://images.pexels.com/photos/37876697/pexels-photo-37876697.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+    imageAlt: 'Peaceful stream flowing through greenery in the Cotswolds',
+    tag: 'Directory',
+    body: [
+      'The directory is organised by region and catchment so you can find the trust working closest to your local river. Each profile includes the organisation\u2019s mission, key campaigns, volunteer opportunities and a direct link to their website so you can support their work or get involved.',
+      'River trusts across the UK carry out hands-on conservation work including habitat restoration, spawning bed improvements, invasive species removal and community education programmes. Many also run citizen science initiatives and water quality monitoring networks that feed real-time data into the national evidence base used by the Environment Agency and Natural Resources Wales.',
+      'Whether you want to volunteer for a river clean-up, donate to a conservation appeal, report a pollution incident or simply learn more about the organisations protecting your local waterway, the River Heroes Directory is the most comprehensive starting point on the web for UK river conservation.'
+    ],
+    quickFacts: [
+      { label: 'Organisations listed', value: '20+' },
+      { label: 'Coverage', value: 'England, Scotland, Wales & NI' },
+      { label: 'Types', value: 'Charities, trusts, campaign groups' },
+      { label: 'Updated', value: 'Quarterly' }
+    ]
   },
   {
-    title: 'How can I check UK river water quality?',
-    answer: 'The Environment Agency publishes live pollution and water quality data for every monitored river in England, while SEPA and NRW cover Scotland and Wales.',
-    detail: 'Use the gov.uk bathing water quality tracker and the Rivers Trust sewage map to see real-time discharge alerts and pollution incidents near you.',
+    title: 'Live Water Quality & Pollution Trackers',
+    question: 'How can I check UK river water quality in real time?',
+    answer: 'The Environment Agency publishes live pollution and water quality data for every monitored river in England, while SEPA and NRW cover Scotland and Wales. The Rivers Trust sewage map overlays storm overflow discharge alerts on an interactive UK map.',
     href: 'https://environment.data.gov.uk/bwq/profiles',
     internal: false,
-    icon: 'M22 12h-4l-3 9L9 3l-3 9H2',
-    label: 'Water Quality Tracker'
+    image: 'https://images.pexels.com/photos/584332/nature-water-river-rocks-584332.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+    imageAlt: 'Long exposure of a clean stream flowing over mossy rocks',
+    tag: 'Live Data',
+    body: [
+      'Water quality in UK rivers is measured against several key parameters: dissolved oxygen, phosphate levels, nitrate concentrations, ammonia, pH and biological indicators such as macroinvertebrate populations. The Environment Agency classifies each river stretch as High, Good, Moderate, Poor or Bad under the Water Framework Directive, and these classifications are updated annually.',
+      'Sewage discharges from storm overflows are one of the biggest concerns for river users. Water companies are legally permitted to release untreated sewage into rivers during heavy rainfall to prevent sewer flooding, but the frequency and volume of these discharges has come under intense public scrutiny. The Rivers Trust\u2019s Sewage Map lets you search any river or postcode to see overflow locations, the number of discharge hours recorded in the latest year, and the water company responsible.',
+      'For wild swimmers, the gov.uk bathing water quality tracker provides real-time predictions for designated bathing sites during the summer season. Always check the latest data before entering any river, avoid swimming within 48 hours of heavy rainfall, and look for signs of pollution such as cloudy water, unusual odours or surface foam.'
+    ],
+    quickFacts: [
+      { label: 'Data source', value: 'Environment Agency, SEPA, NRW' },
+      { label: 'Update frequency', value: 'Hourly to daily' },
+      { label: 'Key metrics', value: 'E. coli, phosphate, ammonia' },
+      { label: 'Coverage', value: '8,000+ river stretches' }
+    ]
   },
   {
-    title: 'Is there a map of all UK rivers?',
-    answer: 'Our UK River Mapping and A-Z Database lists every major British river with its length, source, mouth and key facts in one searchable place.',
-    detail: 'Filter by region, length or activity to find the river you need, then click through to individual river pages for maps, photos and local guides.',
+    title: 'UK River Mapping & A-Z Database',
+    question: 'Is there a complete map and A-Z list of all UK rivers?',
+    answer: 'Our UK River Mapping and A-Z Database lists every major British river with its length, source, mouth, region and key facts in one searchable, filterable directory — from the 220-mile River Severn to the chalk streams of Hampshire.',
     href: '/rivers/',
     internal: true,
-    icon: 'M9 20l-5.447-2.724A1 1 0 0 1 3 16.382V5.618a1 1 0 0 1 1.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0 0 21 18.382V7.618a1 1 0 0 0-.553-.894L15 4m0 13V4m0 0L9 7',
-    label: 'A-Z River Database'
+    image: 'https://images.pexels.com/photos/15509901/pexels-photo-15509901.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+    imageAlt: 'Aerial view of a meandering river through the landscape',
+    tag: 'Database',
+    body: [
+      'The UK has an extraordinary network of rivers — over 1,500 named waterways across England, Scotland, Wales and Northern Ireland. Our directory covers every major river and many significant tributaries, with individual pages for each featuring detailed information on the river\u2019s geography, history, wildlife, recreational access and conservation status.',
+      'Each river page in our database includes an overview of the river\u2019s course from source to mouth, its length in miles and kilometres, the counties and regions it flows through, the major towns and cities along its banks, the fish species it supports, and the activities available such as fishing, kayaking, wild swimming and riverside walking.',
+      'The directory is fully searchable by river name and filterable by region (England, Scotland, Wales, Northern Ireland) and by activity (fishing, kayaking, walking, wildlife watching). This makes it an essential planning tool for outdoor enthusiasts, geography students, conservation researchers and anyone planning a riverside day out in the UK.',
+      'We also highlight the UK\u2019s chalk streams — a globally rare habitat found almost exclusively in southern England. Just 210 chalk streams exist worldwide, and 160 of them are in England, including the famous River Test, River Itchen and River Avon. Our database flags these specially so visitors can learn about their unique ecology and the threats they face from over-abstraction and pollution.'
+    ],
+    quickFacts: [
+      { label: 'Rivers listed', value: '1,500+ named waterways' },
+      { label: 'Longest river', value: 'River Severn — 220 miles' },
+      { label: 'Chalk streams', value: '160 in England (of 210 worldwide)' },
+      { label: 'Filterable by', value: 'Region, activity, length' }
+    ]
   },
   {
-    title: 'Do I need a licence to fish or paddleboard on a UK river?',
-    answer: 'You need an Environment Agency rod licence to fish in England and Wales, plus a permit or day ticket from the fishery owner. Paddleboarders require a British Canoeing licence on many waterways.',
-    detail: 'Check our fishing regulations guide and paddling access code for the full breakdown of byelaws, licence types and where to buy them.',
+    title: 'Angling, Byelaws & Fishing Regulations',
+    question: 'Do I need a licence to fish on a UK river and what byelaws apply?',
+    answer: 'You need an Environment Agency rod licence to fish in England and Wales, plus a permit or day ticket from the fishery owner. In Scotland, permission is required from the local district salmon fishery board. Byelaws vary by region and species.',
     href: '/blog/do-i-need-a-license-to-paddleboard-on-a-river/',
     internal: true,
-    icon: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z',
-    label: 'Fishing & Paddling Rules'
+    image: 'https://images.pexels.com/photos/36917549/pexels-photo-36917549.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+    imageAlt: 'Man fly fishing in River Nidd, Knaresborough, UK',
+    tag: 'Regulations',
+    body: [
+      'Fishing on UK rivers is governed by a combination of national rod licences, regional byelaws and local fishery permits. The Environment Agency rod licence is a legal requirement for anyone aged 13 or over fishing for salmon, trout, freshwater fish or eels in England and Wales. Licences are available as annual, 8-day or 1-day options and can be purchased online from the gov.uk website or at any Post Office.',
+      'Regional byelaws set the rules for each area, including open and closed seasons, bait restrictions, size limits and method restrictions. For example, the coarse fish close season runs from 15 March to 15 June on all rivers in England and Wales, during which it is illegal to fish for coarse species. Salmon and trout seasons vary by region and river — always check the local byelaws before you head out.',
+      'In Scotland, there is no national rod licence, but you need permission from the owner of the fishing rights or the local district salmon fishery board to fish for salmon and sea trout. Brown trout fishing rights are less restrictive but still require landowner permission in most areas. The Loch Lomond Angling Improvement Association and similar bodies offer affordable permits for visiting anglers.',
+      'Our fishing regulations guide breaks down everything you need to know about rod licences, byelaws, close seasons and permits for each UK nation. We also link to the official Environment Agency, SEPA and NRW resources so you can verify the latest rules before your trip.'
+    ],
+    quickFacts: [
+      { label: 'Rod licence cost', value: '\u00a330/year (coarse & non-migratory trout)' },
+      { label: 'Coarse close season', value: '15 March \u2013 15 June (rivers)' },
+      { label: 'Where to buy', value: 'gov.uk or any Post Office' },
+      { label: 'Scotland', value: 'No licence, but permission required' }
+    ]
   },
   {
-    title: 'What are the rules for paddling and access on UK rivers?',
-    answer: 'British Canoeing publishes the Water Safety Code and access guidance covering where you can paddle, portage rights and portage safety on UK waterways.',
-    detail: 'Their licence gives access to over 4,500km of navigations. Always check local access agreements before heading out, as rights vary between England, Scotland and Wales.',
+    title: 'Paddling, Access & Water Safety Code',
+    question: 'What are the rules for paddling, kayaking and paddleboarding on UK rivers?',
+    answer: 'British Canoeing publishes the Water Safety Code and access guidance covering where you can paddle, portage rights and safety on UK waterways. A British Canoeing or Waterways Licence gives access to over 4,500km of navigations in England and Wales.',
     href: 'https://www.britishcanoeing.org.uk/',
     internal: false,
-    icon: 'M3 12h18M3 6h18M3 18h18',
-    label: 'Paddling Access Code'
+    image: 'https://images.pexels.com/photos/27222216/pexels-photo-27222216.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+    imageAlt: 'Group paddleboarding on a calm river',
+    tag: 'Safety & Access',
+    body: [
+      'Paddling access on UK rivers is a complex and sometimes contentious issue. In England and Wales, there is no definitive public right of navigation on most non-tidal rivers — the right to paddle may depend on whether the river is a Navigation Authority waterway (such as the Thames or the Norfolk Broads) or whether you hold a British Canoeing licence. In Scotland, the Land Reform (Scotland) Act 2003 establishes a right of responsible access to most inland waters for recreation.',
+      'A British Canoeing membership includes a Waterways Licence that covers over 4,500km of managed navigations, including Canal & River Trust waterways, the Broads Authority waters and many Environment Agency navigations. If you paddleboard, you can also purchase a standalone Waterways Licence through British Canoeing without full membership.',
+      'The Water Safety Code is essential reading for anyone heading out on a river. It covers four key principles: check the conditions (water level, flow rate, weather forecast), wear the right equipment (buoyancy aid, helmet for white water, suitable footwear), never paddle alone or in flood conditions, and always tell someone where you are going and when you expect to return.',
+      'Our blog guides on river kayaking safety for beginners and whether you need a licence to paddleboard cover the practical steps in detail, with links to British Canoeing\u2019s official resources and the RNLI\u2019s float-to-live advice. We also recommend downloading the Go Paddling app, which shows launch points and access information for paddling spots across the UK.'
+    ],
+    quickFacts: [
+      { label: 'Licence coverage', value: '4,500+ km of navigations' },
+      { label: 'Scotland', value: 'Right of responsible access (2003 Act)' },
+      { label: 'Safety code', value: 'Check, equip, never alone, tell someone' },
+      { label: 'App', value: 'Go Paddling (free)' }
+    ]
   },
   {
-    title: 'What wildlife lives in and around UK rivers?',
-    answer: 'UK rivers support otters, kingfishers, Atlantic salmon, water voles, mayflies and over 40 species of freshwater fish, all tracked by conservation charities.',
-    detail: 'Our Freshwater Wildlife Guide covers how to identify key species, where to spot them, and which conservation status applies to each one.',
+    title: 'Freshwater Wildlife & Conservation Guide',
+    question: 'What wildlife lives in and around UK rivers and how is it protected?',
+    answer: 'UK rivers support otters, kingfishers, Atlantic salmon, water voles, mayflies, brown trout, barbel and over 40 species of freshwater fish. Many are protected under UK and European law, and their populations are key indicators of river health.',
     href: '/river-heroes/',
     internal: true,
-    icon: 'M12 2v20M2 12h20',
-    label: 'Wildlife Guide'
+    image: 'https://images.pexels.com/photos/39366321/pexels-photo-39366321.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+    imageAlt: 'Eurasian kingfisher with blue and orange plumage perched on a branch',
+    tag: 'Wildlife',
+    body: [
+      'UK rivers are home to a remarkable diversity of freshwater wildlife. Mammals include otters, water voles, water shrews and daubenton\u2019s bats. Birds range from kingfishers and dippers to grey herons, common sandpipers and goosanders. Fish species span Atlantic salmon, brown trout, sea trout, grayling, barbel, chub, pike, perch, roach and brook lamprey.',
+      'The return of otters to every county in England is one of the greatest conservation success stories of the past 50 years. Banned pesticides like dieldrin drove otters to near-extinction in the 1970s, but legal protection, cleaner rivers and targeted conservation work have enabled their recovery. The Wildlife Trusts continue to monitor otter populations and improve riparian habitats to support their spread.',
+      'Invertebrates are equally important. Mayflies, stoneflies and caddisflies are sensitive to pollution, so their presence (or absence) tells scientists a lot about water quality. The Riverfly Partnership trains volunteers to sample and count these indicator species each month, creating an early-warning system that detects pollution incidents before they become visible to the naked eye.',
+      'Protection is provided through a combination of UK legislation (Wildlife and Countryside Act 1981, Conservation of Habitats and Species Regulations 2017), European designations (Special Areas of Conservation for rivers like the Wye, Tweed and Dee) and local Biodiversity Action Plans. Our wildlife guide links to each of these resources and explains how river users can contribute to wildlife monitoring through citizen science.'
+    ],
+    quickFacts: [
+      { label: 'Freshwater fish species', value: '40+' },
+      { label: 'Protected mammals', value: 'Otter, water vole, water shrew' },
+      { label: 'Key indicator species', value: 'Mayflies, stoneflies, caddis' },
+      { label: 'Conservation status law', value: 'WCA 1981, Habitats Regs 2017' }
+    ]
   },
   {
-    title: 'How do I get involved in citizen science for rivers?',
-    answer: 'The Riverfly Partnership and FreshWater Watch train volunteers to sample and monitor invertebrate and water quality data on rivers across the UK.',
-    detail: 'Sampling takes around 30 minutes per month and feeds directly into the national water quality evidence base used by the Environment Agency.',
+    title: 'Citizen Science & Water Sampling Hub',
+    question: 'How do I get involved in citizen science and water sampling for UK rivers?',
+    answer: 'The Riverfly Partnership and FreshWater Watch train volunteers to sample invertebrates and test water quality on rivers across the UK. Sampling takes about 30 minutes per month and feeds directly into the national water quality evidence base.',
     href: 'https://www.riverflies.org/',
     internal: false,
-    icon: 'M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z',
-    label: 'Citizen Science Hub'
+    image: 'https://images.pexels.com/photos/3735700/pexels-photo-3735700.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+    imageAlt: 'Scientific sample bottles in a laboratory setting',
+    tag: 'Citizen Science',
+    body: [
+      'Citizen science has become one of the most powerful tools for monitoring UK river health. The Riverfly Partnership coordinates a nationwide network of volunteer sampling groups that count key invertebrate species each month. If invertebrate scores drop below a trigger level, the Environment Agency is notified and investigates for pollution within 48 hours \u2014 a rapid response system that simply would not be possible without volunteers.',
+      'FreshWater Watch, run by the Earthwatch Institute, trains volunteers to test water quality using simple kits that measure nitrates, phosphates and turbidity. Volunteers upload their readings to a shared database that researchers use to track long-term trends and identify pollution hotspots that official monitoring networks might miss.',
+      'Getting involved is straightforward. Most river trusts run citizen science programmes and provide free training. You do not need any scientific background \u2014 the sampling protocols are designed for complete beginners and take around 30 minutes per month at your adopted river site. Equipment is usually provided on loan or at subsidised cost.',
+      'Other citizen science opportunities include the Anglers\u2019 Riverfly Monitoring Initiative (ARMI), the Big River Watch run by The Rivers Trust each September, and eDNA sampling programmes that detect rare species like otters and water voles from a single water sample. Our guide links to each programme with sign-up details and training schedules.'
+    ],
+    quickFacts: [
+      { label: 'Time commitment', value: '~30 minutes/month' },
+      { label: 'Main programmes', value: 'Riverfly, FreshWater Watch, ARMI' },
+      { label: 'Training', value: 'Free via local river trusts' },
+      { label: 'Impact', value: 'Triggers EA pollution investigation within 48h' }
+    ]
   },
   {
-    title: 'Where can I find river clean-up volunteer days near me?',
-    answer: 'Thames21, The Rivers Trust network and Surfers Against Sewage run regular community clean-up events searchable by region on their websites.',
-    detail: 'Most events provide equipment and training on the day. You can also start your own clean-up using their free organising toolkits and resources.',
+    title: 'Volunteer & River Clean-Up Finder',
+    question: 'Where can I find river clean-up volunteer days near me in the UK?',
+    answer: 'Thames21, The Rivers Trust network and Surfers Against Sewage run regular community clean-up events searchable by region on their websites. Most events provide equipment and training on the day, and anyone can join without prior experience.',
     href: 'https://www.thames21.org.uk/',
     internal: false,
-    icon: 'M19 7l-.867 12.142A2 2 0 0 1 16.138 21H7.862a2 2 0 0 1-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v3M4 7h16',
-    label: 'Volunteer Clean-Ups'
+    image: 'https://images.pexels.com/photos/7656743/pexels-photo-7656743.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+    imageAlt: 'Two volunteers picking up trash by a river',
+    tag: 'Volunteer',
+    body: [
+      'River clean-ups are one of the most accessible and immediately rewarding ways to help UK rivers. Volunteering events are held year-round across the country, typically lasting 2\u20133 hours on a weekend morning. Organisers provide all equipment \u2014 litter pickers, gloves, bags and hi-vis vests \u2014 so you just need to turn up in suitable clothing and sturdy footwear.',
+      'Thames21 runs regular clean-ups across the London catchment, including the Thames, Lee, Wandle, Colne and Crane river systems. Their events page lists upcoming dates by location, and they also offer free training for anyone who wants to become a certified cleanup leader and run their own events.',
+      'The Rivers Trust network covers the rest of England and Wales, with dozens of local trusts running clean-ups, habitat restoration days and invasive species removal sessions. Surfers Against Sewage organise the annual Million Mile Clean \u2014 the UK\u2019s largest community clean-up initiative \u2014 with events on rivers, beaches and inland waterways. You can search for events near you on their interactive map.',
+      'If you want to start your own clean-up, most river trusts provide free organising toolkits, risk assessment templates and insurance guidance for community groups. Even a small-scale clean-up with friends and family makes a measurable difference to the amount of plastic and debris reaching our rivers and ultimately the sea.'
+    ],
+    quickFacts: [
+      { label: 'Event duration', value: '2\u20133 hours, usually weekends' },
+      { label: 'Equipment', value: 'Provided free by organisers' },
+      { label: 'Experience needed', value: 'None \u2014 beginners welcome' },
+      { label: 'Largest initiative', value: 'SAS Million Mile Clean' }
+    ]
   }
 ];
 
@@ -95,7 +197,7 @@ const itemListSchema = {
     "position": i + 1,
     "item": {
       "@type": "Thing",
-      "name": r.label,
+      "name": r.title,
       "description": r.answer,
       "url": r.internal ? `${siteUrl}${r.href}` : r.href
     }
@@ -132,7 +234,7 @@ const faqSchema = {
       "name": "How can I check UK river water quality?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The Environment Agency publishes live water quality and pollution data for England on environment.data.gov.uk. The Rivers Trust sewage map shows real-time discharge alerts, while SEPA and NRW cover Scotland and Wales respectively."
+        "text": "The Environment Agency publishes live water quality and pollution data for England on environment.data.gov.uk. The Rivers Trust sewage map shows real-time storm overflow discharge alerts, while SEPA and NRW cover Scotland and Wales respectively. For designated bathing waters, use the gov.uk bathing water quality tracker."
       }
     },
     {
@@ -140,7 +242,7 @@ const faqSchema = {
       "name": "Do I need a licence to fish on a UK river?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. You need an Environment Agency rod licence to fish in England and Wales, plus a permit or day ticket from the fishery owner. In Scotland, most freshwater fishing requires permission from the local district salmon fishery board."
+        "text": "Yes. You need an Environment Agency rod licence to fish in England and Wales, plus a permit or day ticket from the fishery owner. In Scotland, most freshwater fishing requires permission from the local district salmon fishery board. The coarse fish close season runs from 15 March to 15 June on all rivers in England and Wales."
       }
     }
   ]
@@ -152,7 +254,7 @@ const schemaData = [collectionPageSchema, itemListSchema, faqSchema];
 <Layout
   title="UK River Resources, Guides & Conservation Directory"
   description="Explore essential UK river resources, live water monitoring tools, conservation groups, and our comprehensive UK River Heroes directory. Plan and protect."
-  keywords="uk river resources, river water quality uk, river conservation uk, uk river trusts, river volunteer uk, citizen science rivers, uk fishing licence"
+  keywords="uk river resources, river water quality uk, river conservation uk, uk river trusts, river volunteer uk, citizen science rivers, uk fishing licence, uk river map, river clean up uk, freshwater wildlife uk, paddling access uk, british canoeing licence"
   schemaData={schemaData}
 >
   <Breadcrumb items={breadcrumbItems} />
@@ -164,42 +266,51 @@ const schemaData = [collectionPageSchema, itemListSchema, faqSchema];
 
   <section class="intro-section">
     <div class="container">
-      <h2>Essential River Resources</h2>
+      <h2>Essential River Resources for the UK</h2>
       <p>
-        Eight hand-picked tools and directories to help you explore, monitor and protect UK rivers.
-        Each card links directly to the resource you need.
+        Whether you are planning a fishing trip, checking whether your local river is safe to swim in, looking for a river trust to support, or searching for a community clean-up to join, this page brings together the most useful UK river resources in one place. Each section below provides in-depth information, practical guidance and direct links to the tools and organisations you need.
+      </p>
+      <p>
+        We have curated eight resource categories covering conservation, water quality monitoring, river mapping, fishing regulations, paddling access, freshwater wildlife, citizen science and volunteering. Together they form a comprehensive directory for anyone who uses, studies or cares about British rivers \u2014 from anglers and wild swimmers to students, researchers and conservation volunteers.
       </p>
     </div>
   </section>
 
-  <!-- First 4 resource cards — 2 per row -->
+  <!-- First 4 resource cards -->
   <section class="resources-section">
     <div class="container">
       <div class="resources-grid">
         {resources.slice(0, 4).map((resource) => (
           <article class="resource-card">
-            <div class="resource-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d={resource.icon} />
-              </svg>
+            <div class="resource-card-top">
+              <span class="resource-tag">{resource.tag}</span>
+              <img src={resource.image} alt={resource.imageAlt} loading="lazy" width="940" height="650" class="resource-image" />
             </div>
-            <h3 class="resource-title">{resource.title}</h3>
-            <p class="resource-answer">{resource.answer}</p>
-            <p class="resource-detail">{resource.detail}</p>
-            <span class="resource-link">
-              {resource.label}
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M9 5l7 7-7 7" />
-              </svg>
-            </span>
-            <a
-              href={resource.href}
-              {...(resource.internal ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
-              class="resource-overlay"
-              aria-label={resource.label}
-            >
-              <span class="sr-only">{resource.label}</span>
-            </a>
+            <div class="resource-card-bottom">
+              <h3 class="resource-question">{resource.question}</h3>
+              <p class="resource-answer">{resource.answer}</p>
+              {resource.body.map((para) => (
+                <p class="resource-body">{para}</p>
+              ))}
+              <div class="quick-facts">
+                {resource.quickFacts.map((fact) => (
+                  <div class="fact-item">
+                    <span class="fact-label">{fact.label}</span>
+                    <span class="fact-value">{fact.value}</span>
+                  </div>
+                ))}
+              </div>
+              <a
+                href={resource.href}
+                {...(resource.internal ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
+                class="resource-link"
+              >
+                Explore {resource.title}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
           </article>
         ))}
       </div>
@@ -211,7 +322,7 @@ const schemaData = [collectionPageSchema, itemListSchema, faqSchema];
     <div class="container">
       <div class="newsletter-inner">
         <h2 class="newsletter-title">River Guide Newsletter</h2>
-        <p class="newsletter-subtitle">Water level alerts, fishing reports &amp; river news — delivered straight to your inbox.</p>
+        <p class="newsletter-subtitle">Water level alerts, fishing reports &amp; river news \u2014 delivered straight to your inbox.</p>
         <form id="resource-newsletter-form" class="newsletter-form">
           <label for="resource-newsletter-email" class="sr-only">Email address</label>
           <input
@@ -230,34 +341,41 @@ const schemaData = [collectionPageSchema, itemListSchema, faqSchema];
     </div>
   </section>
 
-  <!-- Last 4 resource cards — 2 per row -->
-  <section class="resources-section">
+  <!-- Last 4 resource cards -->
+  <section class="resources-section resources-section--alt">
     <div class="container">
       <div class="resources-grid">
         {resources.slice(4).map((resource) => (
           <article class="resource-card">
-            <div class="resource-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d={resource.icon} />
-              </svg>
+            <div class="resource-card-top">
+              <span class="resource-tag">{resource.tag}</span>
+              <img src={resource.image} alt={resource.imageAlt} loading="lazy" width="940" height="650" class="resource-image" />
             </div>
-            <h3 class="resource-title">{resource.title}</h3>
-            <p class="resource-answer">{resource.answer}</p>
-            <p class="resource-detail">{resource.detail}</p>
-            <span class="resource-link">
-              {resource.label}
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M9 5l7 7-7 7" />
-              </svg>
-            </span>
-            <a
-              href={resource.href}
-              {...(resource.internal ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
-              class="resource-overlay"
-              aria-label={resource.label}
-            >
-              <span class="sr-only">{resource.label}</span>
-            </a>
+            <div class="resource-card-bottom">
+              <h3 class="resource-question">{resource.question}</h3>
+              <p class="resource-answer">{resource.answer}</p>
+              {resource.body.map((para) => (
+                <p class="resource-body">{para}</p>
+              ))}
+              <div class="quick-facts">
+                {resource.quickFacts.map((fact) => (
+                  <div class="fact-item">
+                    <span class="fact-label">{fact.label}</span>
+                    <span class="fact-value">{fact.value}</span>
+                  </div>
+                ))}
+              </div>
+              <a
+                href={resource.href}
+                {...(resource.internal ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
+                class="resource-link"
+              >
+                Explore {resource.title}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
           </article>
         ))}
       </div>
@@ -272,7 +390,7 @@ const schemaData = [collectionPageSchema, itemListSchema, faqSchema];
       const input = form.querySelector('input[name="email"]') as HTMLInputElement;
       const email = input.value.trim();
       if (!email) return;
-      msg!.textContent = 'Subscribing…';
+      msg!.textContent = 'Subscribing\u2026';
       msg!.classList.remove('hidden');
       try {
         const res = await fetch('/api/newsletter', {
@@ -331,24 +449,29 @@ const schemaData = [collectionPageSchema, itemListSchema, faqSchema];
     margin-left: auto;
     margin-right: auto;
     text-align: center;
+    margin-bottom: calc(var(--spacing-unit) * 3);
   }
 
   .resources-section {
     padding: calc(var(--spacing-unit) * 8) 0;
   }
 
+  .resources-section--alt {
+    background: var(--color-background-alt);
+  }
+
   .resources-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: calc(var(--spacing-unit) * 3);
+    gap: calc(var(--spacing-unit) * 4);
   }
 
+  /* Dark-blue top / light-blue bottom card */
   .resource-card {
-    position: relative;
-    background: var(--color-background-alt);
+    background: var(--color-background);
     border: 2px solid var(--color-border);
     border-radius: 12px;
-    padding: calc(var(--spacing-unit) * 5);
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
@@ -360,76 +483,121 @@ const schemaData = [collectionPageSchema, itemListSchema, faqSchema];
     transform: translateY(-4px);
   }
 
-  .resource-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 10px;
-    background: var(--color-primary);
+  .resource-card-top {
+    background: linear-gradient(135deg, #0a2770 0%, #0d3b9e 50%, #1056c0 100%);
+    padding: calc(var(--spacing-unit) * 3);
+    position: relative;
+  }
+
+  .resource-tag {
+    display: inline-block;
+    background: rgba(23, 192, 232, 0.25);
     color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: calc(var(--spacing-unit) * 0.75) calc(var(--spacing-unit) * 2);
+    border-radius: 999px;
     margin-bottom: calc(var(--spacing-unit) * 2);
-    flex-shrink: 0;
+    border: 1px solid rgba(23, 192, 232, 0.4);
   }
 
-  .resource-icon svg {
-    width: 24px;
-    height: 24px;
+  .resource-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
   }
 
-  .resource-title {
-    font-size: 1.05rem;
+  .resource-card-bottom {
+    padding: calc(var(--spacing-unit) * 4);
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .resource-question {
+    font-size: 1.1rem;
     font-weight: 700;
     color: var(--color-text);
-    margin-bottom: calc(var(--spacing-unit) * 1.5);
+    margin-bottom: calc(var(--spacing-unit) * 2);
     line-height: 1.4;
   }
 
   .resource-answer {
     font-size: 0.95rem;
-    line-height: 1.7;
+    line-height: 1.75;
     color: var(--color-text);
     font-weight: 500;
-    margin-bottom: calc(var(--spacing-unit) * 1.5);
+    margin-bottom: calc(var(--spacing-unit) * 2);
   }
 
-  .resource-detail {
+  .resource-body {
     font-size: 0.9rem;
-    line-height: 1.65;
+    line-height: 1.75;
     color: var(--color-text-light);
-    margin-bottom: calc(var(--spacing-unit) * 2.5);
-    flex: 1;
+    margin-bottom: calc(var(--spacing-unit) * 2);
+  }
+
+  /* Quick facts grid */
+  .quick-facts {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--color-border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: calc(var(--spacing-unit) * 3);
+  }
+
+  .fact-item {
+    background: var(--color-background-alt);
+    padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 2);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .fact-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .fact-value {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--color-primary);
   }
 
   .resource-link {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    font-size: 0.875rem;
+    gap: 6px;
+    font-size: 0.9rem;
     font-weight: 600;
     color: var(--color-primary);
+    text-decoration: none;
+    margin-top: auto;
     transition: color 0.2s ease, gap 0.2s ease;
   }
 
   .resource-link svg {
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     transition: transform 0.2s ease;
   }
 
   .resource-card:hover .resource-link {
     color: var(--color-primary-dark);
-    gap: 8px;
+    gap: 10px;
   }
 
-  .resource-overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 10;
-  }
-
-  /* Newsletter section — matches site hero gradient */
+  /* Newsletter section */
   .newsletter-section {
     padding: calc(var(--spacing-unit) * 10) 0;
     background: linear-gradient(135deg, #0a2770 0%, #0d3b9e 50%, #1056c0 100%);
@@ -545,6 +713,10 @@ const schemaData = [collectionPageSchema, itemListSchema, faqSchema];
 
     .newsletter-btn {
       width: 100%;
+    }
+
+    .quick-facts {
+      grid-template-columns: 1fr;
     }
   }
 </style>
