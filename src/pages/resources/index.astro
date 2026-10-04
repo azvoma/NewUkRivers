@@ -162,40 +162,40 @@ const schemaData = [collectionPageSchema, itemListSchema, faqSchema];
     subtitle="Your definitive toolkit for exploring, monitoring, and protecting British waterways."
   />
 
-  <!-- Resource cards grid -->
-  <section class="py-12 md:py-16 bg-white">
-    <div class="max-w-7xl mx-auto px-6">
-      <h2 class="text-2xl md:text-3xl font-bold text-slate-800 mb-2">Essential River Resources</h2>
-      <p class="text-slate-600 mb-10 max-w-2xl">
+  <section class="intro-section">
+    <div class="container">
+      <h2>Essential River Resources</h2>
+      <p>
         Eight hand-picked tools and directories to help you explore, monitor and protect UK rivers.
         Each card links directly to the resource you need.
       </p>
+    </div>
+  </section>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <!-- First 4 resource cards — 2 per row -->
+  <section class="resources-section">
+    <div class="container">
+      <div class="resources-grid">
         {resources.slice(0, 4).map((resource) => (
-          <article class="resource-card group relative bg-slate-50 border border-slate-200 rounded-xl p-6 transition-all duration-300 hover:border-blue-500 hover:shadow-lg hover:-translate-y-1">
-            <div class="flex items-start gap-4 mb-3">
-              <div class="flex-shrink-0 w-11 h-11 rounded-lg bg-blue-600 flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d={resource.icon} />
-                </svg>
-              </div>
-              <div class="flex-1">
-                <h3 class="text-base font-bold text-slate-800 leading-snug">{resource.title}</h3>
-              </div>
-            </div>
-            <p class="text-sm text-slate-700 leading-relaxed mb-2 font-medium">{resource.answer}</p>
-            <p class="text-sm text-slate-500 leading-relaxed">{resource.detail}</p>
-            <div class="mt-4 flex items-center gap-1 text-sm font-semibold text-blue-700 group-hover:text-blue-900 transition-colors">
-              {resource.label}
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M9 5l7 7-7 7" />
+          <article class="resource-card">
+            <div class="resource-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d={resource.icon} />
               </svg>
             </div>
+            <h3 class="resource-title">{resource.title}</h3>
+            <p class="resource-answer">{resource.answer}</p>
+            <p class="resource-detail">{resource.detail}</p>
+            <span class="resource-link">
+              {resource.label}
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M9 5l7 7-7 7" />
+              </svg>
+            </span>
             <a
               href={resource.href}
               {...(resource.internal ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
-              class="absolute inset-0 z-10"
+              class="resource-overlay"
               aria-label={resource.label}
             >
               <span class="sr-only">{resource.label}</span>
@@ -207,59 +207,53 @@ const schemaData = [collectionPageSchema, itemListSchema, faqSchema];
   </section>
 
   <!-- Newsletter integration -->
-  <section class="py-12 md:py-16 bg-blue-700">
-    <div class="max-w-3xl mx-auto px-6 text-center">
-      <h2 class="text-2xl md:text-3xl font-bold text-white mb-3">River Guide Newsletter</h2>
-      <p class="text-blue-100 text-lg mb-8">Water level alerts, fishing reports &amp; river news — delivered straight to your inbox.</p>
-      <form id="resource-newsletter-form" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-        <input
-          type="email"
-          name="email"
-          placeholder="Enter your email"
-          required
-          aria-label="Email address"
-          class="flex-1 px-4 py-3 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-300"
-        />
-        <button
-          type="submit"
-          class="px-6 py-3 bg-white text-blue-700 font-semibold rounded-lg hover:bg-blue-50 transition-colors whitespace-nowrap"
-        >
-          Subscribe
-        </button>
-      </form>
-      <p id="resource-newsletter-msg" class="text-blue-100 text-sm mt-4 hidden" role="status"></p>
-      <p class="text-blue-200 text-xs mt-3">Free. No spam. Unsubscribe anytime.</p>
+  <section class="newsletter-section">
+    <div class="container">
+      <div class="newsletter-inner">
+        <h2 class="newsletter-title">River Guide Newsletter</h2>
+        <p class="newsletter-subtitle">Water level alerts, fishing reports &amp; river news — delivered straight to your inbox.</p>
+        <form id="resource-newsletter-form" class="newsletter-form">
+          <label for="resource-newsletter-email" class="sr-only">Email address</label>
+          <input
+            type="email"
+            id="resource-newsletter-email"
+            name="email"
+            placeholder="Enter your email"
+            required
+            class="newsletter-input"
+          />
+          <button type="submit" class="newsletter-btn">Subscribe</button>
+        </form>
+        <p id="resource-newsletter-msg" class="newsletter-msg hidden" role="status"></p>
+        <p class="newsletter-fineprint">Free. No spam. Unsubscribe anytime.</p>
+      </div>
     </div>
   </section>
 
-  <!-- Remaining resource cards -->
-  <section class="py-12 md:py-16 bg-white">
-    <div class="max-w-7xl mx-auto px-6">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <!-- Last 4 resource cards — 2 per row -->
+  <section class="resources-section">
+    <div class="container">
+      <div class="resources-grid">
         {resources.slice(4).map((resource) => (
-          <article class="resource-card group relative bg-slate-50 border border-slate-200 rounded-xl p-6 transition-all duration-300 hover:border-blue-500 hover:shadow-lg hover:-translate-y-1">
-            <div class="flex items-start gap-4 mb-3">
-              <div class="flex-shrink-0 w-11 h-11 rounded-lg bg-blue-600 flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d={resource.icon} />
-                </svg>
-              </div>
-              <div class="flex-1">
-                <h3 class="text-base font-bold text-slate-800 leading-snug">{resource.title}</h3>
-              </div>
-            </div>
-            <p class="text-sm text-slate-700 leading-relaxed mb-2 font-medium">{resource.answer}</p>
-            <p class="text-sm text-slate-500 leading-relaxed">{resource.detail}</p>
-            <div class="mt-4 flex items-center gap-1 text-sm font-semibold text-blue-700 group-hover:text-blue-900 transition-colors">
-              {resource.label}
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M9 5l7 7-7 7" />
+          <article class="resource-card">
+            <div class="resource-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d={resource.icon} />
               </svg>
             </div>
+            <h3 class="resource-title">{resource.title}</h3>
+            <p class="resource-answer">{resource.answer}</p>
+            <p class="resource-detail">{resource.detail}</p>
+            <span class="resource-link">
+              {resource.label}
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M9 5l7 7-7 7" />
+              </svg>
+            </span>
             <a
               href={resource.href}
               {...(resource.internal ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
-              class="absolute inset-0 z-10"
+              class="resource-overlay"
               aria-label={resource.label}
             >
               <span class="sr-only">{resource.label}</span>
@@ -298,3 +292,259 @@ const schemaData = [collectionPageSchema, itemListSchema, faqSchema];
     });
   </script>
 </Layout>
+
+<style>
+  .container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 calc(var(--spacing-unit) * 3);
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  .intro-section {
+    padding: calc(var(--spacing-unit) * 8) 0;
+    background: var(--color-background-alt);
+  }
+
+  .intro-section h2 {
+    text-align: center;
+    margin-bottom: calc(var(--spacing-unit) * 4);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+  }
+
+  .intro-section p {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: var(--color-text-light);
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+
+  .resources-section {
+    padding: calc(var(--spacing-unit) * 8) 0;
+  }
+
+  .resources-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: calc(var(--spacing-unit) * 3);
+  }
+
+  .resource-card {
+    position: relative;
+    background: var(--color-background-alt);
+    border: 2px solid var(--color-border);
+    border-radius: 12px;
+    padding: calc(var(--spacing-unit) * 5);
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  }
+
+  .resource-card:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 8px 24px rgba(13, 59, 158, 0.12);
+    transform: translateY(-4px);
+  }
+
+  .resource-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: var(--color-primary);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: calc(var(--spacing-unit) * 2);
+    flex-shrink: 0;
+  }
+
+  .resource-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .resource-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: calc(var(--spacing-unit) * 1.5);
+    line-height: 1.4;
+  }
+
+  .resource-answer {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--color-text);
+    font-weight: 500;
+    margin-bottom: calc(var(--spacing-unit) * 1.5);
+  }
+
+  .resource-detail {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: var(--color-text-light);
+    margin-bottom: calc(var(--spacing-unit) * 2.5);
+    flex: 1;
+  }
+
+  .resource-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    transition: color 0.2s ease, gap 0.2s ease;
+  }
+
+  .resource-link svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.2s ease;
+  }
+
+  .resource-card:hover .resource-link {
+    color: var(--color-primary-dark);
+    gap: 8px;
+  }
+
+  .resource-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+  }
+
+  /* Newsletter section — matches site hero gradient */
+  .newsletter-section {
+    padding: calc(var(--spacing-unit) * 10) 0;
+    background: linear-gradient(135deg, #0a2770 0%, #0d3b9e 50%, #1056c0 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .newsletter-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(ellipse at 20% 80%, rgba(23, 192, 232, 0.18) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(23, 192, 232, 0.12) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .newsletter-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .newsletter-title {
+    color: #ffffff;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    margin-bottom: calc(var(--spacing-unit) * 2);
+  }
+
+  .newsletter-subtitle {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.125rem;
+    line-height: 1.7;
+    margin-bottom: calc(var(--spacing-unit) * 5);
+  }
+
+  .newsletter-form {
+    display: flex;
+    gap: calc(var(--spacing-unit) * 1.5);
+    max-width: 440px;
+    margin: 0 auto;
+  }
+
+  .newsletter-input {
+    flex: 1;
+    padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--color-text);
+    transition: border-color 0.3s ease;
+  }
+
+  .newsletter-input::placeholder {
+    color: var(--color-text-light);
+  }
+
+  .newsletter-input:focus {
+    outline: none;
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 0 3px rgba(23, 192, 232, 0.3);
+  }
+
+  .newsletter-btn {
+    padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 3);
+    border: none;
+    border-radius: 8px;
+    background: #ffffff;
+    color: var(--color-primary);
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+
+  .newsletter-btn:hover {
+    background: var(--color-background-alt);
+    transform: translateY(-1px);
+  }
+
+  .newsletter-msg {
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 0.9rem;
+    margin-top: calc(var(--spacing-unit) * 2);
+  }
+
+  .newsletter-msg.hidden {
+    display: none;
+  }
+
+  .newsletter-fineprint {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8rem;
+    margin-top: calc(var(--spacing-unit) * 1.5);
+  }
+
+  @media (max-width: 768px) {
+    .resources-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .newsletter-form {
+      flex-direction: column;
+    }
+
+    .newsletter-btn {
+      width: 100%;
+    }
+  }
+</style>
