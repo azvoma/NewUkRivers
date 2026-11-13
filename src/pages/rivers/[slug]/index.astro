@@ -9,6 +9,10 @@ import RelatedRivers from '../../../components/RelatedRivers.astro';
 import RiverFactFile from '../../../components/RiverFactFile.astro';
 import { affiliates } from '../../../lib/affiliates';
 import { getRivers, getRiversByRegion } from '../../../lib/supabase';
+import {
+  CONTENT_UPDATED, EDITOR, formatDisplayDate, correctionMailto, buildAnswerBlock,
+  fishingGuidanceFor, guidanceFor, waterQualitySources, englandClassificationSource, fitDescription
+} from '../../../lib/trust';
 
 export async function getStaticPaths() {
   const rivers = getRivers();
@@ -35,17 +39,25 @@ const breadcrumbItems = [
 const riverUrl = new URL(`/rivers/${river.slug}/`, Astro.site).toString();
 const siteUrl = Astro.site?.toString() || "https://ukrivers.co.uk";
 
-const schemaData = [
+const answerBlock = buildAnswerBlock(river);
+const fishing = fishingGuidanceFor(river);
+const regionInfo = guidanceFor(river.region);
+
+const schemaData: any[] = [
   {
     "@context": "https://schema.org",
     "@type": "Place",
+    "@id": `${riverUrl}#river`,
     "name": river.name,
     "description": river.description,
     "url": riverUrl,
-    "geo": river.origin && {
-      "@type": "GeoCoordinates",
-      "name": river.origin
-    },
+    ...(river.latitude != null && river.longitude != null && {
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": river.latitude,
+        "longitude": river.longitude
+      }
+    }),
     "containedInPlace": {
       "@type": "AdministrativeArea",
       "name": river.region
@@ -62,36 +74,6 @@ const schemaData = [
         }
       ]
     })
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": siteUrl
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Rivers Directory",
-        "item": `${siteUrl}rivers/`
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "name": `Rivers in ${river.region}`,
-        "item": `${siteUrl}rivers/?region=${encodeURIComponent(river.region)}`
-      },
-      {
-        "@type": "ListItem",
-        "position": 4,
-        "name": river.name,
-        "item": riverUrl
-      }
-    ]
   }
 ];
 
@@ -120,15 +102,68 @@ const faqs = [
   },
   {
     question: `Is it safe to swim in the ${river.name}?`,
-    answer: `${river.swimming_safety}. Always check current water quality, avoid swimming after heavy rain, never swim alone, and be aware of currents and underwater hazards.`
+    answer: `${river.swimming_safety.replace(/\.+$/, '')}. Check recent sewage-discharge alerts and water quality before any swim, avoid swimming after heavy rain, and never swim alone.`
   },
   {
-    question: river.has_gold ? `Can you find gold in the ${river.name}?` : `What makes the ${river.name} special?`,
+    question: river.has_gold ? `Can you find gold in the ${river.name}?` : `Do I need a licence to fish the ${river.name}?`,
     answer: river.has_gold
       ? `Yes, the ${river.name} is known to contain natural gold deposits. Gold panning requires landowner permission and proper equipment. The gold comes from erosion of gold-bearing rocks upstream.`
-      : `The ${river.name} is special for its natural beauty, wildlife, and ${river.activities && river.activities.length > 0 ? 'recreational opportunities' : 'cultural significance'}. Each UK river has unique characteristics shaped by its geology and history.`
+      : fishing.fishingSummary
   }
 ];
+
+const baseTitle = `${river.name} | ${river.region} River Guide & Information`;
+let pageTitle = baseTitle;
+if (baseTitle.length > 60) {
+  pageTitle = [
+    `${river.name} | ${river.region} River Guide & Facts`,
+    `${river.name} | ${river.region} River Guide`,
+    `${river.name} | ${river.region} River Facts`
+  ].find((t) => t.length <= 60) || baseTitle;
+} else if (baseTitle.length < 50) {
+  pageTitle = [' - Facts & Map', ' - Facts, Map', ' - Facts', ' - Map & Facts']
+    .map((t) => baseTitle + t)
+    .find((t) => t.length >= 50 && t.length <= 60) || baseTitle;
+}
+
+const pageDescription = fitDescription(
+  `Explore ${river.name} in ${river.region}.`,
+  river.description || `Discover wildlife, activities, and essential information about this ${river.region} river.`,
+  [
+    'Maps and facts.',
+    'Wildlife and activities.',
+    'Maps, wildlife and activities.',
+    'Facts, wildlife and safety advice.',
+    'Plan your visit with local facts.',
+    'Maps, wildlife, activities and safety advice.',
+    'Find facts, maps, wildlife, activities and safety advice.'
+  ]
+);
+
+schemaData.push(
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": riverUrl,
+    "url": riverUrl,
+    "name": pageTitle,
+    "description": pageDescription,
+    "inLanguage": "en-GB",
+    "dateModified": CONTENT_UPDATED,
+    "about": { "@id": `${riverUrl}#river` },
+    "author": { "@type": "Person", "name": EDITOR.name, "jobTitle": EDITOR.jobTitle },
+    "publisher": { "@type": "Organization", "name": "UK Rivers Directory", "url": siteUrl }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map((f) => ({
+      "@type": "Question",
+      "name": f.question,
+      "acceptedAnswer": { "@type": "Answer", "text": f.answer }
+    }))
+  }
+);
 
 const riverGalleries: Record<string, { url: string; alt: string }[]> = {
  'river-aire': [
@@ -164,7 +199,6 @@ const riverGalleries: Record<string, { url: string; alt: string }[]> = {
     { url: 'https://upload.wikimedia.org/wikipedia/commons/7/70/River_Dart_at_Dartington.jpg', alt: 'River Dart at Dartington Devon' }
   ],
   'river-dee-scotland': [
-    { url: 'https://www.coastandcountry.co.uk/blog/wp-content/uploads/sites/6/2022/03/River-Dart.jpg' },
     { url: 'https://i.postimg.cc/jq9XVtmh/River_Dee_Scot_2.jpg' }
   ],
   'river-dee-wales': [
@@ -179,9 +213,7 @@ const riverGalleries: Record<string, { url: string; alt: string }[]> = {
     { url: 'https://upload.wikimedia.org/wikipedia/commons/9/94/Brightside_-_railway_bridge_over_River_Don.jpg', alt: 'River Don at Brightside Sheffield South Yorkshire' },
     { url: 'https://upload.wikimedia.org/wikipedia/commons/1/13/RiverDonAldwarkeLock.jpg', alt: 'River Don at Oughtibridge South Yorkshire' }
   ],
-  'river-eden': [
-    { url: 'https://beckstonesartgallery.co.uk/wp-content/uploads/2025/04/41-Golden-glow-the-River-Eden-towards-Lazonby-27-x-40-cm.jpg', alt: 'River Eden Cumbria near Lazonby' },
-    { url: 'https://beckstonesartgallery.co.uk/wp-content/uploads/2025/04/41-Golden-glow-the-River-Eden-towards-Lazonby-27-x-40-cm.jpg', alt: 'River Eden Cumbria near Lazonby' },
+  'river-eden-cumbria': [
     { url: 'https://upload.wikimedia.org/wikipedia/commons/5/5c/River_Eden_Armathwaite.jpg', alt: 'River Eden at Armathwaite gorge Cumbria' }
   ],
   'river-exe': [
@@ -228,7 +260,7 @@ const riverGalleries: Record<string, { url: string; alt: string }[]> = {
     { url: 'https://upload.wikimedia.org/wikipedia/commons/9/98/River_Ness_and_Inverness_Castle_from_Ness_Walk_Inverness_Scotland_(EXPLORED)_-_Flickr_-_conner395.jpg', alt: 'River Ness and Inverness Castle Ness Walk Scotland' },
     { url: 'https://upload.wikimedia.org/wikipedia/commons/8/8a/Huntly_Street_and_the_River_Ness_(26875646573).jpg', alt: 'River Ness at Huntly Street Inverness Scotland' }
   ],
-  'river-ouse': [
+  'river-ouse-yorkshire': [
     { url: 'https://upload.wikimedia.org/wikipedia/commons/9/96/River_Ouse_at_York.jpg', alt: 'River Ouse at York city centre' },
     { url: 'https://i.guim.co.uk/img/media/0424efc8b35802c7b7738dc8389dec766574b971/0_348_5500_3302/master/5500.jpg?width=1200&height=900&quality=85&auto=format&fit=crop&s=a66166257a5e3403eed023e17b9a5de6', alt: 'River Ouse at Kings Pool York' }
  
@@ -239,8 +271,6 @@ const riverGalleries: Record<string, { url: string; alt: string }[]> = {
     { url: 'https://upload.wikimedia.org/wikipedia/commons/a/ac/04_Ribble_estuary%2C_Lytham_St_Annes%2C_Lancashire%2C_UK.jpg', alt: 'River Ribble estuary Lytham St Annes Lancashire' }
   ],
   'river-severn': [
-    { url: 'https://i.postimg.cc/kGvfKXxG/River_Spey_1.jpg', alt: 'River Severn' },
-    { url: 'https://i.postimg.cc/gJvDbktT/River_Spey.jpg', alt: 'River Severn' },
     { url: 'https://upload.wikimedia.org/wikipedia/commons/c/c0/Fallen_trees_by_the_infant_Severn_in_Montgomeryshire_-_geograph-2981572.jpg', alt: 'River Severn in Montgomeryshire Wales' },
     { url: 'https://upload.wikimedia.org/wikipedia/commons/6/6b/River_Severn_-_looking_down_the_estuary_towards_Lydney_-_June_2016_-_panoramio.jpg', alt: 'River Severn estuary looking towards Lydney' }
   ],
@@ -298,7 +328,6 @@ const riverGalleries: Record<string, { url: string; alt: string }[]> = {
     { url: 'https://scontent.ffab1-1.fna.fbcdn.net/v/t39.30808-6/486614937_1189242002824525_8124325699180499922_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=e06c5d&_nc_ohc=0URmTcM0JcgQ7kNvwFnZ2gi&_nc_oc=Adro0dAvIga6yZ2GRIWpEjFR1hXMC7cO1FTboSXj5sDYfwK97YefwyJDXdK6aURGpkI&_nc_zt=23&_nc_ht=scontent.ffab1-1.fna&_nc_gid=Q8VwKJL2kI9_mXOBaeC2lQ&_nc_ss=7a3a8&oh=00_Af0EvQHyLQblLLWG_zUtFk-9fCnPrcBr3lIMcpYirGzs_g&oe=69E3F18F', alt: 'River Wear at Sunderland Wearmouth iron bridge' }
   ],
   'river-wye': [
-    { url: 'https://upload.wikimedia.org/wikipedia/commons/2/29/River_Wear_from_Prebends_Bridge_-_geograph.org.uk_-_3495984.jpg', alt: 'River Wye valley' },
     { url: 'https://i.postimg.cc/T32vZVZP/River_wye_2.jpg', alt: 'River Wye landscape' }
   ]
 };
@@ -327,7 +356,14 @@ const defaultGallery = [
 
 
 
-const galleryImages = riverGalleries[river.slug] || defaultGallery;
+// Third-party publisher, social and travel-site images are not hotlinked.
+const allowedImageHosts = ['upload.wikimedia.org', 'i.postimg.cc', 'images.pexels.com'];
+const isAllowedImage = (url: string) =>
+  url.startsWith('/') || allowedImageHosts.some((h) => url.startsWith(`https://${h}/`));
+
+const curatedGallery = (riverGalleries[river.slug] || []).filter((img) => isAllowedImage(img.url));
+const fallbackGallery = defaultGallery.filter((img) => img.url === river.image_url || isAllowedImage(img.url));
+const galleryImages = curatedGallery.length > 0 ? curatedGallery : fallbackGallery;
 
 const riverSpecificFacts = {
   'river-thames': [
@@ -440,8 +476,8 @@ const exploreActivities = [
 ---
 
 <Layout
-  title={`${river.name} | ${river.region} River Guide & Information`}
-  description={`Explore ${river.name} in ${river.region}. ${river.description ? river.description.substring(0, 120) : `Discover wildlife, activities, and essential information about this ${river.region} river.`}`}
+  title={pageTitle}
+  description={pageDescription}
   keywords={`${river.name}, ${river.slug}, ${river.region} rivers, UK rivers, ${river.activities && river.activities.length > 0 ? river.activities.join(', ') : 'river activities'}`}
   image={river.image_url}
   type="article"
@@ -484,14 +520,21 @@ const exploreActivities = [
 
   <section class="river-intro">
     <div class="container">
-      <h2>About {river.name}</h2>
+      <h2>What is the {river.name}?</h2>
+      <p class="answer-block"><strong>{answerBlock}</strong></p>
       <p class="lead">{river.description}</p>
+      <p class="trust-strip">
+        <span>Last updated <time datetime={CONTENT_UPDATED}>{formatDisplayDate(CONTENT_UPDATED)}</time></span>
+        <span>Edited by {EDITOR.name}, {EDITOR.jobTitle.toLowerCase()}</span>
+        <a href="/methodology/">How this page is compiled</a>
+        <a href={correctionMailto(`Correction: ${river.name}`)}>Report a correction</a>
+      </p>
     </div>
   </section>
 
   <section class="gallery-section">
     <div class="container">
-      <h2>{river.name} Photo Gallery</h2>
+      <h2>What does the {river.name} look like?</h2>
       <div class="gallery-grid">
         {galleryImages.map((image) => (
           <div class="gallery-item">
@@ -513,7 +556,7 @@ const exploreActivities = [
                 <path d="M9 2C6.2 2 4 4.2 4 7C4 10.5 9 16 9 16C9 16 14 10.5 14 7C14 4.2 11.8 2 9 2Z" stroke="white" stroke-width="1.5" fill="none"/>
                 <circle cx="9" cy="7" r="2" stroke="white" stroke-width="1.25" fill="none"/>
               </svg>
-              <h3>Location Map</h3>
+              <h3>Where is the {river.name} on the map?</h3>
             </div>
             <div class="map-widget-body">
               <iframe
@@ -535,7 +578,7 @@ const exploreActivities = [
                   <path d="M8 1C5.8 1 4 2.8 4 5C4 7.8 8 13 8 13C8 13 12 7.8 12 5C12 2.8 10.2 1 8 1Z" stroke="white" stroke-width="1.5" fill="none"/>
                   <circle cx="8" cy="5" r="1.5" stroke="white" stroke-width="1.25" fill="none"/>
                 </svg>
-                <h3>Location</h3>
+                <h3>Where does the {river.name} rise and end?</h3>
               </div>
               <div class="detail-content">
                 <p><strong>Region:</strong> {river.region}</p>
@@ -554,7 +597,7 @@ const exploreActivities = [
                   <path d="M5.5 8L8 5.5L10.5 8" stroke="white" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
                   <path d="M8 5.5V10" stroke="white" stroke-width="1.25" stroke-linecap="round"/>
                 </svg>
-                <h3>Wildlife</h3>
+                <h3>What wildlife lives on the {river.name}?</h3>
               </div>
               <div class="detail-content">
                 {river.wildlife && river.wildlife.length > 0 ? (
@@ -575,7 +618,7 @@ const exploreActivities = [
                   <circle cx="8" cy="8" r="6" stroke="white" stroke-width="1.5" fill="none"/>
                   <path d="M8 5V8L10 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                <h3>Activities</h3>
+                <h3>What can you do on the {river.name}?</h3>
               </div>
               <div class="detail-content">
                 {river.activities && river.activities.length > 0 ? (
@@ -598,10 +641,11 @@ const exploreActivities = [
                   <path d="M8 1V7" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
                   <path d="M6 3L8 1L10 3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
                 </svg>
-                <h3>Safety</h3>
+                <h3>Is the {river.name} safe to swim in?</h3>
               </div>
               <div class="detail-content">
                 <p><strong>Swimming Safety:</strong> {river.swimming_safety}</p>
+                <p><a href="#before-you-go">Check water quality sources before you swim</a></p>
                 {river.fishing_season && (
                   <p><strong>Fishing Season:</strong> {river.fishing_season}</p>
                 )}
@@ -617,7 +661,7 @@ const exploreActivities = [
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                 <path d="M8 1L10 5.5H15L11 8.5L12.5 13.5L8 10.5L3.5 13.5L5 8.5L1 5.5H6L8 1Z" stroke="white" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
               </svg>
-              <h3>Key Features of {river.name}</h3>
+              <h3>What are the key features of the {river.name}?</h3>
             </div>
             <div class="features-grid">
               <div class="feature-box">
@@ -630,17 +674,6 @@ const exploreActivities = [
                 </div>
                 <h4>River Course</h4>
                 <p>The {river.name} flows from {river.origin} through {river.region}, eventually reaching {river.mouth}. {river.length_miles && `At ${river.length_miles} miles long, it traverses diverse landscapes.`}</p>
-              </div>
-              <div class="feature-box">
-                <div class="feature-icon">
-                  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-                    <circle cx="16" cy="16" r="16" fill="#dbeafe"/>
-                    <path d="M8 26L16 8L24 26H8Z" stroke="#0066cc" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                    <path d="M12 19C13.5 17 15 16.5 16 16.5C17 16.5 18.5 17 20 19" stroke="#0066cc" stroke-width="1.25" stroke-linecap="round" fill="none"/>
-                  </svg>
-                </div>
-                <h4>Natural Beauty</h4>
-                <p>The river valley offers stunning scenery, from its source through varied terrain. Perfect for photography, nature walks, and outdoor exploration.</p>
               </div>
               <div class="feature-box">
                 <div class="feature-icon">
@@ -665,7 +698,7 @@ const exploreActivities = [
                   </svg>
                 </div>
                 <h4>Ecology</h4>
-                <p>The {river.name} supports important ecosystems including {river.wildlife && river.wildlife.length > 0 ? river.wildlife.slice(0, 2).join(' and ') : 'diverse wildlife'}. Conservation efforts help protect these habitats.</p>
+                <p>{river.wildlife && river.wildlife.length > 0 ? `Wildlife recorded for the ${river.name} in this directory includes ${river.wildlife.slice(0, 3).join(', ')}.` : `No wildlife list is available for the ${river.name} in this directory yet.`}</p>
               </div>
             </div>
           </div>
@@ -678,7 +711,7 @@ const exploreActivities = [
                   <path d="M5 7.5L8 4.5L11 7.5" stroke="white" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
                   <path d="M8 4.5V9" stroke="white" stroke-width="1.25" stroke-linecap="round"/>
                 </svg>
-                <h3>Explore Along {river.name}</h3>
+                <h3>What can you explore along the {river.name}?</h3>
                 <span class="explore-subtitle">Discover activities along the river</span>
               </div>
               <div class="explore-grid">
@@ -770,70 +803,71 @@ const exploreActivities = [
     </div>
   </section>
 
-  <section class="geography-section">
+  <section class="geography-section" id="before-you-go">
     <div class="container">
-      <h2>River Geography & Education</h2>
+      <h2>What should you check before visiting the {river.name}?</h2>
       <div class="geography-grid">
         <div class="geography-card">
           <div class="geography-card-header">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
               <path d="M8 1L10 5.5H15L11 8.5L12.5 13.5L8 10.5L3.5 13.5L5 8.5L1 5.5H6L8 1Z" stroke="white" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
             </svg>
-            <h3>Physical Geography</h3>
+            <h3>Where does the {river.name} flow?</h3>
           </div>
           <div class="geography-content">
-            <p><strong>River Course:</strong> The {river.name} follows a classic river profile from source to mouth, creating diverse habitats along its {river.length_miles || 'considerable'} mile journey.</p>
-            <p><strong>Landscape Features:</strong> The river creates distinctive features including meanders, floodplains, and {river.mouth?.includes('Estuary') || river.mouth?.includes('Sea') ? 'an estuary where it meets the sea' : 'its confluence with larger waterways'}.</p>
-            <p><strong>Geology:</strong> The river has carved through {river.region} landscape over thousands of years, shaped by the underlying bedrock and glacial activity.</p>
+            {river.origin && <p><strong>Source:</strong> {river.origin}</p>}
+            {river.mouth && <p><strong>Mouth:</strong> {river.mouth}</p>}
+            {river.length_miles && <p><strong>Length:</strong> {river.length_miles} miles ({river.length_km} km)</p>}
+            <p><strong>Regulator:</strong> <a href={regionInfo.regulatorUrl} target="_blank" rel="noopener noreferrer">{regionInfo.regulator}</a></p>
           </div>
         </div>
 
         <div class="geography-card">
           <div class="geography-card-header">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <rect x="2" y="7" width="12" height="8" rx="1.5" stroke="white" stroke-width="1.25" fill="none"/>
-              <path d="M5 7V5.5C5 3.6 6.3 2 8 2C9.7 2 11 3.6 11 5.5V7" stroke="white" stroke-width="1.25" stroke-linecap="round" fill="none"/>
-              <circle cx="8" cy="10.5" r="1.25" stroke="white" stroke-width="1" fill="none"/>
+              <path d="M8 1L10 5.5H15L11 8.5L12.5 13.5L8 10.5L3.5 13.5L5 8.5L1 5.5H6L8 1Z" stroke="white" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
             </svg>
-            <h3>Human Geography</h3>
+            <h3>Is the water clean enough to swim in?</h3>
           </div>
           <div class="geography-content">
-            <p><strong>Settlements:</strong> Major towns and cities developed along the {river.name} due to access to water, transportation, and trade opportunities.</p>
-            <p><strong>Historical Industry:</strong> The river powered mills, supported fishing communities, and served as a vital transport route for goods and people.</p>
-            <p><strong>Modern Use:</strong> Today the river supports recreation, tourism, {river.activities.includes('Fishing') ? 'sport fishing' : 'water sports'}, and remains important for local ecosystems.</p>
+            <p>{river.swimming_safety}</p>
+            <p>Check recent sewage-discharge alerts and water quality before you swim:</p>
+            <ul>
+              {waterQualitySources.map((src) => (
+                <li><a href={src.url} target="_blank" rel="noopener noreferrer">{src.label}</a></li>
+              ))}
+              {river.region === 'England' && (
+                <li><a href={englandClassificationSource.url} target="_blank" rel="noopener noreferrer">{englandClassificationSource.label}</a> (official status of each stretch)</li>
+              )}
+            </ul>
           </div>
         </div>
 
         <div class="geography-card">
           <div class="geography-card-header">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <path d="M2 10C4 7.5 5.5 6.5 8 6.5C10.5 6.5 12 9 14 9" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-              <path d="M2 12.5C4 10 5.5 9 8 9C10.5 9 12 11.5 14 11.5" stroke="white" stroke-width="1" stroke-linecap="round" fill="none" opacity="0.7"/>
-              <path d="M8 1V6.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M6 3L8 1L10 3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <path d="M8 1L10 5.5H15L11 8.5L12.5 13.5L8 10.5L3.5 13.5L5 8.5L1 5.5H6L8 1Z" stroke="white" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
             </svg>
-            <h3>Environmental Status</h3>
+            <h3>Is there a flood risk on the {river.name}?</h3>
           </div>
           <div class="geography-content">
-            <p><strong>Water Quality:</strong> Regular monitoring ensures the river maintains good ecological status under UK water quality standards.</p>
-            <p><strong>Conservation:</strong> Protected habitats along the river support {river.wildlife.length > 0 ? river.wildlife.length : 'numerous'} species of wildlife including rare and endangered species.</p>
-            <p><strong>Climate Adaptation:</strong> River management includes flood prevention, habitat restoration, and preparing for changing rainfall patterns.</p>
+            <p>Levels change quickly after heavy rain. Check official warnings before you travel: <a href={regionInfo.floodUrl} target="_blank" rel="noopener noreferrer">{regionInfo.floodLabel}</a>.</p>
+            {stationId
+              ? <p>The water level widget on this page shows the latest Environment Agency reading for a monitoring station on this river.</p>
+              : <p>This river does not have a live level reading on this page.</p>}
           </div>
         </div>
 
         <div class="geography-card">
           <div class="geography-card-header">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <circle cx="8" cy="10" r="4" stroke="white" stroke-width="1.25" fill="none"/>
-              <path d="M6 10H10M8 8V12" stroke="white" stroke-width="1.25" stroke-linecap="round"/>
-              <path d="M8 2V6" stroke="white" stroke-width="1.25" stroke-linecap="round" opacity="0.7"/>
+              <path d="M8 1L10 5.5H15L11 8.5L12.5 13.5L8 10.5L3.5 13.5L5 8.5L1 5.5H6L8 1Z" stroke="white" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
             </svg>
-            <h3>Flood Management</h3>
+            <h3>Do I need a licence to fish the {river.name}?</h3>
           </div>
           <div class="geography-content">
-            <p><strong>Flood Risk:</strong> Like all UK rivers, the {river.name} experiences seasonal variations in flow and occasional flooding during heavy rainfall.</p>
-            <p><strong>Defenses:</strong> Flood management schemes protect communities through embankments, flood storage areas, and early warning systems.</p>
-            <p><strong>Natural Solutions:</strong> Riverside tree planting and wetland restoration help manage water flow naturally while supporting biodiversity.</p>
+            <p>{fishing.fishingSummary}</p>
+            <p>Source: <a href={fishing.fishingSource.url} target="_blank" rel="noopener noreferrer">{fishing.fishingSource.label}</a></p>
           </div>
         </div>
       </div>
@@ -851,7 +885,7 @@ const exploreActivities = [
               <path d="M6 3.5L8 1L10 3.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
               <path d="M2 14C4 11.5 5.5 10.5 8 10.5C10.5 10.5 12 13.5 14 13.5" stroke="white" stroke-width="1" stroke-linecap="round" fill="none" opacity="0.65"/>
             </svg>
-            <h3>Key Tributaries of {river.name}</h3>
+            <h3>What are the main tributaries of the {river.name}?</h3>
           </div>
           <div class="tributaries-grid">
             {riverTributaries.map((tributary) => (
@@ -878,7 +912,7 @@ const exploreActivities = [
   {relatedRivers.length > 0 && (
     <section class="related-section">
       <div class="container">
-        <h2>Other Rivers in {river.region}</h2>
+        <h2>What other rivers are in {river.region}?</h2>
         <div class="related-grid">
           {relatedRivers.map((relatedRiver) => (
             <a href={`/rivers/${relatedRiver.slug}/`} class="related-card" aria-label={`View ${relatedRiver.name} details`}>
@@ -1639,5 +1673,35 @@ const exploreActivities = [
     .gallery-grid {
       grid-template-columns: 1fr;
     }
+  }
+
+  .answer-block {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    padding: 1rem 1.25rem;
+    border-left: 4px solid #0066cc;
+    background: #f1f5f9;
+    border-radius: 8px;
+    margin: 0 0 1rem;
+  }
+
+  .trust-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.25rem;
+    font-size: 0.875rem;
+    color: #64748b;
+    margin: 1rem 0 0;
+  }
+
+  .trust-strip a,
+  .geography-content a {
+    color: #0066cc;
+    text-decoration: underline;
+  }
+
+  .geography-content ul {
+    margin: 0.5rem 0 0 1.1rem;
+    padding: 0;
   }
 </style>

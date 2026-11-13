@@ -56,20 +56,20 @@ const resources = [
   {
     title: 'UK River Mapping & A-Z Database',
     question: 'Is there a complete map and A-Z list of all UK rivers?',
-    answer: 'Our UK River Mapping and A-Z Database lists every major British river with its length, source, mouth, region and key facts in one searchable, filterable directory — from the 220-mile River Severn to the chalk streams of Hampshire.',
+    answer: 'Our UK River Mapping and A-Z Database lists 44 major British rivers with their length, source, mouth, region and key facts in one searchable, filterable directory — from the 220-mile River Severn to the chalk streams of Hampshire.',
     href: '/rivers/',
     internal: true,
     image: 'https://images.pexels.com/photos/15509901/pexels-photo-15509901.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
     imageAlt: 'Aerial view of a meandering river through the landscape',
     tag: 'Database',
     body: [
-      'The UK has an extraordinary network of rivers — over 1,500 named waterways across England, Scotland, Wales and Northern Ireland. Our directory covers every major river and many significant tributaries, with individual pages for each featuring detailed information on the river\u2019s geography, history, wildlife, recreational access and conservation status.',
-      'Each river page in our database includes an overview of the river\u2019s course from source to mouth, its length in miles and kilometres, the counties and regions it flows through, the major towns and cities along its banks, the fish species it supports, and the activities available such as fishing, kayaking, wild swimming and riverside walking.',
+      'The UK has an extraordinary network of rivers across England, Scotland, Wales and Northern Ireland. Our directory currently profiles 44 of the best-known, with an individual page for each featuring its length, source, mouth, wildlife, activities and swimming guidance.',
+      'Each river page in our database includes an overview of the river\u2019s course from source to mouth, its length in miles and kilometres, its region, the wildlife recorded for it, and the activities available such as fishing, kayaking, wild swimming and riverside walking.',
       'The directory is fully searchable by river name and filterable by region (England, Scotland, Wales, Northern Ireland) and by activity (fishing, kayaking, walking, wildlife watching). This makes it an essential planning tool for outdoor enthusiasts, geography students, conservation researchers and anyone planning a riverside day out in the UK.',
       'We also highlight the UK\u2019s chalk streams — a globally rare habitat found almost exclusively in southern England. Just 210 chalk streams exist worldwide, and 160 of them are in England, including the famous River Test, River Itchen and River Avon. Our database flags these specially so visitors can learn about their unique ecology and the threats they face from over-abstraction and pollution.'
     ],
     quickFacts: [
-      { label: 'Rivers listed', value: '1,500+ named waterways' },
+      { label: 'Rivers listed', value: '44 major UK rivers' },
       { label: 'Longest river', value: 'River Severn — 220 miles' },
       { label: 'Chalk streams', value: '160 in England (of 210 worldwide)' },
       { label: 'Filterable by', value: 'Region, activity, length' }
@@ -323,7 +323,10 @@ const schemaData = [collectionPageSchema, itemListSchema, faqSchema];
       <div class="newsletter-inner">
         <h2 class="newsletter-title">River Guide Newsletter</h2>
         <p class="newsletter-subtitle">Water level alerts, fishing reports &amp; river news \u2014 delivered straight to your inbox.</p>
-        <form id="resource-newsletter-form" class="newsletter-form">
+        <form id="resource-newsletter-form" class="newsletter-form" name="newsletter" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+          <input type="hidden" name="form-name" value="newsletter" />
+          <input type="hidden" name="source" value="resources_page" />
+          <p class="sr-only" aria-hidden="true"><label>Leave this field empty: <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
           <label for="resource-newsletter-email" class="sr-only">Email address</label>
           <input
             type="email"
@@ -393,13 +396,13 @@ const schemaData = [collectionPageSchema, itemListSchema, faqSchema];
       msg!.textContent = 'Subscribing\u2026';
       msg!.classList.remove('hidden');
       try {
-        const res = await fetch('/api/newsletter', {
+        const res = await fetch('/', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email })
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({ 'form-name': 'newsletter', email, source: 'resources_page' }).toString()
         });
         if (res.ok) {
-          msg!.textContent = 'You are subscribed! Check your inbox to confirm.';
+          msg!.textContent = 'You are subscribed. Thank you!';
           input.value = '';
         } else {
           msg!.textContent = 'Something went wrong. Please try again later.';

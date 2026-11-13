@@ -1,0 +1,202 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import { getRivers } from '../lib/supabase';
+import {
+  CONTENT_UPDATED, EDITOR, CORRECTIONS_EMAIL, formatDisplayDate, correctionMailto,
+  waterQualitySources, englandClassificationSource, regionGuidance
+} from '../lib/trust';
+
+const riverCount = getRivers().length;
+const pageUrl = new URL('/methodology/', Astro.site).toString();
+
+const breadcrumbItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Methodology', href: '/methodology/' }
+];
+
+const schemaData = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "@id": pageUrl,
+  "url": pageUrl,
+  "name": "Methodology: How UK Rivers Directory Compiles Data",
+  "inLanguage": "en-GB",
+  "dateModified": CONTENT_UPDATED,
+  "author": { "@type": "Person", "name": EDITOR.name, "jobTitle": EDITOR.jobTitle },
+  "publisher": { "@type": "Organization", "name": "UK Rivers Directory", "url": new URL('/', Astro.site).toString() }
+};
+
+const licenceSources = [
+  regionGuidance.England.fishingSource,
+  regionGuidance.Scotland.fishingSource,
+  regionGuidance['Northern Ireland'].fishingSource
+];
+---
+
+<Layout
+  title="Methodology: How UK Rivers Directory Compiles Data"
+  description="How UK Rivers Directory builds its river pages, which official sources it links to, what is not independently checked, and how to report a correction."
+  keywords="UK rivers directory methodology, river data sources, report a correction"
+  schemaData={schemaData}
+>
+  <Breadcrumb items={breadcrumbItems} />
+
+  <div class="legal-page">
+    <div class="container">
+      <h1>How UK Rivers Directory Compiles Its Information</h1>
+      <p class="last-updated">
+        Last updated <time datetime={CONTENT_UPDATED}>{formatDisplayDate(CONTENT_UPDATED)}</time>.
+        Edited by {EDITOR.name}, {EDITOR.jobTitle.toLowerCase()}.
+      </p>
+
+      <section>
+        <h2>Who runs this directory?</h2>
+        <p>
+          UK Rivers Directory is edited by {EDITOR.name}, who built the site and maintains every page on it.
+          The directory currently profiles {riverCount} UK rivers across England, Scotland, Wales and Northern Ireland.
+          It is a reference guide, not a regulator or a safety service.
+        </p>
+      </section>
+
+      <section>
+        <h2>What does each river page contain?</h2>
+        <p>Every river page is built from the same record, so you can compare rivers like for like:</p>
+        <ul>
+          <li>Length, source, mouth and region</li>
+          <li>A short description, wildlife and activities</li>
+          <li>General swimming guidance and a fishing season note</li>
+          <li>A map location and, for some rivers, a live Environment Agency water level</li>
+          <li>Links to the official sources you should check before you travel, swim or fish</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Where does the information come from?</h2>
+        <p>
+          Reference facts such as length, source and mouth are entered into the directory by the editor.
+          The directory does not yet publish a source next to each individual figure, so treat these values as a
+          guide and check an official source if you need an exact number.
+        </p>
+        <p>Where a page relies on an official source, it says so and links to it:</p>
+        <ul>
+          <li>
+            <strong>Live water level:</strong> the Environment Agency flood-monitoring service, shown only for rivers
+            with a configured monitoring station.
+          </li>
+          <li>
+            <strong>Water quality and sewage alerts:</strong>
+            {waterQualitySources.map((src, i) => (
+              <>
+                <a href={src.url} target="_blank" rel="noopener noreferrer">{src.label}</a>{i < waterQualitySources.length - 1 ? ', ' : ''}
+              </>
+            ))}
+            and, for England,
+            <a href={englandClassificationSource.url} target="_blank" rel="noopener noreferrer">{englandClassificationSource.label}</a>.
+          </li>
+          <li>
+            <strong>Fishing licence rules:</strong>
+            {licenceSources.map((src, i) => (
+              <>
+                <a href={src.url} target="_blank" rel="noopener noreferrer">{src.label}</a>{i < licenceSources.length - 1 ? ', ' : ''}
+              </>
+            ))}.
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>What does this directory not do?</h2>
+        <ul>
+          <li>It does not test water quality. Swimming guidance on each page is general and is not a clearance to swim.</li>
+          <li>It does not rely on first-hand visits unless a page says so.</li>
+          <li>It does not show every river in the UK. It covers {riverCount} well-known rivers.</li>
+          <li>It does not replace local rules. Access, permits and byelaws vary by stretch, so check with the landowner or fishery.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>What does "Last updated" mean?</h2>
+        <p>
+          The date shown on a river page is when its content last changed in a meaningful way, such as new figures,
+          new guidance or a correction. It is not changed for cosmetic edits. The same date is used in the page's
+          structured data.
+        </p>
+      </section>
+
+      <section>
+        <h2>How do I report a mistake?</h2>
+        <p>
+          Email <a href={correctionMailto('Correction request')}>{CORRECTIONS_EMAIL}</a> with the page address,
+          what is wrong and, if you can, a link to an official source. Every river page also has a
+          "Report a correction" link that fills in the river's name for you. When a correction is made, the page
+          is updated and its "Last updated" date changes.
+        </p>
+      </section>
+
+      <section>
+        <h2>Adverts and affiliate links</h2>
+        <p>
+          Some pages carry adverts and affiliate links, which can earn the site a commission. Affiliate links are
+          marked as sponsored in the page code. Please see our <a href="/privacy/">Privacy Policy</a> and
+          <a href="/cookies/">Cookie Policy</a> for how advertising cookies are used.
+        </p>
+      </section>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .legal-page {
+    padding: calc(var(--spacing-unit) * 10) 0;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 calc(var(--spacing-unit) * 3);
+  }
+
+  .legal-page h1 {
+    color: var(--color-text);
+    margin-bottom: calc(var(--spacing-unit) * 2);
+  }
+
+  .last-updated {
+    color: var(--color-text-light);
+    font-style: italic;
+    margin-bottom: calc(var(--spacing-unit) * 4);
+  }
+
+  .legal-page section {
+    margin-bottom: calc(var(--spacing-unit) * 5);
+  }
+
+  .legal-page h2 {
+    color: var(--color-text);
+    margin-top: calc(var(--spacing-unit) * 4);
+    margin-bottom: calc(var(--spacing-unit) * 2);
+    padding-bottom: calc(var(--spacing-unit) * 1);
+    border-bottom: 2px solid var(--color-border);
+  }
+
+  .legal-page p,
+  .legal-page ul {
+    color: var(--color-text-light);
+    line-height: 1.8;
+  }
+
+  .legal-page ul {
+    margin-bottom: calc(var(--spacing-unit) * 2);
+    padding-left: calc(var(--spacing-unit) * 4);
+  }
+
+  .legal-page li {
+    margin-bottom: calc(var(--spacing-unit) * 1);
+  }
+
+  .legal-page a {
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+</style>
