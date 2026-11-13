@@ -10,11 +10,15 @@
       </svg>
       <p><strong>River Guide Newsletter</strong> <span class="nsb-subtext">— Water level alerts, fishing reports & river news</span></p>
     </div>
-    <form class="nsb-form" id="nsb-form" novalidate>
+    <form class="nsb-form" id="nsb-form" name="newsletter" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate>
+      <input type="hidden" name="form-name" value="newsletter" />
+      <input type="hidden" name="source" value="sticky_bar" />
+      <p class="sr-only" aria-hidden="true"><label>Leave this field empty: <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
       <label for="nsb-email" class="sr-only">Email address</label>
       <input
         type="email"
         id="nsb-email"
+        name="email"
         class="nsb-input"
         placeholder="Your email address"
         autocomplete="email"
@@ -85,6 +89,13 @@
       if (error && error.code !== '23505') {
         throw error;
       }
+
+      // Also record the sign-up with Netlify Forms (best effort, never blocks the thank-you).
+      fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ 'form-name': 'newsletter', email, source: 'sticky_bar' }).toString()
+      }).catch(() => {});
 
       form.style.display = 'none';
       success.style.display = 'flex';

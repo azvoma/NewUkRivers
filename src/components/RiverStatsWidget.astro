@@ -7,16 +7,16 @@ export interface Props {
 
 const { river } = Astro.props;
 
-function getFlowIndicator(river: River): { label: string; level: number; color: string } {
+function getLengthClass(river: River): { label: string; level: number; color: string } {
   if (!river.length_miles) return { label: 'Unknown', level: 0, color: '#94a3b8' };
-  if (river.length_miles > 200) return { label: 'Very High', level: 5, color: '#0066cc' };
-  if (river.length_miles > 150) return { label: 'High', level: 4, color: '#0284c7' };
-  if (river.length_miles > 100) return { label: 'Moderate', level: 3, color: '#00a86b' };
-  if (river.length_miles > 50) return { label: 'Low-Moderate', level: 2, color: '#f59e0b' };
-  return { label: 'Low', level: 1, color: '#f97316' };
+  if (river.length_miles > 200) return { label: 'Very long (200+ mi)', level: 5, color: '#0066cc' };
+  if (river.length_miles > 150) return { label: 'Long (150-200 mi)', level: 4, color: '#0284c7' };
+  if (river.length_miles > 100) return { label: 'Medium (100-150 mi)', level: 3, color: '#00a86b' };
+  if (river.length_miles > 50) return { label: 'Short (50-100 mi)', level: 2, color: '#f59e0b' };
+  return { label: 'Short (under 50 mi)', level: 1, color: '#f97316' };
 }
 
-const flow = getFlowIndicator(river);
+const flow = getLengthClass(river);
 ---
 
 <div class="river-stats-widget">
@@ -25,7 +25,7 @@ const flow = getFlowIndicator(river);
       <path d="M2 14C4 11 6 9 9 9C12 9 14 12 17 12C18.5 12 19.5 11.5 20 11" stroke="#0066cc" stroke-width="1.75" stroke-linecap="round" fill="none"/>
       <path d="M2 17C4 14 6 12 9 12C12 12 14 15 17 15C18.5 15 19.5 14.5 20 14" stroke="#0066cc" stroke-width="1.25" stroke-linecap="round" fill="none" opacity="0.55"/>
     </svg>
-    <h3>River Statistics</h3>
+    <h3>How long is the {river.name}?</h3>
   </div>
 
   <dl class="stats-list">
@@ -74,11 +74,11 @@ const flow = getFlowIndicator(river);
           <path d="M1 8C3 6 5 5 8 5C11 5 13 8 15 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
           <path d="M1 11C3 9 5 8 8 8C11 8 13 11 15 11" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" fill="none" opacity="0.55"/>
         </svg>
-        Avg Flow
+        Length class
       </dt>
       <dd>
         <span class="flow-label" style={`color: ${flow.color}`}>{flow.label}</span>
-        <div class="flow-bars" aria-label={`Flow level: ${flow.label}`}>
+        <div class="flow-bars" aria-label={`Length class: ${flow.label}`}>
           {[1, 2, 3, 4, 5].map((i) => (
             <span
               class="flow-bar"

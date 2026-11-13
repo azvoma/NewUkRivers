@@ -10,9 +10,10 @@ interface Props {
   publishedAt: string;
   imageUrl: string;
   slug: string;
+  seoTitle?: string;
 }
 
-const { title, description, keywords, category, publishedAt, imageUrl, slug } = Astro.props;
+const { title, description, keywords, category, publishedAt, imageUrl, slug, seoTitle } = Astro.props;
 
 const breadcrumbItems = [
   { label: 'Home', href: '/' },
@@ -47,7 +48,7 @@ const schemaData = {
 ---
 
 <Layout
-  title={title}
+  title={seoTitle ?? title}
   description={description}
   keywords={keywords}
   image={imageUrl}
