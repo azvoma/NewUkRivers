@@ -249,9 +249,33 @@ const faqs = [
     filterRivers();
   });
 
+  // Apply a filter from the URL hash (e.g. /rivers/#region=Scotland or #activity=Fishing).
+  // Hash links keep one crawlable URL (/rivers/) instead of many duplicate query-string URLs.
+  function applyHashFilters() {
+    const params = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+    const region = params.get('region');
+    const activity = params.get('activity');
+    if (region && Array.from(regionFilter.options).some((o) => o.value === region)) {
+      regionFilter.value = region;
+    }
+    if (activity) {
+      activeActivities.add(activity);
+      activityToggles.forEach((btn) => {
+        if ((btn as HTMLElement).dataset.activity === activity) {
+          btn.setAttribute('aria-pressed', 'true');
+          btn.classList.add('active');
+        }
+      });
+      clearActivitiesBtn.style.display = 'inline-flex';
+    }
+    filterRivers();
+  }
+
   updateResultsCount(totalRivers);
   searchInput.addEventListener('input', filterRivers);
   regionFilter.addEventListener('change', filterRivers);
+  if (window.location.hash) applyHashFilters();
+  window.addEventListener('hashchange', applyHashFilters);
 </script>
 
 <style>

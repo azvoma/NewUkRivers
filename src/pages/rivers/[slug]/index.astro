@@ -25,6 +25,9 @@ export async function getStaticPaths() {
 
 const { river } = Astro.props;
 
+const sameRegionRivers = getRiversByRegion(river.region)
+  .filter(r => r.slug !== river.slug)
+  .sort((x, y) => x.name.localeCompare(y.name));
 const relatedRivers = getRiversByRegion(river.region)
   .filter(r => r.slug !== river.slug)
   .slice(0, 3);
@@ -32,7 +35,7 @@ const relatedRivers = getRiversByRegion(river.region)
 const breadcrumbItems = [
   { label: 'Home', href: '/' },
   { label: 'Rivers Directory', href: '/rivers/' },
-  { label: river.region, href: `/rivers/?region=${encodeURIComponent(river.region)}` },
+  { label: river.region, href: `/rivers/#region=${encodeURIComponent(river.region)}` },
   { label: river.name, href: `/rivers/${river.slug}/` }
 ];
 
@@ -803,7 +806,22 @@ const exploreActivities = [
     </div>
   </section>
 
-  <section class="geography-section" id="before-you-go">
+  <section class="region-rivers" aria-labelledby="region-rivers-heading">
+      <div class="container">
+        <h2 id="region-rivers-heading">Which other rivers are in {river.region}?</h2>
+        <p>
+          Our directory lists {sameRegionRivers.length + 1} rivers in {river.region}. Besides the {river.name}, you can read about:
+        </p>
+        <ul class="region-rivers-list">
+          {sameRegionRivers.map((r) => (
+            <li><a href={`/rivers/${r.slug}/`}>{r.name}</a></li>
+          ))}
+        </ul>
+        <p><a href="/rivers/">See all 44 UK rivers</a></p>
+      </div>
+    </section>
+
+    <section class="geography-section" id="before-you-go">
     <div class="container">
       <h2>What should you check before visiting the {river.name}?</h2>
       <div class="geography-grid">
@@ -1704,4 +1722,8 @@ const exploreActivities = [
     margin: 0.5rem 0 0 1.1rem;
     padding: 0;
   }
+  .region-rivers { padding: 2rem 0; }
+  .region-rivers h2 { margin-bottom: 0.75rem; }
+  .region-rivers-list { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; list-style: none; padding: 0; margin: 0.75rem 0 1rem; }
+  .region-rivers a { color: var(--color-primary, #0066cc); text-decoration: underline; }
 </style>
