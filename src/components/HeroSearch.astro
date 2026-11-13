@@ -41,7 +41,7 @@ const riverData = getRivers().map(r => ({
           <path d="M3.5 3.5L11.5 11.5M11.5 3.5L3.5 11.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
         </svg>
       </button>
-      <a href="/rivers" class="hs-browse-btn">
+      <a href="/rivers/" class="hs-browse-btn">
         Browse all
         <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
           <path d="M2.5 6.5H10.5M10.5 6.5L7 3M10.5 6.5L7 10" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
@@ -141,7 +141,7 @@ const riverData = getRivers().map(r => ({
             <circle cx="8" cy="11" r="0.75" fill="currentColor"/>
           </svg>
           No rivers found for "<strong>${trimmed}</strong>" —
-          <a href="/rivers">browse all</a>
+          <a href="/rivers/">browse all</a>
         </li>`;
     } else {
       results.innerHTML = scored.map(({ r }, i) => {

@@ -68,7 +68,7 @@ const riverCountByRegion = regions.map(r => ({
     </div>
     <div class="regions-grid">
       {riverCountByRegion.map((region) => (
-        <a href={`/rivers?region=${encodeURIComponent(region.name)}`} class="region-card" style={`--region-color: ${region.color}; --region-light: ${region.lightColor};`}>
+        <a href={`/rivers/#region=${encodeURIComponent(region.name)}`} class="region-card" style={`--region-color: ${region.color}; --region-light: ${region.lightColor};`}>
           <div class="region-card-inner">
             <div class="region-icon" aria-hidden="true">
               {region.icon === 'england' && (
@@ -124,7 +124,7 @@ const riverCountByRegion = regions.map(r => ({
       <h3>Explore by Activity</h3>
       <div class="activity-tags">
         {['Fishing', 'Kayaking', 'Walking', 'Cycling', 'Wild Swimming', 'Wildlife Watching', 'Canoeing', 'Camping'].map((activity) => (
-          <a href={`/rivers?activity=${encodeURIComponent(activity)}`} class="activity-tag">
+          <a href={`/rivers/#activity=${encodeURIComponent(activity)}`} class="activity-tag">
             {activity}
           </a>
         ))}
