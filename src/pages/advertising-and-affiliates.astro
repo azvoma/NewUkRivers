@@ -1,0 +1,130 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import { CONTENT_UPDATED, EDITOR, CORRECTIONS_EMAIL, formatDisplayDate } from '../lib/trust';
+
+const breadcrumbItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Advertising and affiliates', href: '/advertising-and-affiliates/' }
+];
+---
+
+<Layout
+  title="Advertising and Affiliate Disclosure | UK Rivers Directory"
+  description="How UK Rivers Directory is funded: which advertising and affiliate links appear, how they are marked, and why they never change what the guides say."
+  keywords="UK Rivers Directory advertising, affiliate disclosure"
+>
+  <Breadcrumb items={breadcrumbItems} />
+
+  <div class="legal-page">
+    <div class="container">
+      <h1>Advertising and Affiliate Disclosure</h1>
+      <p class="last-updated">
+        Last updated <time datetime={CONTENT_UPDATED}>{formatDisplayDate(CONTENT_UPDATED)}</time>.
+        Edited by {EDITOR.name}, {EDITOR.jobTitle.toLowerCase()}.
+      </p>
+
+      <section>
+        <h2>How is UK Rivers Directory funded?</h2>
+        <p>
+          The directory is free to read and is run by one person. It is funded by affiliate commission and,
+          where Google approves it, display advertising. It does not charge for access and does not accept
+          payment to include a river, change a safety note or rank one place above another.
+        </p>
+      </section>
+
+      <section>
+        <h2>Which affiliate links appear on the site?</h2>
+        <p>
+          We take part in the Awin affiliate network. Banners and links for outdoor-gear retailers,
+          fishing-tackle retailers and a hotel group appear on some pages. If you click one and then buy or book,
+          the retailer may pay us a commission. The price you pay is the same either way.
+        </p>
+        <p>
+          Every affiliate link carries <code>rel="sponsored"</code>, and pages that contain them show a notice
+          near the top of the content.
+        </p>
+      </section>
+
+      <section>
+        <h2>Does advertising affect what you write?</h2>
+        <p>
+          No. River facts, safety guidance and licence information come from the same sources whether or not a
+          page has a commercial link. Gear and product pages are researched from manufacturer information and
+          general guidance, and they say so. Where a page is not based on hands-on testing, it does not claim to be.
+        </p>
+      </section>
+
+      <section>
+        <h2>Google advertising and cookies</h2>
+        <p>
+          Display advertising from Google may use cookies to show ads. How cookies and personal data are handled
+          is explained in the <a href="/privacy/">Privacy Policy</a> and the <a href="/cookies/">Cookie Policy</a>.
+        </p>
+      </section>
+
+      <section>
+        <h2>Questions or concerns</h2>
+        <p>
+          If a page looks more like an advert than a guide, or you think something is not marked clearly,
+          email <a href={`mailto:${CORRECTIONS_EMAIL}`}>{CORRECTIONS_EMAIL}</a> and it will be fixed.
+        </p>
+      </section>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .legal-page {
+    padding: calc(var(--spacing-unit) * 10) 0;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 calc(var(--spacing-unit) * 3);
+  }
+
+  .legal-page h1 {
+    color: var(--color-text);
+    margin-bottom: calc(var(--spacing-unit) * 2);
+  }
+
+  .last-updated {
+    color: var(--color-text-light);
+    font-style: italic;
+    margin-bottom: calc(var(--spacing-unit) * 4);
+  }
+
+  .legal-page section {
+    margin-bottom: calc(var(--spacing-unit) * 5);
+  }
+
+  .legal-page h2 {
+    color: var(--color-text);
+    margin-top: calc(var(--spacing-unit) * 4);
+    margin-bottom: calc(var(--spacing-unit) * 2);
+    padding-bottom: calc(var(--spacing-unit) * 1);
+    border-bottom: 2px solid var(--color-border);
+  }
+
+  .legal-page p,
+  .legal-page ul {
+    color: var(--color-text-light);
+    line-height: 1.8;
+  }
+
+  .legal-page ul {
+    margin-bottom: calc(var(--spacing-unit) * 2);
+    padding-left: calc(var(--spacing-unit) * 4);
+  }
+
+  .legal-page li {
+    margin-bottom: calc(var(--spacing-unit) * 1);
+  }
+
+  .legal-page a {
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+</style>

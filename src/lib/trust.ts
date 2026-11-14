@@ -5,7 +5,7 @@
 import type { River } from './data';
 
 export const SITE_NAME = 'UK Rivers Directory';
-export const CONTENT_UPDATED = '2026-11-13';
+export const CONTENT_UPDATED = '2026-11-14';
 export const CORRECTIONS_EMAIL = 'ukrivers@anoziva.com';
 
 export const EDITOR = {

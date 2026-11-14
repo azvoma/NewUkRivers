@@ -7,6 +7,9 @@ import GearSidebar from '../../../components/GearSidebar.astro';
 import WaterLevelWidget from '../../../components/WaterLevelWidget.astro';
 import RelatedRivers from '../../../components/RelatedRivers.astro';
 import RiverFactFile from '../../../components/RiverFactFile.astro';
+import AuthorBox from '../../../components/AuthorBox.astro';
+import AffiliateNotice from '../../../components/AffiliateNotice.astro';
+import { getRiverContent } from '../../../lib/river-content';
 import { affiliates } from '../../../lib/affiliates';
 import { getRivers, getRiversByRegion } from '../../../lib/supabase';
 import {
@@ -424,7 +427,8 @@ const tributaries = {
   'river-spey': ['River Feshie', 'River Dulnain', 'River Avon']
 };
 
-const riverTributaries = tributaries[river.slug] || [];
+const editorial = getRiverContent(river.slug);
+const riverTributaries = editorial?.tributaries ?? tributaries[river.slug] ?? [];
 
 const eaStationIds: Record<string, string> = {
   'river-thames': '3400TH',
@@ -534,6 +538,34 @@ const exploreActivities = [
       </p>
     </div>
   </section>
+
+  {editorial && (
+    <section class="in-depth" aria-labelledby="in-depth-heading">
+      <div class="container in-depth-inner">
+        <h2 id="in-depth-heading">What is the {river.name} like?</h2>
+        {editorial.overview.map((p) => <p>{p}</p>)}
+
+        <h3>Where does the {river.name} flow?</h3>
+        <p>{editorial.course}</p>
+
+        <h3>What wildlife can you see on the {river.name}?</h3>
+        <p>{editorial.wildlife}</p>
+
+        <h3>What can you do on the {river.name}?</h3>
+        <p>{editorial.outdoors}</p>
+
+        <h3>How should you plan a visit to the {river.name}?</h3>
+        <ul>
+          {editorial.planning.map((tip) => <li>{tip}</li>)}
+        </ul>
+
+        <h3>What are some facts about the {river.name}?</h3>
+        <ul>
+          {editorial.facts.map((fact) => <li>{fact}</li>)}
+        </ul>
+      </div>
+    </section>
+  )}
 
   <section class="gallery-section">
     <div class="container">
@@ -780,19 +812,15 @@ const exploreActivities = [
               </div>
             </div>
           )}
-          <div class="mt-8 mb-8 flex justify-center p-4 bg-slate-50 border border-slate-100 rounded-xl w-full" style="max-width: 300px;">
-            <a rel="sponsored" href="https://www.awin1.com/cread.php?s=4069157&v=45595&q=533134&r=3008603" target="_blank">
-              <img src="https://www.awin1.com/cshow.php?s=4069157&v=45595&q=533134&r=3008603" border="0" alt="Fishing Tackle & Bait" loading="lazy" style="max-width: 300px; max-height: 250px; width: auto; height: auto;" />
-            </a>
-          </div>
         </div>
         <div class="river-sidebar-aside">
-          <div class="mt-6 mb-8 flex justify-center p-4 bg-slate-50 border border-slate-100 rounded-xl">
+          <RiverFactFile river={river} siteUrl={Astro.site?.toString() || 'https://ukrivers.co.uk'} />
+          <div class="sponsored-slot">
+            <p class="sponsored-label">Advertisement</p>
             <a rel="sponsored" href={affiliates.macdonaldHotels.tracking.square300x250} target="_blank">
               <img src="/images/ads/imgsummer-mdh-300x250px-1781194981092.jpg" alt={affiliates.macdonaldHotels.name} border="0" loading="lazy" />
             </a>
           </div>
-          <RiverFactFile river={river} siteUrl={Astro.site?.toString() || 'https://ukrivers.co.uk'} />
           {stationId && (
             <WaterLevelWidget riverName={river.name} stationId={stationId} />
           )}
@@ -925,6 +953,24 @@ const exploreActivities = [
     </section>
   )}
 
+  <div class="container">
+    <AffiliateNotice />
+    <AuthorBox />
+  </div>
+
+  <section class="related-guides" aria-labelledby="related-guides-heading">
+    <div class="container in-depth-inner">
+      <h2 id="related-guides-heading">Guides before you go</h2>
+      <ul>
+        <li><a href="/blog/is-it-safe-to-swim-in-the-river-today/">Is it safe to swim in the river today? How to check</a></li>
+        <li><a href="/blog/river-kayaking-safety-for-beginners/">River kayaking safety for beginners</a></li>
+        <li><a href="/blog/do-i-need-a-license-to-paddleboard-on-a-river/">Do you need a licence to paddleboard on a UK river?</a></li>
+        <li><a href="/blog/wildlife-on-uk-rivers/">Wildlife to look for on UK rivers</a></li>
+        <li><a href="/blog/longest-rivers-in-the-uk/">The longest rivers in the UK</a></li>
+      </ul>
+    </div>
+  </section>
+
   <FAQ faqs={faqs} />
 
   {relatedRivers.length > 0 && (
@@ -949,11 +995,6 @@ const exploreActivities = [
   )}
 </Layout>
 
-<div class="flex md:hidden justify-center my-6 w-full">
-  <a rel="sponsored" href={affiliates.macdonaldHotels.tracking.mobile320x50} target="_blank">
-    <img src="/images/ads/imgsummer-mdh-320x50px-1781195066075.jpg" alt={affiliates.macdonaldHotels.name} border="0" loading="lazy" />
-  </a>
-</div>
 
 <style>
   .container {
@@ -1096,6 +1137,18 @@ const exploreActivities = [
     color: rgba(255, 255, 255, 0.95);
     font-weight: 500;
   }
+
+  .related-guides { padding: 0 0 calc(var(--spacing-unit) * 4); }
+  .related-guides ul { padding-left: 1.25rem; line-height: 1.9; }
+  .in-depth { padding: 0 0 calc(var(--spacing-unit) * 6); }
+  .in-depth-inner { max-width: 820px; }
+  .in-depth h2 { margin-bottom: 1rem; }
+  .in-depth h3 { margin: 1.75rem 0 0.5rem; font-size: 1.15rem; }
+  .in-depth p, .in-depth li { line-height: 1.75; color: var(--color-text-light); }
+  .in-depth ul { padding-left: 1.25rem; margin: 0.5rem 0; }
+  .in-depth li { margin-bottom: 0.5rem; }
+  .sponsored-slot { display: flex; flex-direction: column; align-items: center; padding: 0.75rem; background: #f8fafc; border: 1px solid var(--color-border); border-radius: 12px; }
+  .sponsored-label { margin: 0 0 0.5rem; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: #64748b; }
 
   .river-intro {
     padding: calc(var(--spacing-unit) * 10) 0 calc(var(--spacing-unit) * 8);

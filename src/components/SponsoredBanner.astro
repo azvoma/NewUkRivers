@@ -1,0 +1,35 @@
+---
+export interface Props {
+  href: string;
+  src: string;
+  alt: string;
+}
+const { href, src, alt } = Astro.props;
+---
+
+<aside class="sponsored-banner" aria-label="Advertisement">
+  <p class="sponsored-label">Advertisement</p>
+  <a rel="sponsored noopener" href={href} target="_blank">
+    <img src={src} alt={alt} loading="lazy" />
+  </a>
+</aside>
+
+<style>
+  .sponsored-banner {
+    margin: 2.5rem auto;
+    padding: 0.75rem;
+    max-width: 760px;
+    text-align: center;
+    background: #f8fafc;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+  }
+  .sponsored-label {
+    margin: 0 0 0.5rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #64748b;
+  }
+  .sponsored-banner img { max-width: 100%; height: auto; }
+</style>
