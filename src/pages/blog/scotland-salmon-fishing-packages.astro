@@ -1,5 +1,7 @@
 ---
 import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
+import AuthorBox from '../../components/AuthorBox.astro';
+import AffiliateNotice from '../../components/AffiliateNotice.astro';
 import { affiliates } from '../../lib/affiliates';
 ---
 
@@ -31,7 +33,7 @@ import { affiliates } from '../../lib/affiliates';
   <section id="introduction">
     <h2>Top 4 Rivers for Scotland Salmon Fishing Packages</h2>
     <p>
-      In our experience, Scotland salmon fishing packages offer the finest Atlantic salmon angling experiences available anywhere in the world, and we have found that booking a structured river holiday on one of Scotland's top four salmon rivers — the Tay, Spey, Dee, or Tweed — delivers the best combination of productive fishing, expert guidance, and stunning Highland scenery. The combination of pristine environments, excellent water quality, and centuries of fishing tradition make Scottish rivers the ultimate destination for salmon enthusiasts. From the mighty River Tay holding records for the largest rod-caught salmon ever landed in Britain, to the fast-flowing River Spey famous for its spring runs, these four major rivers offer diverse and exceptional fishing opportunities throughout the season.
+      Scotland salmon fishing packages offer the finest Atlantic salmon angling experiences available anywhere in the world, and we have found that booking a structured river holiday on one of Scotland's top four salmon rivers — the Tay, Spey, Dee, or Tweed — delivers the best combination of productive fishing, expert guidance, and stunning Highland scenery. The combination of pristine environments, excellent water quality, and centuries of fishing tradition make Scottish rivers the ultimate destination for salmon enthusiasts. From the mighty River Tay holding records for the largest rod-caught salmon ever landed in Britain, to the fast-flowing River Spey famous for its spring runs, these four major rivers offer diverse and exceptional fishing opportunities throughout the season.
     </p>
     <p>
       Understanding Scottish salmon rivers requires knowledge of their unique characteristics, seasonal patterns, and the fascinating life cycle of Atlantic salmon that connects these rivers to the vast Atlantic Ocean. Salmon are anadromous fish, born in freshwater, migrating to sea to grow, then returning to their natal rivers to spawn. This remarkable journey covering thousands of miles makes salmon fishing a pursuit combining skill, patience, knowledge, and deep respect for one of nature's most extraordinary fish species. For all your angling needs, <a rel="sponsored" href={affiliates.totalFishingTackle.trackingUrl} target="_blank">Total Fishing Tackle</a> offers a wide selection of rods, reels, and waders.
@@ -48,7 +50,7 @@ import { affiliates } from '../../lib/affiliates';
     <h2>River Tay - Scotland's Premier Salmon River</h2>
     <img src="/images/blog/scotland-salmon-fishing-packages/Fishing_Salmon_in_Scotland.png" alt="River Tay salmon fishing beat in the Scottish Highlands with a guided fishing package" width="800" height="500" loading="lazy" decoding="async" />
     <p>
-      <strong>The River Tay</strong> holds the distinguished title of being Britain's premier salmon river and one of the most productive rivers in the UK for Atlantic salmon. At 120 miles long and with the largest discharge of any British river, the Tay provides exceptional salmon habitat throughout its massive catchment spanning much of Highland Perthshire. The river's historic record includes Miss Georgina Ballantine's legendary 64-pound salmon caught in 1922, a British rod-caught record that stands to this day, demonstrating the exceptional quality of Tay salmon and the river's capacity to produce extraordinary fish [Source: Pending Authority Link].
+      <strong>The River Tay</strong> holds the distinguished title of being Britain's premier salmon river and one of the most productive rivers in the UK for Atlantic salmon. At 120 miles long and with the largest discharge of any British river, the Tay provides exceptional salmon habitat throughout its massive catchment spanning much of Highland Perthshire. The river's historic record includes Miss Georgina Ballantine's legendary 64-pound salmon caught in 1922, a British rod-caught record that stands to this day, demonstrating the exceptional quality of Tay salmon and the river's capacity to produce extraordinary fish.
     </p>
     <p>
       The Tay system includes numerous tributaries that are themselves significant salmon rivers, including the Tummel, Isla, Earn, and Almond. This extensive network provides diverse fishing opportunities from the broad lower reaches near Perth to intimate Highland burns upstream. Spring fishing from January through May can produce large early-run salmon, while autumn fishing from September through October sees the river teeming with fresh-run fish. The Tay consistently produces annual catches exceeding 2,000 salmon, making it statistically one of the most reliable rivers for salmon fishing success. River Tay salmon fishing packages are available through multiple beats and estates.
@@ -99,7 +101,7 @@ import { affiliates } from '../../lib/affiliates';
     <h2>Understanding Scottish Salmon Fishing Seasons</h2>
 
     <p>
-      Salmon fishing seasons vary between rivers in the UK, with most Scottish rivers opening between January and March and closing between October and November. <strong>Spring fishing</strong> targets early-run salmon that enter rivers from February through May. These fresh silver fish average larger sizes than later runs, and spring salmon are prized for their prime condition. However, spring runs have declined on many rivers, making autumn fishing increasingly important for major rivers in the UK [Source: Pending Authority Link].
+      Salmon fishing seasons vary between rivers in the UK, with most Scottish rivers opening between January and March and closing between October and November. <strong>Spring fishing</strong> targets early-run salmon that enter rivers from February through May. These fresh silver fish average larger sizes than later runs, and spring salmon are prized for their prime condition. However, spring runs have declined on many rivers, making autumn fishing increasingly important for major rivers in the UK.
     </p>
     <p>
       <strong>Summer fishing</strong> from June through August focuses on grilse - young salmon returning after just one year at sea. Grilse typically weigh 4-8 pounds and provide exciting sport on lighter tackle. <strong>Autumn fishing</strong> from September through November is now the most productive period on many rivers of the UK, with large numbers of salmon entering rivers to spawn. Water levels become crucial during autumn, as salmon require flow to migrate upstream. Understanding seasonal patterns is essential for planning successful Scotland fishing holidays.
@@ -126,11 +128,8 @@ import { affiliates } from '../../lib/affiliates';
     </ul>
   </aside>
 
-  <div class="author-byline">
-    <p><strong>Author:</strong> Expert Angling Team, UK Rivers Directory</p>
-    <p class="author-bio">Our team brings over 20 years of hands-on experience fishing and studying UK river ecosystems, with specialist knowledge of Scottish salmon rivers and Atlantic salmon conservation. We are dedicated to helping anglers book responsible, rewarding Scotland salmon fishing packages.</p>
-    <p class="last-updated"><em>Last Updated: 28 July 2026</em></p>
-  </div>
+  <AffiliateNotice />
+  <AuthorBox updated="2026-11-14" />
 </BlogPostLayout>
 
 <style is:global>
@@ -156,27 +155,5 @@ import { affiliates } from '../../lib/affiliates';
     line-height: 1.7;
     color: #334155;
     margin-bottom: 0.5rem;
-  }
-  .author-byline {
-    border-top: 1px solid #e2e8f0;
-    padding-top: 1.5rem;
-    margin-top: 3rem;
-  }
-  .author-byline p {
-    font-size: 1rem;
-    line-height: 1.7;
-    color: #475569;
-    margin-bottom: 0.75rem;
-  }
-  .author-byline strong {
-    color: #0f172a;
-  }
-  .author-bio {
-    color: #475569;
-  }
-  .last-updated em {
-    font-style: italic;
-    color: #94a3b8;
-    font-size: 0.95rem;
   }
 </style>

@@ -1,5 +1,7 @@
 ---
 import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
+import AuthorBox from '../../components/AuthorBox.astro';
+import AffiliateNotice from '../../components/AffiliateNotice.astro';
 import { affiliates } from '../../lib/affiliates';
 ---
 
@@ -30,7 +32,7 @@ import { affiliates } from '../../lib/affiliates';
   <section id="what-are-chalk-rivers">
     <h2>What Are Chalk Rivers?</h2>
     <p>
-      In our experience securing chalk stream fly fishing day tickets is the single best way to access some of the world's rarest and most productive trout waters, and the UK is extraordinarily fortunate to be home to approximately 85% of the world's remaining chalk streams [Source: Pending Authority Link]. We have found that booking a guided chalk stream fishing UK trip gives you access to crystal-clear, spring-fed rivers where wild brown trout thrive in their natural habitat. These unique rivers form when rainwater percolates through permeable chalk bedrock, emerging as springs that flow through the landscape creating waterways of exceptional purity.
+      Securing chalk stream fly fishing day tickets is the single best way to access some of the world's rarest and most productive trout waters, and the UK is extraordinarily fortunate to be home to most of the world's chalk streams (a figure often put at around 85%). booking a guided chalk stream fishing UK trip gives you access to crystal-clear, spring-fed rivers where wild brown trout thrive in their natural habitat. These unique rivers form when rainwater percolates through permeable chalk bedrock, emerging as springs that flow through the landscape creating waterways of exceptional purity.
     </p>
     <p>
       The formation of chalk rivers occurs primarily in southeastern England where thick deposits of chalk geology dominate the landscape. As rainfall slowly filters through the porous chalk, it becomes naturally purified and enriched with calcium carbonate and other minerals. This geological filtration process creates water of exceptional quality with stable temperatures that fluctuate minimally between seasons. The consistent spring-fed flow means chalk streams maintain relatively constant water levels and temperatures, creating ideal conditions for specialized aquatic life that cannot survive in more variable river environments. Stock up on quality fly fishing gear from <a rel="sponsored" href={affiliates.totalFishingTackle.trackingUrl} target="_blank">Total Fishing Tackle</a> before your trip.
@@ -106,7 +108,7 @@ import { affiliates } from '../../lib/affiliates';
   <section id="threats">
     <h2>Threats & Conservation Efforts</h2>
     <p>
-      Despite their protected status, chalk rivers face multiple serious threats that endanger their survival among rivers in the UK. <strong>Water abstraction</strong> represents the most significant threat, with chalk aquifers heavily exploited for public water supply. Excessive abstraction reduces spring flows, sometimes causing upper reaches to dry completely during summer. This impacts the entire ecosystem, as reduced flows concentrate pollutants, increase temperatures, and eliminate habitat for fish and invertebrates. Some famous chalk streams now flow only during winter months, having essentially become seasonal waterways where they were once perennial rivers of the UK [Source: Pending Authority Link].
+      Despite their protected status, chalk rivers face multiple serious threats that endanger their survival among rivers in the UK. <strong>Water abstraction</strong> represents the most significant threat, with chalk aquifers heavily exploited for public water supply. Excessive abstraction reduces spring flows, sometimes causing upper reaches to dry completely during summer. This impacts the entire ecosystem, as reduced flows concentrate pollutants, increase temperatures, and eliminate habitat for fish and invertebrates. Some famous chalk streams now flow only during winter months, having essentially become seasonal waterways where they were once perennial rivers of the UK.
     </p>
     <p>
       <strong>Agricultural pollution</strong> from nitrates and phosphates degrades water quality in major rivers in the UK, with chalk streams particularly vulnerable due to their small catchment sizes. Fertilizer runoff stimulates excessive algal growth that blocks sunlight, reducing aquatic plant diversity and oxygen levels. <strong>Sewage discharge</strong>, both treated and during storm overflow events, adds harmful bacteria, chemicals, and nutrients. <strong>Physical modifications</strong> including channel straightening, weir construction, and bank reinforcement have severely damaged many chalk rivers, removing natural features essential for wildlife.
@@ -135,18 +137,15 @@ import { affiliates } from '../../lib/affiliates';
   <aside class="key-takeaways">
     <h2>Key Takeaways</h2>
     <ul>
-      <li>The UK holds approximately 85% of the world's remaining chalk streams, making chalk stream fly fishing day tickets a uniquely British angling experience.</li>
+      <li>The UK holds most of the world's chalk streams (a figure often put at around 85%), making chalk stream fly fishing day tickets a uniquely British angling experience.</li>
       <li>The River Itchen and River Test in Hampshire are the premier destinations for guided chalk stream fishing UK, with day ticket and syndicate access available.</li>
-      <li>Chalk streams maintain stable 10-12°C temperatures year-round, creating ideal conditions for wild brown trout and world-class sight-fishing.</li>
+      <li>Chalk streams maintain fairly stable temperatures year-round, creating ideal conditions for wild brown trout and world-class sight-fishing.</li>
       <li>Booking through established fisheries ensures responsible access while supporting conservation of these globally rare habitats.</li>
     </ul>
   </aside>
 
-  <div class="author-byline">
-    <p><strong>Author:</strong> Expert Angling Team, UK Rivers Directory</p>
-    <p class="author-bio">Our team brings over 20 years of hands-on experience fishing and studying UK river ecosystems, with specialist knowledge of chalk stream fisheries and conservation. We are dedicated to helping anglers book responsible, rewarding chalk stream fly fishing trips.</p>
-    <p class="last-updated"><em>Last Updated: 28 July 2026</em></p>
-  </div>
+  <AffiliateNotice />
+  <AuthorBox updated="2026-11-14" />
 </BlogPostLayout>
 
 <style is:global>
@@ -172,27 +171,5 @@ import { affiliates } from '../../lib/affiliates';
     line-height: 1.7;
     color: #334155;
     margin-bottom: 0.5rem;
-  }
-  .author-byline {
-    border-top: 1px solid #e2e8f0;
-    padding-top: 1.5rem;
-    margin-top: 3rem;
-  }
-  .author-byline p {
-    font-size: 1rem;
-    line-height: 1.7;
-    color: #475569;
-    margin-bottom: 0.75rem;
-  }
-  .author-byline strong {
-    color: #0f172a;
-  }
-  .author-bio {
-    color: #475569;
-  }
-  .last-updated em {
-    font-style: italic;
-    color: #94a3b8;
-    font-size: 0.95rem;
   }
 </style>

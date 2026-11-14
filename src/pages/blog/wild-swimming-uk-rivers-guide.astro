@@ -1,5 +1,8 @@
 ---
 import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
+import AuthorBox from '../../components/AuthorBox.astro';
+import AffiliateNotice from '../../components/AffiliateNotice.astro';
+import SponsoredBanner from '../../components/SponsoredBanner.astro';
 ---
 
 <BlogPostLayout
@@ -22,12 +25,6 @@ import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
     <li><a href="#tips">Expert Tips</a></li>
   </ul>
 
-  <div slot="ad-toc" class="mt-4 flex justify-center">
-    <a rel="sponsored" href="https://www.awin1.com/cread.php?s=4069141&v=45595&q=533128&r=3008603" target="_blank">
-      <img src="https://www.awin1.com/cshow.php?s=4069141&v=45595&q=533128&r=3008603" border="0" alt="Fishing Tackle & Bait" loading="lazy" />
-    </a>
-  </div>
-
   <section id="introduction">
     <h2>Introduction to Wild Swimming in UK Rivers</h2>
     <p>
@@ -38,17 +35,11 @@ import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
     </p>
   </section>
 
-  <div class="hidden md:flex justify-center my-8 w-full">
-    <a rel="sponsored" href="https://www.awin1.com/cread.php?s=4523963&v=27393&q=440124&r=3008603" target="_blank">
-      <img src="/images/ads/imglifesbetterbythewater_728x90-1758622475381.gif" alt="Red Equipment — Life's Better By The Water" border="0" loading="lazy" />
-    </a>
-  </div>
-
-  <div class="flex md:hidden justify-center my-6 w-full">
-    <a rel="sponsored" href="https://www.awin1.com/cread.php?s=4523942&v=27393&q=582264&r=3008603" target="_blank">
-      <img src="/images/ads/imglifesbetterbythewater_120x600-1758622135989.gif" alt="Red Equipment — Life's Better By The Water" border="0" loading="lazy" />
-    </a>
-  </div>
+  <SponsoredBanner
+    href="https://www.awin1.com/cread.php?s=4523963&v=27393&q=440124&r=3008603"
+    src="/images/ads/imglifesbetterbythewater_728x90-1758622475381.gif"
+    alt="Red Equipment, Life's Better By The Water"
+  />
 
   <section id="safety">
     <h2>Essential Safety Guidelines for River Swimming</h2>
@@ -151,4 +142,7 @@ import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
       Build your confidence and skills progressively, perhaps starting in supervised open water swimming venues before progressing to rivers. Learn basic river rescue techniques and consider attending wild swimming safety courses offered by organizations like the Outdoor Swimming Society. Always research your chosen location beforehand, checking maps, access rights, and current conditions. With proper preparation, knowledge, and respect, wild swimming in rivers in the UK offers profound rewards - connecting you with nature, challenging your body, and providing experiences that conventional recreation simply cannot match.
     </p>
   </section>
+
+  <AffiliateNotice />
+  <AuthorBox updated="2026-11-14" />
 </BlogPostLayout>

@@ -12,9 +12,10 @@ interface Props {
   imageUrl: string;
   slug: string;
   seoTitle?: string;
+  updatedAt?: string;
 }
 
-const { title, description, keywords, category, publishedAt, imageUrl, slug, seoTitle } = Astro.props;
+const { title, description, keywords, category, publishedAt, imageUrl, slug, seoTitle, updatedAt = '2026-11-14' } = Astro.props;
 
 const moreGuides = blogPosts.filter((p) => p.published && p.slug !== slug);
 
@@ -31,9 +32,11 @@ const schemaData = {
   "description": description,
   "image": imageUrl,
   "datePublished": publishedAt,
+  "dateModified": updatedAt,
   "author": {
-    "@type": "Organization",
-    "name": "UK Rivers Directory"
+    "@type": "Person",
+    "name": "Andrew Zvoma",
+    "jobTitle": "Founder and editor"
   },
   "publisher": {
     "@type": "Organization",
