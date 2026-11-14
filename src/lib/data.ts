@@ -1114,4 +1114,28 @@ export const blogPosts: BlogPost[] = [
     published_at: '2026-07-27T10:00:00Z',
     created_at: '2026-07-27T10:00:00Z'
   },
+  {
+    id: '11',
+    title: 'The Longest Rivers in the UK',
+    slug: 'longest-rivers-in-the-uk',
+    category: 'Guides',
+    excerpt: 'The ten longest rivers in our directory ranked by length, where each rises and reaches the sea, and why published lengths differ.',
+    content: null,
+    image_url: '/images/rivers/river-thames/River_Thames.jpg',
+    published: true,
+    published_at: '2026-11-14T10:00:00Z',
+    created_at: '2026-11-14T10:00:00Z'
+  },
+  {
+    id: '12',
+    title: 'Wildlife to Look for on UK Rivers',
+    slug: 'wildlife-on-uk-rivers',
+    category: 'Guides',
+    excerpt: 'Kingfishers, otters, water voles, salmon and more: what you might see on a UK river, when to look and how to watch responsibly.',
+    content: null,
+    image_url: '/images/rivers/river-tweed/River_Tweed.jpg',
+    published: true,
+    published_at: '2026-11-14T10:00:00Z',
+    created_at: '2026-11-14T10:00:00Z'
+  },
 ];

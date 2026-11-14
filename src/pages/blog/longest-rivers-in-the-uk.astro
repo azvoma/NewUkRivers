@@ -1,0 +1,98 @@
+---
+import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
+import AuthorBox from '../../components/AuthorBox.astro';
+import AffiliateNotice from '../../components/AffiliateNotice.astro';
+import { rivers } from '../../lib/data';
+
+const longest = rivers
+  .filter((r) => r.length_km)
+  .sort((a, b) => (b.length_km ?? 0) - (a.length_km ?? 0))
+  .slice(0, 10);
+---
+
+<BlogPostLayout
+  title="The Longest Rivers in the UK"
+  seoTitle="The Longest Rivers in the UK: Top 10 by Length (with Maps and Guides)"
+  description="The ten longest rivers in the UK ranked by length, with where each rises and reaches the sea, and why published lengths for the same river can differ."
+  keywords="longest rivers in the UK, longest river in Britain, River Severn length, River Thames length"
+  category="Guides"
+  publishedAt="2026-11-14T10:00:00Z"
+  updatedAt="2026-11-14"
+  imageUrl="/images/rivers/river-thames/River_Thames.jpg"
+  slug="longest-rivers-in-the-uk"
+>
+  <ul slot="toc">
+    <li><a href="#ranking">The ranking</a></li>
+    <li><a href="#severn-thames">Severn or Thames?</a></li>
+    <li><a href="#measuring">Why lengths differ</a></li>
+    <li><a href="#notes">A closer look</a></li>
+  </ul>
+
+  <section id="ranking">
+    <h2>The ten longest rivers in the UK</h2>
+    <p>
+      The River Severn is generally recognised as the longest river in the United Kingdom, with the River Thames the longest river that flows entirely within England. The table ranks the rivers in our directory by the length we have recorded for each, taken from commonly published figures. Click through to a river's guide for its course, wildlife, access and safety notes.
+    </p>
+    <div class="table-wrap" style="overflow-x:auto">
+      <table>
+        <thead>
+          <tr><th>#</th><th>River</th><th>Length</th><th>Rises</th><th>Reaches the sea at</th></tr>
+        </thead>
+        <tbody>
+          {longest.map((r, i) => (
+            <tr>
+              <td>{i + 1}</td>
+              <td><a href={`/rivers/${r.slug}/`}>{r.name}</a></td>
+              <td>{r.length_km} km ({r.length_miles} miles)</td>
+              <td>{r.origin ?? 'n/a'}</td>
+              <td>{r.mouth ?? 'n/a'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Only rivers in our directory are ranked, and some rivers that are long in places, or shared with other countries, may be measured differently by other sources.
+    </p>
+  </section>
+
+  <section id="severn-thames">
+    <h2>Severn or Thames?</h2>
+    <p>
+      The Severn rises in the Cambrian Mountains of mid-Wales and flows through Shropshire, Worcestershire and Gloucestershire before reaching the Bristol Channel, so it crosses the border between Wales and England. The Thames rises in Gloucestershire and flows east through Oxford, Reading and London to the North Sea. The Severn is usually given as the longer of the two, while the Thames is often described as the longest river wholly in England. Both are navigable for long stretches, but they are very different rivers: the Severn is tidal, with a famous tidal bore, and the Thames is a heavily managed river with many locks.
+    </p>
+  </section>
+
+  <section id="measuring">
+    <h2>Why published lengths differ</h2>
+    <p>
+      You will see slightly different lengths for the same river, and that is normal. Measuring a river is harder than it sounds.
+    </p>
+    <ul>
+      <li><strong>Where it starts.</strong> Many rivers have several headwater streams, and sources may be disputed or move with the seasons.</li>
+      <li><strong>Where it ends.</strong> Estuaries are wide, and different bodies decide where river becomes sea in different places.</li>
+      <li><strong>How it is measured.</strong> Maps at different scales trace more or less of each bend, and channel straightening or canalisation changes the true length over time.</li>
+    </ul>
+    <p>
+      Treat any length as approximate and the ranking of rivers that are close in length as indicative rather than definitive.
+    </p>
+  </section>
+
+  <section id="notes">
+    <h2>A closer look at the big rivers</h2>
+    <p>
+      Length is only one way to appreciate a river. A few things worth knowing before you plan a visit:
+    </p>
+    <ul>
+      <li>Long rivers cross many managed and unmanaged stretches. Check the access and licence position for the part you want to paddle, as explained in <a href="/blog/do-i-need-a-license-to-paddleboard-on-a-river/">our access guide</a>.</li>
+      <li>Large rivers can be dangerous after heavy rain, with high flows, weirs and cold water. Read <a href="/blog/is-it-safe-to-swim-in-the-river-today/">our swimming safety guide</a> before you get in.</li>
+      <li>Many of these rivers have well-signed walking routes beside them, which is the easiest way to explore without needing a boat.</li>
+    </ul>
+    <p>
+      See the full list in <a href="/rivers/">our river directory</a>, or browse by region from the <a href="/">home page</a>.
+    </p>
+  </section>
+
+  <AffiliateNotice />
+  <AuthorBox updated="2026-11-14" />
+</BlogPostLayout>
