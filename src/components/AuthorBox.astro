@@ -1,0 +1,38 @@
+---
+import { EDITOR, CORRECTIONS_EMAIL, formatDisplayDate, CONTENT_UPDATED } from '../lib/trust';
+
+export interface Props {
+  updated?: string;
+}
+const { updated = CONTENT_UPDATED } = Astro.props;
+---
+
+<aside class="author-box" aria-label="About the author">
+  <p class="author-name"><strong>{EDITOR.name}</strong>, {EDITOR.jobTitle.toLowerCase()}</p>
+  <p>
+    Andrew built UK Rivers Directory and writes and maintains every page. He is a UK-based web designer and
+    developer, not a qualified guide, instructor or water-safety professional, so safety sections link to the
+    official bodies that are. Read <a href="/methodology/">how pages are compiled</a> and
+    <a href="/advertising-and-affiliates/">how the site is funded</a>.
+  </p>
+  <p class="author-meta">
+    Last reviewed <time datetime={updated}>{formatDisplayDate(updated)}</time>.
+    Spotted a mistake? <a href={`mailto:${CORRECTIONS_EMAIL}`}>Email a correction</a>.
+  </p>
+</aside>
+
+<style>
+  .author-box {
+    margin: 3rem 0 1rem;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid var(--color-border);
+    border-left: 4px solid var(--color-primary);
+    border-radius: 8px;
+    background: var(--color-background-alt);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  .author-box p { margin: 0 0 0.6rem; }
+  .author-box p:last-child { margin-bottom: 0; }
+  .author-meta { color: var(--color-text-light); font-size: 0.875rem; }
+</style>
