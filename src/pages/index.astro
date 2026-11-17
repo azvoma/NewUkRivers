@@ -5,8 +5,11 @@ import RiverCard from '../components/RiverCard.astro';
 import FAQ from '../components/FAQ.astro';
 import RegionHub from '../components/RegionHub.astro';
 import { getRivers } from '../lib/supabase';
+import { blogPosts } from '../lib/data';
 
 const featuredRivers = getRivers().filter(river => river.featured).slice(0, 6);
+
+const latestGuides = [...blogPosts].filter((b) => b.published).sort((a, b) => b.published_at.localeCompare(a.published_at)).slice(0, 6);
 
 const siteUrl = Astro.site?.toString() || "https://ukrivers.co.uk";
 
@@ -105,6 +108,18 @@ const faqs = [
   </section>
 
   <RegionHub />
+
+  <section class="latest-guides" aria-labelledby="latest-guides-heading">
+    <div class="container">
+      <h2 id="latest-guides-heading" class="section-title">Latest River Guides</h2>
+      <ul class="latest-guides-list">
+        {latestGuides.map((g) => (
+          <li><a href={`/blog/${g.slug}/`}>{g.title}</a><span>{g.excerpt}</span></li>
+        ))}
+      </ul>
+      <p><a href="/blog/">All guides</a></p>
+    </div>
+  </section>
 
   <section class="activities-section">
     <div class="container">
@@ -440,4 +455,9 @@ const faqs = [
       grid-template-columns: 1fr;
     }
   }
+  .latest-guides { padding: 2rem 0; }
+  .latest-guides-list { list-style: none; padding: 0; display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .latest-guides-list li { border: 1px solid var(--color-border); border-radius: 10px; padding: 1rem; }
+  .latest-guides-list a { font-weight: 600; display: block; margin-bottom: 0.4rem; }
+  .latest-guides-list span { color: var(--color-text-light); font-size: 0.95rem; line-height: 1.6; }
 </style>

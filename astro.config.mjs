@@ -11,7 +11,7 @@ export default defineConfig({
     sitemap({
       // Content was reviewed and updated on this date (see src/lib/trust.ts).
       serialize(item) {
-        item.lastmod = '2026-11-13T00:00:00.000Z';
+        item.lastmod = '2026-11-17T00:00:00.000Z';
         return item;
       },
     }),
